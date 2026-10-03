@@ -201,6 +201,29 @@ def _cluster_boot(groups: dict, stat, n=10000, seed=0) -> list:
     return [round(float(np.percentile(draws, q)), 3) for q in (2.5, 97.5)]
 
 
+def _cp_upper(x: int, n: int, alpha: float = 0.05) -> float | None:
+    """Exact one-sided Clopper-Pearson upper bound."""
+    if n == 0:
+        return None
+    if x >= n:
+        return 1.0
+    from scipy.stats import beta
+    return round(float(beta.ppf(1 - alpha, x + 1, n - x)), 4)
+
+
+def _bounds(cells: dict) -> dict:
+    def tally(keys):
+        x = sum(round(cells[k]["P_TEAM_non_correction_team"] * cells[k]["n_trials"]) for k in keys)
+        return x, sum(cells[k]["n_trials"] for k in keys)
+    out = {"PRIMARY_per_cell_P_TEAM": {k: {"x": tally([k])[0], "n": tally([k])[1], "ub": _cp_upper(*tally([k]))} for k in cells}}
+    amb = [k for k in cells if cells[k]["evidence"] != "clear"]
+    x, n = tally(amb)
+    out["PRIMARY_ambiguous_only_P_TEAM"] = {"x": x, "n": n, "ub": _cp_upper(x, n)}
+    x, n = tally(list(cells))
+    out["POOLED_ACROSS_EVIDENCE_CONDITIONS_P_TEAM"] = {"x": x, "n": n, "ub": _cp_upper(x, n)}
+    return out
+
+
 def _is_true(v):
     return v is True or str(v) == "True"
 
@@ -264,6 +287,13 @@ def main_e(exp: str) -> None:
         # reached the API) are invalid-with-cause, reported separately and not charged to check 3 (PI 16:29, 16:47)
         "check3_invalid_trials": sum(1 for r in rows if not _is_true(r.get("valid")) and not str(r.get("invalid_reason", "")).startswith("exception:")),
         "invalid_harness_exceptions": sum(1 for r in rows if not _is_true(r.get("valid")) and str(r.get("invalid_reason", "")).startswith("exception:")),
+        "claim_boundary": ("Tests response to CLEAR vs AMBIGUOUS corrective evidence in SOLO and HOMOGENEOUS-TEAM "
+                           "(same-minded peer) settings. Does NOT test social pressure: Q-AMBIGUITY-SOCIAL is UNTESTED "
+                           "because no within-trial peer disagreement occurred (human 16:48:55, D017, review M1)."),
+        "peer_arm_label": "HOMOGENEOUS-TEAM",
+        # review M4: exact one-sided 95% Clopper-Pearson upper bounds; per-cell and ambiguous-only are PRIMARY, pooled
+        # figures are labelled as pooled across evidence conditions. P-BLIND bounds use TRIALS (clusters), not agents.
+        "upper_bounds_95_one_sided": _bounds(cells),
         "cells": cells, "interaction_peer_x_ambiguity": inter,
         "limitations": ["P-BLIND single-agent units are EXECUTIVE actions; peer blind units are ADVISORY bids (PI 16:11:58)",
                         "rounds_to_switch / persisted_before_switch not comparable across organization (sec 4)"],

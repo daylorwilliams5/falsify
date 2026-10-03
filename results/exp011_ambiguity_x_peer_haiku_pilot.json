@@ -16,6 +16,52 @@
   },
   "check3_invalid_trials": 0,
   "invalid_harness_exceptions": 30,
+  "claim_boundary": "Tests response to CLEAR vs AMBIGUOUS corrective evidence in SOLO and HOMOGENEOUS-TEAM (same-minded peer) settings. Does NOT test social pressure: Q-AMBIGUITY-SOCIAL is UNTESTED because no within-trial peer disagreement occurred (human 16:48:55, D017, review M1).",
+  "peer_arm_label": "HOMOGENEOUS-TEAM",
+  "upper_bounds_95_one_sided": {
+    "PRIMARY_per_cell_P_TEAM": {
+      "peer_clear": {
+        "x": 0,
+        "n": 5,
+        "ub": 0.4507
+      },
+      "peer_conflicting": {
+        "x": 0,
+        "n": 5,
+        "ub": 0.4507
+      },
+      "peer_probabilistic": {
+        "x": 0,
+        "n": 5,
+        "ub": 0.4507
+      },
+      "single_clear": {
+        "x": 0,
+        "n": 5,
+        "ub": 0.4507
+      },
+      "single_conflicting": {
+        "x": 0,
+        "n": 5,
+        "ub": 0.4507
+      },
+      "single_probabilistic": {
+        "x": 0,
+        "n": 5,
+        "ub": 0.4507
+      }
+    },
+    "PRIMARY_ambiguous_only_P_TEAM": {
+      "x": 0,
+      "n": 20,
+      "ub": 0.1391
+    },
+    "POOLED_ACROSS_EVIDENCE_CONDITIONS_P_TEAM": {
+      "x": 0,
+      "n": 30,
+      "ub": 0.095
+    }
+  },
   "cells": {
     "peer_clear": {
       "org": "peer",

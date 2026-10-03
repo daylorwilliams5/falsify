@@ -5,9 +5,9 @@
   "state": "RUNNING",
   "started": "2026-10-03T16:44:58",
   "members": {
-    "primary_analyst": "PENDING",
-    "independent_analyst": "PENDING",
-    "robustness_auditor": "PENDING"
+    "primary_analyst": "COMPLETE",
+    "independent_analyst": "COMPLETE",
+    "robustness_auditor": "RUNNING"
   },
   "lead_state": "COORDINATING"
 }
