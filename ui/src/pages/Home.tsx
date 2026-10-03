@@ -24,7 +24,7 @@ export function Home({ programs }: { programs: ProgramSummary[] }) {
       </section>
 
       <section className="home-programs">
-        <div className="ov-label">
+        <div className="label">
           Research programs
           {waiting > 0 && <span className="home-waiting">{waiting} need you</span>}
         </div>

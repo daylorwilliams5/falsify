@@ -8,12 +8,12 @@ export function PlanView({ plan }: { plan: ResearchPlan }) {
   return (
     <div className="plan">
       <section className="plan-sec">
-        <div className="ov-label">Refined question</div>
+        <div className="label">Refined question</div>
         <p className="plan-refined">{plan.refined_question}</p>
       </section>
 
       <section className="plan-sec">
-        <div className="ov-label">Competing hypotheses</div>
+        <div className="label">Competing hypotheses</div>
         <ol className="plan-hyps">
           {plan.hypotheses.map((h) => (
             <li key={h.id}>
@@ -29,7 +29,7 @@ export function PlanView({ plan }: { plan: ResearchPlan }) {
 
       <div className="plan-pair">
         <section className="plan-sec">
-          <div className="ov-label">First experiment</div>
+          <div className="label">First experiment</div>
           <p className="plan-xtitle">{x.title}</p>
           <dl className="plan-dl">
             <dt>Design</dt><dd>{x.design}</dd>
@@ -40,11 +40,11 @@ export function PlanView({ plan }: { plan: ResearchPlan }) {
           </dl>
         </section>
         <section className="plan-sec">
-          <div className="ov-label">Skeptic’s concerns</div>
+          <div className="label">Skeptic’s concerns</div>
           <ul className="plan-risks">
             {plan.risks.map((r) => <li key={r}>{r}</li>)}
           </ul>
-          <div className="ov-label" style={{ marginTop: 32 }}>Starting literature</div>
+          <div className="label" style={{ marginTop: 32 }}>Starting literature</div>
           <ul className="plan-sources">
             {plan.sources.map((s) => (
               <li key={s.title}><span className="plan-src-t">{s.title}</span> <span className="plan-src-y">{s.year}</span><p>{s.why}</p></li>

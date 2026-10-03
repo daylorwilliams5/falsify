@@ -7,7 +7,6 @@ import { ExperimentCard } from '../components/ExperimentCard';
 import { ResearchLoop } from '../components/ResearchLoop';
 import { AgentStatusRow } from '../components/AgentStatusRow';
 import { TraceRow } from '../components/TraceRow';
-import { DecisionCard } from '../components/DecisionCard';
 import { TimelineEvent } from '../components/TimelineEvent';
 import { EvidenceItem } from '../components/EvidenceItem';
 import { LiteratureSource } from '../components/LiteratureSource';
@@ -29,7 +28,7 @@ export function ExperimentPage({ lab, base, id }: { lab: LabSnapshot; base: stri
   const exp = lab.experiments.find((e) => e.id === id) ?? lab.experiments[0];
   const evidence = lab.state.evidence.filter((e) => e.hypothesis === exp.hypothesis);
   return (
-    <DetailPage base={base} kicker={`Experiment · ${exp.id}`} title={lab.state.latest_result.headline} lede={exp.question}>
+    <DetailPage base={base} kicker={`Experiment · ${exp.id}`} title={exp.id} lede={exp.question}>
       <div className="detail-grid">
         <Panel title="Result" meta={<span className="mono">results/{exp.id}.json</span>}>
           <ExperimentCard x={exp} />
@@ -42,33 +41,12 @@ export function ExperimentPage({ lab, base, id }: { lab: LabSnapshot; base: stri
   );
 }
 
-export function DecisionPage({ lab, base }: { lab: LabSnapshot; base: string }) {
-  return (
-    <DetailPage base={base} kicker="Next move" title="Proposed next experiment" lede="The lab pauses here for human approval before building or running anything.">
-      <Panel title="Decision" meta={<span className="mono">{lab.state.next_decision.rationale_path}</span>} className="decision-panel">
-        <DecisionCard d={lab.state.next_decision} />
-      </Panel>
-    </DetailPage>
-  );
-}
-
 export function LiteraturePage({ lab, base }: { lab: LabSnapshot; base: string }) {
   return (
     <DetailPage base={base} kicker="Literature" title="What prior work says" lede="Provisionally approved for synthesis and gap analysis. No strong novelty claims.">
       <div className="lit-grid">
         {lab.literature.map((s) => <LiteratureSource key={s.id} s={s} />)}
       </div>
-    </DetailPage>
-  );
-}
-
-export function EvidencePage({ lab, base }: { lab: LabSnapshot; base: string }) {
-  return (
-    <DetailPage base={base} kicker="Evidence" title="What we measured vs. what we believe" lede="Every claim carries its provenance: measured, derived, inferred, or still a hypothesis.">
-      <div className="prov-legend mono">
-        {ORDER.map((k) => <span key={k} className={`prov-${k.toLowerCase()}`}>{k}</span>)}
-      </div>
-      {ORDER.flatMap((k) => lab.state.evidence.filter((e) => e.kind === k)).map((e) => <EvidenceItem key={e.id} e={e} />)}
     </DetailPage>
   );
 }

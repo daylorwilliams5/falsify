@@ -22,21 +22,9 @@ export type Provenance = 'MEASURED' | 'DERIVED' | 'INFERRED' | 'HYPOTHESIS';
 export type EventSource = 'HUMAN' | 'AGENT' | 'EXPERIMENT';
 
 // research_state.json  ←  registry/hypotheses.json (question) + director state
-export interface LatestResult {
-  experiment: string;
-  label: string;
-  headline: string;
-  finding: string;
-  verdict: string;
-  reason: string;
-}
-
 export interface ResearchState {
   program: string;
   question: string;
-  question_short: string;
-  latest_result: LatestResult;
-  current_phase: string;
   refined_from?: string;
   current_experiment: string;
   loop_index: number;
@@ -67,8 +55,6 @@ export interface DecisionOption {
   build: string; // e.g. "~30 min" or "READY"
   cost: 'HIGH' | 'MEDIUM' | 'LOW';
   hypotheses: string[];
-  short: string;
-  one_line: string;
   design: string;
   trials: number;
   falsified_if: string;
@@ -164,8 +150,6 @@ export interface Phase {
 }
 
 export interface AgentActivity {
-  phases: Phase[];
-  focus: { agent: string; verb: string; state: AgentState }[];
   agents: AgentStatus[];
   loop: LoopStage[];
   trace: { root: string; agent: string; started: string; spans: TraceSpan[] };

@@ -2,7 +2,7 @@
   "_meta": {
     "label": "EXPLORATORY (EDGE_CASE_POLICY \u00a7K). Offline re-aggregation, 0 model calls, 0 new trials.",
     "generated": "2026-10-03T12:10:59",
-    "authorized_by": "decisions/D002.json (PI, Level 1)",
+    "authorized_by": "decisions/D003.json (PI, Level 1) - corrective decision that withdrew D002's pre-committed status-transition clause",
     "source_file": "data/trials/exp001_pilot.jsonl",
     "source_sha256": "afdd0786dfc592db054725c310a8302ad0c1e65b1ac6ae4547fbbb998125e669",
     "source_mutated": false,
@@ -15,7 +15,25 @@
     "prompt_hash": [
       "ccbb34cb3d7e"
     ],
-    "no_hypothesis_status_change_proposed": true
+    "no_hypothesis_status_change_proposed": true,
+    "provenance_chain": {
+      "originally_authorized_by": "decisions/D002.json (PI, Level 1)",
+      "d002_review_verdict": "FAIL (critiques/review_D002.md) - on three authority findings concerning a pre-committed H8/H5a status-transition clause",
+      "what_survived_of_d002": "the ANALYSIS portion only. The methodology reviewer ruled the route-intention redefinition legitimately Level 1 (disagreement_rounds is secondary per PREREG_V2.md:32; the token artifact is at falsify/org.py:161; C7 at critiques/loop1_auditor.md:289-290 specified the redefinition before D002). The defect was in the inference D002 pre-authorized, not in the data work. This artifact is therefore NOT tainted, but its sole authorization pointer was to a failed record.",
+      "superseded_by": "decisions/D003.json - re-authorizes this artifact as purely EXPLORATORY with NO status consequence for any hypothesis",
+      "review_concerns_discharged_by": "decisions/D007.json (accepts critiques/review_D003.md findings 3-6 and critiques/review_D004.md)",
+      "corrections_applied_under_D007": [
+        "D007(4): _meta.authorized_by re-pointed from D002 to D003, with this supersession chain recorded rather than the D002 reference dropped",
+        "D007(4): residual falsify/org.py:160 citations corrected to :161 (line 160 is executor_overridden; line 161 is the disagreement expression) - verified on disk",
+        "D007(3): count-vs-rate unit clarification added for cell D disagreement_rounds = 1.0",
+        "D007(2): structural qualification bound to every statement of the 0/80 zero",
+        "D007(1): scoped-and-reversible status of the build declination recorded"
+      ],
+      "corrections_ts": "2026-10-03T12:23:16",
+      "corrections_made_by": "statistician (the PI does not hand-edit results files; see D007 alternatives_rejected)"
+    },
+    "source_sha256_reverified_under_D007": "afdd0786dfc592db054725c310a8302ad0c1e65b1ac6ae4547fbbb998125e669",
+    "source_sha256_unchanged": true
   },
   "definitions": {
     "route_intention": "the route (A|B|HOLD) a role's own output commits to acting on this round",
@@ -137,7 +155,8 @@
       "wilson95": [
         0.0,
         0.045818
-      ]
+      ],
+      "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
     },
     "rounds_where_plurality_differs_from_authority_all_recoverable": {
       "count": 0,
@@ -146,7 +165,8 @@
       "wilson95": [
         0.0,
         0.045818
-      ]
+      ],
+      "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
     },
     "which_rounds_differ": [],
     "trials_with_differing_action_sequence": [],
@@ -158,7 +178,8 @@
       "wilson95": [
         0.0,
         0.045818
-      ]
+      ],
+      "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
     },
     "tie_frequency_all_recoverable": {
       "count": 0,
@@ -167,7 +188,8 @@
       "wilson95": [
         0.0,
         0.045818
-      ]
+      ],
+      "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
     },
     "recorded_action_equals_planner_authority": {
       "count": 80,
@@ -187,7 +209,8 @@
       "wilson95": [
         0.0,
         0.045818
-      ]
+      ],
+      "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
     },
     "route_intention_disagreement_all_recoverable": {
       "count": 0,
@@ -196,9 +219,10 @@
       "wilson95": [
         0.0,
         0.045818
-      ]
+      ],
+      "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
     },
-    "legacy_disagreement_field_org_py_160": {
+    "legacy_disagreement_field_org_py_161": {
       "count": 6,
       "n": 80,
       "rate": 0.075,
@@ -216,7 +240,8 @@
       "exp001_pilot-D-004#r1"
     ],
     "absolute_gap_rate": 0.075,
-    "note": "legacy flags 7.5% of rounds; route-intention disagreement is 0.0%. Every legacy-True round is a CONTINUE/REPLAN token difference with a unanimous route intention (confirms critiques/exp001_pilot_skeptic.md \u00a71.4)."
+    "note": "legacy flags 7.5% of rounds; route-intention disagreement is 0.0%. Every legacy-True round is a CONTINUE/REPLAN token difference with a unanimous route intention (confirms critiques/exp001_pilot_skeptic.md \u00a71.4).",
+    "_citation_correction": "This key was named ..._org_py_160 before D007. The legacy `disagreement` expression is at falsify/org.py:161; line 160 is `executor_overridden`. Corrected per critiques/review_D003.md \u00a76 / D007(4)."
   },
   "by_cell": {
     "C": {
@@ -238,7 +263,8 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
       "plurality_differs_from_authority": {
         "count": 0,
@@ -247,9 +273,19 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
-      "ties": 0
+      "ties": 0,
+      "legacy_disagreement_per_trial_counts": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "legacy_disagreement_mean_count_rounds_per_trial": 0.2,
+      "legacy_disagreement_UNIT_NOTE": "the figure 0.2 in results/exp001_pilot.json is a COUNT (rounds per trial), NOT a proportion; the proportion of rounds flagged is 0.05."
     },
     "C0": {
       "n_rounds": 20,
@@ -270,7 +306,8 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
       "plurality_differs_from_authority": {
         "count": 0,
@@ -279,9 +316,19 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
-      "ties": 0
+      "ties": 0,
+      "legacy_disagreement_per_trial_counts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "legacy_disagreement_mean_count_rounds_per_trial": 0.0,
+      "legacy_disagreement_UNIT_NOTE": "the figure 0.0 in results/exp001_pilot.json is a COUNT (rounds per trial), NOT a proportion; the proportion of rounds flagged is 0.0."
     },
     "D": {
       "n_rounds": 20,
@@ -302,7 +349,8 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
       "plurality_differs_from_authority": {
         "count": 0,
@@ -311,9 +359,19 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
-      "ties": 0
+      "ties": 0,
+      "legacy_disagreement_per_trial_counts": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "legacy_disagreement_mean_count_rounds_per_trial": 1.0,
+      "legacy_disagreement_UNIT_NOTE": "the figure 1.0 in results/exp001_pilot.json is a COUNT (rounds per trial), NOT a proportion; the proportion of rounds flagged is 0.25."
     },
     "D0": {
       "n_rounds": 20,
@@ -334,7 +392,8 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
       "plurality_differs_from_authority": {
         "count": 0,
@@ -343,9 +402,19 @@
         "wilson95": [
           0.0,
           0.161125
-        ]
+        ],
+        "structural_qualification": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time."
       },
-      "ties": 0
+      "ties": 0,
+      "legacy_disagreement_per_trial_counts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "legacy_disagreement_mean_count_rounds_per_trial": 0.0,
+      "legacy_disagreement_UNIT_NOTE": "the figure 0.0 in results/exp001_pilot.json is a COUNT (rounds per trial), NOT a proportion; the proportion of rounds flagged is 0.0."
     }
   },
   "trials": [
@@ -4254,10 +4323,68 @@
   },
   "findings": {
     "F9C1_prediction_confirmed": true,
-    "headline": "0/80 multi-agent rounds differ between plurality(tie->HOLD) and planner authority; 0/80 route-intention disagreement; 0/80 ties; 20/20 action sequences identical. Rate is exactly 0/80.",
-    "legacy_vs_route_intention": "legacy disagreement 6/80 = 0.075 vs route-intention 0/80 = 0.000; absolute gap 0.075 (7.5 percentage points). All 6 legacy-True rounds are unanimous on route.",
+    "headline": "0/80 multi-agent rounds differ between plurality(tie->HOLD) and planner authority; 0/80 route-intention disagreement; 0/80 ties; 20/20 action sequences identical. Rate is exactly 0/80. QUALIFIED (D007 item 2): the instrument cannot record a route intention for 2 of 4 roles (org.py SCHEMAS:20-23); the adversarial sensitivity analysis (0 rounds flip over all A/B/HOLD reassignments of the 14/160 unrecoverable intentions) is what licenses relying on this zero.",
+    "legacy_vs_route_intention": "legacy org.py:161 disagreement 6/80 = 0.075 of rounds vs route-intention 0/80 = 0.000; absolute gap 0.075. All 6 legacy-True rounds are unanimous on route. UNIT (D007 item 3): cell D disagreement_rounds = 1.0 is a per-trial COUNT (per-trial values [1,2,1,1,0]), not a proportion; as a rate it is 0.25 of rounds.",
     "measurement_validity_finding": "2 of 4 roles (researcher, reviewer) have NO route field in their output schema (falsify/org.py SCHEMAS lines 20-23), so their route intention is never structurally recorded. 146/160 free-text role-rounds could be adjudicated from text; 14/160 (8.75%) could not and were left as null rather than imputed. This is a measurement-validity limitation, not a zero.",
     "policy_F_audit": "no round record in data/trials/exp001_pilot.jsonl carries the executor_overridden field; that field postdates this run. Executor compliance (20/20 trials, 80/80 rounds) is confirmed by recomputation (planner plan_route maps to executor action in 80/80), not by a logged override flag. The policy-F override path is therefore unexercised and untested on this data.",
     "exploratory_label": "EXPLORATORY per EDGE_CASE_POLICY \u00a7K. No hypothesis status change is proposed by this analysis."
+  },
+  "unit_clarification_D007_item3": {
+    "error_being_corrected": "cell D `disagreement_rounds = 1.0` has been quoted bare since the 11:10:03 timeline entry and was repeated in decisions/D005.json item 3. Stated bare, '1.0' reads as 100%. It is not.",
+    "what_1.0_actually_is": "a PER-TRIAL COUNT: the mean number of flagged rounds per trial. Unit = rounds/trial.",
+    "cell_D_per_trial_counts": [
+      1,
+      2,
+      1,
+      1,
+      0
+    ],
+    "cell_D_mean_count_rounds_per_trial": 1.0,
+    "cell_D_rate_of_rounds_flagged": 0.25,
+    "cell_D_rate_denominator": "5 rounds flagged / 20 rounds (5 trials x 4 rounds)",
+    "cell_C_per_trial_counts": [
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "cell_C_mean_count_rounds_per_trial": 0.2,
+    "cell_C_rate_of_rounds_flagged": 0.05,
+    "cell_C0_per_trial_counts": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cell_D0_per_trial_counts": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "correct_statement": "The legacy org.py:161 field fires on 6/80 rounds = 0.075 overall, and on 5/20 rounds = 0.25 in cell D (mean 1.0 rounds per trial). Route-intention disagreement is 0/80 = 0.000. The cell means 1.0 (D) and 0.2 (C) reported in results/exp001_pilot.json are COUNTS per trial, not proportions.",
+    "rule_going_forward": "never quote disagreement_rounds without its unit; say \"1.0 rounds/trial (= 0.25 of rounds)\"."
+  },
+  "structural_qualification_of_the_zero_D007_item2": {
+    "MUST_ACCOMPANY_THE_ZERO": "This 0/80 is NOT a clean zero and must never be quoted bare (D007 item 2). The Researcher and Reviewer have NO route field in their output schemas (falsify/org.py SCHEMAS:20-23), so the instrument structurally cannot express the construct for 2 of 4 roles; only the Planner (plan_route) and Executor (action) carry a recorded route intention, and those two are already coupled by EDGE_CASE_POLICY \u00a7F planner authority. 14/160 free-text role-rounds were unrecoverable and were left null rather than imputed. WHAT LICENSES RELYING ON THE ZERO is the adversarial sensitivity analysis: reassigning all 14/160 unrecoverable intentions over every A/B/HOLD combination flips 0 rounds; and dropping both free-text roles entirely leaves planner vs executor agreeing in 80/80 rounds. Cite the sensitivity analysis alongside the zero every time.",
+    "see": [
+      "measurement_validity",
+      "sensitivity_to_unrecoverable_intentions",
+      "critiques/review_D003.md \u00a74",
+      "decisions/D007.json item 2"
+    ]
+  },
+  "declination_scope_D007_item1": {
+    "what_was_declined": "funding the 3-4h plurality/flat-aggregation build (decisions/D005.json item 1)",
+    "nature": "a RESOURCE-ALLOCATION call, not a hypothesis verdict. Upheld against its strongest attack in critiques/review_D003.md \u00a72.",
+    "scope": "applies to exp001_pilot's 80 multi-agent rounds ONLY - to this dataset, NOT to the construct.",
+    "reversibility": "REVERSIBLE. A measured non-zero route-intention disagreement rate in ANY future arm revives H8/H5a as a fundable branch.",
+    "prohibited_paraphrases": "No downstream document may paraphrase this declination as H8 or H5a being inert, dead, falsified, vacuous or retired. H8's own prediction is explicitly CONDITIONAL on a non-zero disagreement rate, so an unmet antecedent in one dataset is not a generalizing claim.",
+    "registry_state": "H5 and H3 remain \"untested\". H8 and H5a remain unregistered PROPOSALS under registry/hypotheses.json proposed_loop1 with no status at all. The registry is untouched by this analysis.",
+    "also_unmeasured": "ties were reached 0/80, so the HOLD tie-break - which critiques/escalation_conditions_skeptic.md F8 argues IS the mechanism - is UNMEASURED, not validated.",
+    "source": "decisions/D007.json item 1; critiques/review_D003.md \u00a73"
   }
 }

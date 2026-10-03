@@ -1,5 +1,16 @@
 import type { Phase } from '../data/types';
 
+export const LAB_PHASES = [
+  ['literature', 'Literature'],
+  ['hypothesis', 'Hypothesis'],
+  ['experiment', 'Experiment'],
+  ['result', 'Result'],
+  ['critique', 'Critique'],
+  ['decision', 'PI decision'],
+  ['review', 'Methodology review'],
+  ['next', 'Next experiment'],
+] as const;
+
 export const PHASES = [
   ['literature', 'Literature'],
   ['hypothesis', 'Hypothesis'],
@@ -10,9 +21,9 @@ export const PHASES = [
 ] as const;
 
 /** Build the six-step loop with everything before `current` complete. */
-export function phasesAt(current: string, note?: string): Phase[] {
-  const i = PHASES.findIndex(([id]) => id === current);
-  return PHASES.map(([id, label], j) => ({
+export function phasesAt(current: string, note?: string, list: readonly (readonly [string, string])[] = PHASES): Phase[] {
+  const i = list.findIndex(([id]) => id === current);
+  return list.map(([id, label], j) => ({
     id, label,
     state: j < i ? 'COMPLETE' : j === i ? 'RUNNING' : 'QUEUED',
     note: j === i ? note : undefined,
@@ -24,7 +35,7 @@ export function LoopTimeline({ phases }: { phases: Phase[] }) {
   const current = phases.find((p) => p.state === 'RUNNING');
   return (
     <div className="loopline">
-      <ol className="loopline-track">
+      <ol className="loopline-track" style={{ gridTemplateColumns: `repeat(${phases.length}, 1fr)` }}>
         {phases.map((p) => (
           <li key={p.id} className={`ll-step is-${p.state.toLowerCase()}`}>
             <span className="ll-node" />

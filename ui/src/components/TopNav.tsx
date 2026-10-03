@@ -1,4 +1,14 @@
-export function TopNav({ section, running }: { section: string; running: number }) {
+const LINKS = [
+  ['', 'Overview'],
+  ['research', 'Research'],
+  ['experiments', 'Experiments'],
+  ['decisions', 'Decisions'],
+  ['literature', 'Literature'],
+  ['lab', 'Lab'],
+  ['timeline', 'Timeline'],
+] as const;
+
+export function TopNav({ section, status }: { section: string; status: string }) {
   return (
     <header className="nav-bar">
       <a href="#/" className="brand">
@@ -6,12 +16,13 @@ export function TopNav({ section, running }: { section: string; running: number 
         <span className="brand-tag">The lab that tries to prove itself wrong.</span>
       </a>
       <nav className="nav-links">
-        <a href="#/" className={section === '' || section === 'p' ? 'is-active' : ''}>Programs</a>
-        <a href="#/new" className={section === 'new' ? 'is-active' : ''}>New question</a>
+        {LINKS.map(([id, label]) => (
+          <a key={id} href={`#/${id}`} className={section === id ? 'is-active' : ''}>{label}</a>
+        ))}
       </nav>
       <div className="live-status">
         <span className="live-dot" />
-        Live <span className="live-sub">· {running} programs active</span>
+        Autonomous lab <span className="live-sub">· {status.toLowerCase()}</span>
       </div>
     </header>
   );

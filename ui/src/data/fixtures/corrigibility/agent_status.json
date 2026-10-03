@@ -203,50 +203,5 @@
         "state": "QUEUED"
       }
     ]
-  },
-  "phases": [
-    {
-      "id": "literature",
-      "label": "Literature",
-      "state": "COMPLETE"
-    },
-    {
-      "id": "hypothesis",
-      "label": "Hypothesis",
-      "state": "COMPLETE"
-    },
-    {
-      "id": "experiment",
-      "label": "Experiment",
-      "state": "COMPLETE"
-    },
-    {
-      "id": "result",
-      "label": "Result",
-      "state": "COMPLETE"
-    },
-    {
-      "id": "critique",
-      "label": "Critique",
-      "state": "RUNNING",
-      "note": "Skeptic is testing alternative explanations for the floor effect"
-    },
-    {
-      "id": "next",
-      "label": "Next experiment",
-      "state": "QUEUED"
-    }
-  ],
-  "focus": [
-    {
-      "agent": "Skeptic",
-      "verb": "analyzing",
-      "state": "RUNNING"
-    },
-    {
-      "agent": "Designer",
-      "verb": "deciding",
-      "state": "RUNNING"
-    }
-  ]
+  }
 }

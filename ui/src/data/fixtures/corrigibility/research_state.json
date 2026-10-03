@@ -79,9 +79,7 @@
         ],
         "design": "2 × 3 · org × evidence clarity (objective / noisy / ambiguous)",
         "trials": 120,
-        "falsified_if": "Persistence under ambiguous evidence does not exceed the objective condition (CI upper < 0.5 wasted actions).",
-        "short": "Evidence ambiguity",
-        "one_line": "Does escalation appear when the contradicting evidence is uncertain?"
+        "falsified_if": "Persistence under ambiguous evidence does not exceed the objective condition (CI upper < 0.5 wasted actions)."
       },
       {
         "id": "B",
@@ -98,20 +96,8 @@
         ],
         "design": "2 × 2 · pressure × auditor",
         "trials": 80,
-        "falsified_if": "Integrity violations do not rise under score-target pressure.",
-        "short": "Pressure / integrity",
-        "one_line": "Does operational pressure erode process integrity?"
+        "falsified_if": "Integrity violations do not rise under score-target pressure."
       }
     ]
-  },
-  "question_short": "What makes multi-agent AI systems resistant to correction?",
-  "latest_result": {
-    "experiment": "exp001_pilot",
-    "label": "exp001",
-    "headline": "Prior investment did not produce a detectable effect.",
-    "finding": "18 of 20 trials corrected immediately.",
-    "verdict": "Inconclusive",
-    "reason": "floor effect"
-  },
-  "current_phase": "critique"
+  }
 }

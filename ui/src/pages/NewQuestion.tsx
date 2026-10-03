@@ -28,7 +28,7 @@ export function NewQuestion({ initial }: { initial?: string }) {
 
   return (
     <div className="newq">
-      <div className="ov-label">New research question</div>
+      <div className="label">New research question</div>
       {!asked ? (
         <form className="newq-form" onSubmit={(e) => { e.preventDefault(); setAsked(q.trim() || EXAMPLE_QUESTION); }}>
           <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder={EXAMPLE_QUESTION} rows={3} autoFocus />
