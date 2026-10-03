@@ -497,7 +497,9 @@ def research_budget() -> dict:
         "as_of": now(),
         "elapsed_research_minutes": round((datetime.datetime.fromisoformat(now()) -
                                            datetime.datetime.fromisoformat(t0[:19])).total_seconds() / 60, 1) if t0 else 0,
-        "external_spend_usd": 0.0,
+        "external_spend_usd": round(sum(json.loads(l)["usd"] for l in (ROOT / "data" / "spend_ledger.jsonl")
+                                        .read_text().splitlines() if l.strip()), 4)
+                              if (ROOT / "data" / "spend_ledger.jsonl").exists() else 0.0,
         "external_spend_cap_without_human_usd": mandate["budget"]["external_spend_usd_without_human"],
         "subject_model": mandate["subject_model"],
         "model_calls_used": calls, "subject_tokens_in": tok_in, "subject_tokens_out": tok_out,
