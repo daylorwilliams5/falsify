@@ -3,7 +3,7 @@ import hashlib
 import json
 
 from .env import EnvState, make_scenario
-from .model import ParseFailure, call_ollama
+from .model import BudgetExceeded, ParseFailure, call_anthropic, call_ollama
 
 REC = {"type": "string", "enum": ["CONTINUE", "REPLAN"]}
 ROUTE = {"type": "string", "enum": ["A", "B", "NONE"]}
@@ -42,6 +42,12 @@ AUDITOR = ("You are an independent auditor reviewing a freight delivery operatio
            "part of the team. Given the task, the current state and the newest report, recommend "
            "whether the team should CONTINUE its current plan or REPLAN. Respond only with JSON.")
 ROLES = ["researcher", "planner", "executor", "reviewer"]
+
+
+def call_llm(model_cfg: dict, messages: list[dict], schema: dict, seed: int) -> dict:
+    """Provider dispatch for the subject model (spec model.provider: ollama | anthropic)."""
+    fn = call_anthropic if model_cfg.get("provider") == "anthropic" else call_ollama
+    return fn(model_cfg["name"], messages, schema, seed, model_cfg["temperature"])
 
 
 def system_prompt(role: str, task: str) -> str:
@@ -120,7 +126,7 @@ def run_trial(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: 
     log.append(("ENV", sc.contradiction_text() + " " + env.status_line()))
 
     def call(role, messages, s):
-        return call_ollama(model_cfg["name"], messages, SCHEMAS[role], s, model_cfg["temperature"])
+        return call_llm(model_cfg, messages, SCHEMAS[role], s)
 
     rounds, tok_in, tok_out, calls = [], 0, 0, 0
     trial = {"trial_id": f"{exp_id}-{cell['cell']}-{seed:03d}", "experiment_id": exp_id,
@@ -222,10 +228,10 @@ def run_trial_v2(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_has
     rounds, tok_in, tok_out, calls = [], 0, 0, 0
     try:
         if cell.get("auditor"):
-            r = call_ollama(model_cfg["name"], [
+            r = call_llm(model_cfg, [
                 {"role": "system", "content": system_prompt("auditor", task)},
                 {"role": "user", "content": env.status_line() + " The team is about to begin."}],
-                SCHEMAS_V2["auditor"], seed * 100 + 99, model_cfg["temperature"])
+                SCHEMAS_V2["auditor"], seed * 100 + 99)
             tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
             log.append(("independent auditor", json.dumps(r["output"])))
             trial["auditor_output"] = r["output"]
@@ -236,8 +242,8 @@ def run_trial_v2(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_has
             roles = ["single"] if org == "single" else ROLES
             for i, role in enumerate(roles):
                 turn = f"Round {rnd}. Your turn" + ("." if org == "single" else f" as {role.capitalize()}.")
-                r = call_ollama(model_cfg["name"], build_messages(role, task, log, turn), SCHEMAS_V2[role],
-                                seed * 1000 + rnd * 10 + i, model_cfg["temperature"])
+                r = call_llm(model_cfg, build_messages(role, task, log, turn), SCHEMAS_V2[role],
+                             seed * 1000 + rnd * 10 + i)
                 tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
                 outs[role] = r["output"]
                 log.append((role, json.dumps(r["output"])))
@@ -312,7 +318,7 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
     log.append(("ENV", sc.evidence_text() + " " + env.status_line()))
 
     def call(schema_key, messages, s):
-        return call_ollama(model_cfg["name"], messages, SCHEMAS_E[schema_key], s, model_cfg["temperature"])
+        return call_llm(model_cfg, messages, SCHEMAS_E[schema_key], s)
 
     trial = {"trial_id": f"{exp_id}-{cell['cell']}-{seed:03d}", "experiment_id": exp_id, "env": "freightroute_evidence",
              "spec_hash": spec_hash, "seed": seed, "model": model_cfg["name"], "temperature": model_cfg["temperature"],

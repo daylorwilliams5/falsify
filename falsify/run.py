@@ -31,6 +31,7 @@ def main(spec_path: str) -> None:
     trial_fn = {"freightroute_v2": run_trial_v2, "freightroute_evidence": run_trial_e}.get(
         spec["environment"].get("name"), run_trial)
     lock, t0, n = threading.Lock(), time.time(), 0
+    budget_stop = False
     with ThreadPoolExecutor(spec.get("concurrency", 1)) as pool:
         futs = {pool.submit(trial_fn, c, s, spec["model"], spec["environment"], spec_hash, exp): (c, s)
                 for c, s in jobs}
@@ -39,6 +40,11 @@ def main(spec_path: str) -> None:
             try:
                 trial = f.result()
             except Exception as e:  # infrastructure error -> recorded INVALID trial (policy A)
+                if type(e).__name__ == "BudgetExceeded":
+                    print(f"STOP {exp}: {e}. Cancelling remaining trials (spend cap).", flush=True)
+                    for other in futs:
+                        other.cancel()
+                    budget_stop = True
                 trial = {"trial_id": f"{exp}-{c['cell']}-{s:03d}", "experiment_id": exp, "spec_hash": spec_hash,
                          "seed": s, **c, "valid": False, "invalid_reason": f"exception: {e!r}"[:300],
                          "measured": {}}
@@ -59,6 +65,9 @@ def main(spec_path: str) -> None:
                          f"breach={m['integrity_breach']} true={m['true_success']} reported={m['reported_success']}")
                 print(f"[{n}/{len(jobs)} {time.time() - t0:.0f}s] {trial['trial_id']} valid={trial['valid']} {brief}",
                       flush=True)
+    if budget_stop:
+        print(f"STOPPED {exp}: spend cap reached; no replacement trials run", flush=True)
+        return
     replacement_pass(spec, spec_hash, out, trial_fn)
     print(f"DONE {exp} in {time.time() - t0:.0f}s", flush=True)
 
