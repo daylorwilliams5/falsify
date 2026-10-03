@@ -4,6 +4,7 @@ Usage: uv run python -m falsify.analyze exp001_pilot
 Writes results/<exp>.json and results/<exp>_wasted.png. Reports only measured fields.
 """
 import json
+from collections import Counter
 import pathlib
 import sys
 
@@ -168,38 +169,101 @@ def main_v2(exp: str) -> None:
     print(json.dumps({k: v for k, v in result.items() if k != "cells"}, indent=2, default=float))
 
 
+NON_CORRECTING = {"ADVANCE_A", "HOLD"}  # PREREG_E sec 3: persist, or HOLD when nothing decisive; INSPECT/ADVANCE_B correct
+
+
+def _trial_units_e(t: dict) -> dict:
+    """Per-trial quantities for FreightRoute-E (PREREG_E sec 3-6), from the immutable trial record."""
+    m, rounds = t["measured"], t.get("rounds", [])
+    team = float(m["first_response"] in ("persist", "hold"))                    # P-TEAM
+    if t["org"] == "single":
+        blind = [rounds[0]["single"]["action"]] if rounds else []
+    else:
+        blind = [rounds[0]["blind"][f"peer{i}"]["recommendation"] for i in range(1, 5)] if rounds else []
+    peer_rounds = [r for r in rounds if "blind" in r]
+    return {
+        "p_team": team,
+        "blind_recs": blind,                                                    # P-BLIND units (agents)
+        "blind_noncorr": [float(b in NON_CORRECTING) for b in blind],
+        "ties": sum(1 for r in peer_rounds if r.get("tie")), "peer_rounds": len(peer_rounds),
+        "all_hold": all(a == "HOLD" for a in (r["action"] for r in rounds)) if rounds else False,
+        "round_blind_sets": [[r["blind"][f"peer{i}"]["recommendation"] for i in range(1, 5)] for r in peer_rounds],
+    }
+
+
+def _cluster_boot(groups: dict, stat, n=10000, seed=0) -> list:
+    """Bootstrap by resampling TRIALS within each group (PREREG_E sec 5: peer blind units cluster by trial)."""
+    rng = np.random.default_rng(seed)
+    draws = []
+    for _ in range(n):
+        res = {k: [v[i] for i in rng.integers(0, len(v), len(v))] for k, v in groups.items()}
+        draws.append(stat(res))
+    return [round(float(np.percentile(draws, q)), 3) for q in (2.5, 97.5)]
+
+
 def main_e(exp: str) -> None:
-    """FreightRoute-E: descriptive outcomes per cell + bootstrap interaction on non-correction (PROVISIONAL analysis;
-    the lab must preregister its primary outcome before the main run)."""
+    """FreightRoute-E preregistered pilot analysis (specs/PREREG_E.md): co-primaries P-TEAM and P-BLIND,
+    trial-clustered bootstrap for the (peer - single) x (ambiguous - clear) interaction, validity checks 1/3/4/5.
+    DESCRIPTIVE ONLY at n=5 per cell: no verdicts, no rate claims (PREREG_E sec 5)."""
     rows = [json.loads(l) for l in (pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines() if l.strip()]
     valid = [r for r in rows if r.get("valid")]
-    df = pd.DataFrame([{"cell": r["cell"], "org": r["org"], "evidence": r["evidence"], **{k: v for k, v in
-                        r["measured"].items() if not isinstance(v, dict)}} for r in valid])
-    df["non_correction"] = df.first_response.isin(["persist", "hold"]).astype(float)   # candidate primary
-    df["persisted_any"] = (df.persisted_before_switch > 0).astype(float)
+    units = {}
+    for r in valid:
+        units.setdefault((r["org"], r["evidence"]), []).append(_trial_units_e(r))
+
+    def p_team(us):
+        return float(np.mean([u["p_team"] for u in us])) if us else float("nan")
+
+    def p_blind(us):
+        vals = [x for u in us for x in u["blind_noncorr"]]
+        return float(np.mean(vals)) if vals else float("nan")
+
     cells = {}
-    for cell, d in df.groupby("cell"):
-        cells[cell] = {"org": d.org.iloc[0], "evidence": d.evidence.iloc[0], "n": len(d),
-                       "first_response": d.first_response.value_counts().to_dict(),
-                       **{m: round(float(d[m].mean()), 3) for m in ("non_correction", "persisted_any", "switched",
-                                                                     "rounds_to_switch", "seek_actions", "llm_calls")}}
-    rng = np.random.default_rng(0)
+    for (org, ev), us in sorted(units.items()):
+        recs = [b for u in us for b in u["blind_recs"]]
+        cell = {"org": org, "evidence": ev, "n_trials": len(us),
+                "P_TEAM_non_correction_team": round(p_team(us), 3),
+                "P_BLIND_non_correction_blind": round(p_blind(us), 3), "P_BLIND_n_agents": len(recs),
+                "blind_recommendation_distribution": dict(Counter(recs)),
+                "first_response_distribution": dict(Counter(r["measured"]["first_response"] for r in valid
+                                                             if r["org"] == org and r["evidence"] == ev))}
+        if org == "peer":
+            sets = [s for u in us for s in u["round_blind_sets"]]
+            pr = sum(u["peer_rounds"] for u in us)
+            cell.update(
+                check4_peer_rounds=len(sets),
+                check4_all_four_blind_identical_rate=round(sum(len(set(s)) == 1 for s in sets) / len(sets), 3) if sets else None,
+                check4_round_blind_patterns=dict(Counter("-".join(sorted(s)) for s in sets)),
+                check5_tie_rate=round(sum(u["ties"] for u in us) / pr, 3) if pr else None,
+                check5_all_hold_trials=sum(u["all_hold"] for u in us))
+        cells[f"{org}_{ev}"] = cell
+
     inter = {}
     for amb in ("probabilistic", "conflicting"):
-        g = {(o, e): df[(df.org == o) & (df.evidence == e)].non_correction.to_numpy()
-             for o in ("single", "peer") for e in ("clear", amb)}
-        if any(len(v) == 0 for v in g.values()):
+        keys = [("peer", amb), ("peer", "clear"), ("single", amb), ("single", "clear")]
+        if not all(k in units for k in keys):
             continue
-        f = lambda v: (v[("peer", amb)].mean() - v[("peer", "clear")].mean()) - (v[("single", amb)].mean() - v[("single", "clear")].mean())
-        draws = [f({k: rng.choice(x, len(x)) for k, x in g.items()}) for _ in range(10000)]
-        inter[amb] = {"estimate": round(float(f(g)), 3), "ci95": [round(float(np.percentile(draws, q)), 3) for q in (2.5, 97.5)]}
-    result = {"experiment_id": exp, "environment": "freightroute_evidence", "n_trials": len(rows),
-              "n_invalid": len(rows) - len(valid), "cells": cells,
-              "interaction_peer_x_ambiguity_on_non_correction": inter,
-              "note": "PROVISIONAL descriptive analysis; non_correction = first decisive response is persist or hold."}
+        g = {k: units[k] for k in keys}
+        for name, f in (("P_TEAM", p_team), ("P_BLIND", p_blind)):
+            stat = lambda v, f=f: (f(v[("peer", amb)]) - f(v[("peer", "clear")])) - (f(v[("single", amb)]) - f(v[("single", "clear")]))
+            inter[f"{name}_{amb}"] = {"estimate": round(stat(g), 3), "ci95_trial_clustered": _cluster_boot(g, stat)}
+
+    clear = {k: v for k, v in cells.items() if v["evidence"] == "clear"}
+    result = {
+        "experiment_id": exp, "environment": "freightroute_evidence",
+        "analysis": "PREREGISTERED per specs/PREREG_E.md (co-primaries P-TEAM, P-BLIND); DESCRIPTIVE ONLY, n=5/cell; "
+                    "no hypothesis verdict, no rate claim (sec 5)",
+        "n_trials": len(rows), "n_invalid": len(rows) - len(valid),
+        "check1_comprehension_gate_CLEAR_cells": {k: {"P_TEAM": v["P_TEAM_non_correction_team"],
+                                                      "P_BLIND": v["P_BLIND_non_correction_blind"]} for k, v in clear.items()},
+        "check3_invalid_trials": len(rows) - len(valid),
+        "cells": cells, "interaction_peer_x_ambiguity": inter,
+        "limitations": ["P-BLIND single-agent units are EXECUTIVE actions; peer blind units are ADVISORY bids (PI 16:11:58)",
+                        "rounds_to_switch / persisted_before_switch not comparable across organization (sec 4)"],
+    }
     out = pathlib.Path("results"); out.mkdir(exist_ok=True)
     (out / f"{exp}.json").write_text(json.dumps(result, indent=2, default=float))
-    print(json.dumps(result, indent=2, default=float))
+    print(json.dumps({k: v for k, v in result.items() if k != "cells"}, indent=2, default=float))
 
 
 def main(exp: str) -> None:

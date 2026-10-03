@@ -148,7 +148,7 @@ def test_review_records_automatic_checklist(lab):
                                 "model_within_mandate": True, "budget_compliant": True, "level_correct": True,
                                 "code_unchanged_since_decision": True, "inside_preregistered_condition_space": True}
     d = json.loads((cli.DECISIONS / f"{did}.json").read_text())
-    assert set(d["code_hashes"]) == {"env.py", "env2.py", "org.py", "run.py", "prompt_hash", "env_text_hash"}
+    assert set(d["code_hashes"]) == {"env.py", "env2.py", "env3.py", "org.py", "run.py", "model.py", "analyze.py", "prompt_hash", "env_text_hash"}
     assert r["attested"]["preregistered"] == "yes"
 
 

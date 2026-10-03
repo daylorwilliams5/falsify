@@ -113,7 +113,7 @@ def code_hashes() -> dict:
     texts = [inspect.getsource(f) for f in (env.Scenario.task_text, env.Scenario.auditor_view,
                                             env.Scenario.contradiction_text, env2.Scenario2.task_text)]
     texts.append(json.dumps(env2.INCENTIVES, sort_keys=True))
-    return ({f: sha(PKG / f) for f in ("env.py", "env2.py", "org.py", "run.py")}
+    return ({f: sha(PKG / f) for f in ("env.py", "env2.py", "env3.py", "org.py", "run.py", "model.py", "analyze.py")}
             | {"prompt_hash": prompt_hash(),
                "env_text_hash": hashlib.sha256("\n".join(texts).encode()).hexdigest()[:16]})
 
