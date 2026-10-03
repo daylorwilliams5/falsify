@@ -79,3 +79,12 @@ Hackathon project for **Hack-Nation 7th Global AI Hackathon, Challenge 3 (Databr
 - The `ui/` folder: a control-room app built by another session; it reads fixtures, not live data.
 - Pod `status.json` files can be edited directly by agents (the CLI validates only through its own commands).
 - The loop-quality rubric Q1–Q8 for Loops 1–3 hasn't been computed yet.
+
+## LATEST (16:13): read this first
+- Loop 3 is CLOSED. The D015 gate was approved by the human (recorded as: FreightRoute v2.1 parked, not killed; no extra v2.1 trials; exp011 approved).
+- **exp011 (Haiku 4.5, ambiguity × peer pilot, 30 trials, about $3) is APPROVED at Level 3.**
+  - Decision D016, review PASS_WITH_NOTE; the human gate was approved at 16:12:45 from a browser.
+  - The PI should now run `bin/falsify run specs/exp011_ambiguity_x_peer_haiku_pilot.json --decision D016`. **Check `data/exp011_ambiguity_x_peer_haiku_pilot.log`.** If it hasn't started, type into the PI's REPL (`tmux attach -t falsify`) asking it to run D016.
+- **Known gap flagged by the PI before any data:** `falsify/analyze.py` `main_e` computes only `non_correction`, which the PI's prereg amendment demotes. It does not compute P-BLIND, tie rate, all-HOLD count, or blind-recommendation measures. An engineering build is needed before the analysis pod reads exp011. See the timeline entries `exp011_predata_corrections` (16:11:58) and D016.
+- Spend so far: about $0.0002 (key test). Watch `bin/falsify budget` and `data/spend_ledger.jsonl`. The cap is $20.
+- After exp011: analysis pod → adversarial pod → PI decision. Then the hackathon deliverables (see above).
