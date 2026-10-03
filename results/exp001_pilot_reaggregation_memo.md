@@ -21,7 +21,7 @@ Label: **EXPLORATORY** per `specs/EDGE_CASE_POLICY.md` §K. **No hypothesis stat
 |---|---|
 | 4 | `_meta.authorized_by` re-pointed D002 → D003, supersession chain recorded (not dropped) |
 | 4 | residual `org.py:160` → **`org.py:161`** (line 160 is `executor_overridden`; 161 is the `disagreement` expression) — verified on disk |
-| 3 | count-vs-rate unit clarification for cell D `disagreement_rounds = 1.0` (§2a below) |
+| 3 | count-vs-rate unit clarification for cell D `disagreement_rounds = 1.0` (§2a below; last bare quote at §2 fixed under D010 item 4) |
 | 2 | structural qualification now bound to every statement of the 0/80 zero |
 | 1 | declination of the aggregation build recorded as **scoped and reversible** (§6 below) |
 
@@ -108,9 +108,16 @@ rounds, not all of them, and every one of those rounds is unanimous on route.
 The 6 legacy-True rounds are `D-001#r1`, `D-002#r1`, `D-002#r2`, `D-003#r1`, `C-004#r1`, `D-004#r1`.
 In every one of them all recoverable roles name the **same** route. They are CONTINUE/REPLAN token
 differences only. This **confirms `critiques/exp001_pilot_skeptic.md` §1.4 quantitatively**: the field
-is a label artifact. Cell D's `disagreement_rounds` = 1.0 against `wasted_actions` = 0.0 in
-`results/exp001_pilot.json` is a token count, not organizational conflict. The C7 redefinition
+is a label artifact. Cell D's `disagreement_rounds` = **1.0 rounds/trial (i.e. 0.25 of rounds, from
+per-trial counts [1, 2, 1, 1, 0] — a COUNT, not a proportion; see §2a)** against `wasted_actions` = 0.0
+in `results/exp001_pilot.json` is a token count, not organizational conflict. The C7 redefinition
 is delivered here.
+
+*(Unit added under `decisions/D010.json` item 4 / `critiques/review_D007.md` §6, which identified this as
+the last surviving bare quote. The raw recorded field value in `results/exp001_pilot.json` and
+`_stats.json` is `1.0` and those files are immutable and untouched. Attribution corrected: the PI's own
+propagation of the bare figure is in `decisions/D002.json`, **twice** — in `decision` and again in
+`alternatives_rejected` — **not** in `decisions/D005.json`, which contains no occurrence.)*
 
 ## 3. Measurement-validity finding — 2 of 4 roles never record a route at all
 

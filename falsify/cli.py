@@ -199,6 +199,10 @@ def experiment_timing(exp: str) -> dict | None:
             if trials.exists() else None
     inspected = [e["ts"] for e in events if e.get("stage") in ("analysis_written", "pod_synthesis")
                  and exp in json.dumps(e)]
+    # Also count any analysis artifact on disk (an agent may analyze without the logged CLI path).
+    for pattern in (f"results/{exp}*", f"critiques/*{exp}*", f"pods/*/*/*{exp}*"):
+        for f in ROOT.glob(pattern):
+            inspected.append(datetime.datetime.fromtimestamp(f.stat().st_mtime).isoformat(timespec="seconds"))
     first_inspection = min(inspected) if inspected else None
     phase = 1 if not done else (3 if first_inspection else 2)
     return {"experiment": exp, "run_started": started, "run_finished": done, "last_trial_written": finished_at,

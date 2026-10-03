@@ -289,3 +289,14 @@ def test_timing_phases_are_machine_derived(lab):
     did = decide(1, action="other")
     d = json.loads((cli.DECISIONS / f"{did}.json").read_text())
     assert "timing_at_decision" in d
+
+
+def test_unlogged_analysis_artifact_counts_as_inspection(lab):
+    root, _ = lab
+    (root / "data" / "trials").mkdir(parents=True)
+    (root / "data" / "trials" / "expU.jsonl").write_text("{}\n")
+    (root / "data" / "expU.log").write_text("DONE expU in 5s\n")
+    assert cli.experiment_timing("expU")["phase"] == 2
+    (root / "results").mkdir(exist_ok=True)
+    (root / "results" / "expU.json").write_text("{}")
+    assert cli.experiment_timing("expU")["phase"] == 3
