@@ -1,15 +1,13 @@
 #!/bin/zsh
-# Keep the Omnigent lab session alive: whenever the `omnigent run` client exits (which stops the session),
-# re-attach to the SAME conversation and tell the PI what happened. Every restart is logged to timeline.jsonl.
+# Keep the Omnigent lab session alive in INTERACTIVE mode.
+# Root cause of the earlier session stops: `omnigent run -p` is ONE-SHOT/headless mode; the client follows the
+# session to idle and then deliberately stops it (omnigent/chat.py _run_one_shot -> _stop_headless_session).
+# So never pass -p here. Messages are delivered by typing into this REPL (tmux send-keys) or via the web UI.
 CONV="$1"; MAX="${2:-20}"
 cd "$(dirname "$0")/.." || exit 1
 export PATH="$HOME/.local/bin:$PATH"
 for i in $(seq 1 "$MAX"); do
-  start=$(date +%H:%M:%S)
-  if [ "$i" -eq 1 ]; then MSG="SUPERVISOR: session re-attached under bin/lab-supervisor at $start. Continue from where you are."
-  else MSG="SUPERVISOR RESTART #$((i-1)) at $start: the omnigent client exited at about $last_exit and the session was stopped (Omnigent sends stop_session when its client exits); any sub-agent turn in flight at that moment FAILED and will not report to your inbox. Check pods/*/loop3/status.json and decisions/, re-dispatch whatever was in flight, and continue. This is infrastructure, not a result."; fi
-  omnigent run lab -r "$CONV" -p "$MSG"
-  last_exit=$(date +%H:%M:%S)
-  bin/falsify log engineer infra_restart "lab-supervisor: omnigent client exited at $last_exit (session stop); re-attaching conversation $CONV (restart $i/$MAX)." >/dev/null
+  omnigent run lab -r "$CONV"
+  bin/falsify log engineer infra_restart "lab-supervisor: interactive omnigent client exited at $(date +%H:%M:%S); re-attaching conversation $CONV (restart $i/$MAX)." >/dev/null
   sleep 5
 done
