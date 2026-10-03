@@ -167,7 +167,13 @@ def state() -> dict:
     builds = [e for e in events if e.get("stage") in ("build_complete", "build_rejected")]
     pending = [r for r in reqs if not any(b["ts"] >= r["ts"] for b in builds)]
     loop_starts = [e for e in events if e.get("stage") == "loop_open" and "LOOP3" in e.get("text", "")]
+    # stall detection: newest lab file activity
+    files = [ROOT / "timeline.jsonl", *ROOT.glob("pods/*/*/*"), *ROOT.glob("pods/*/*/subagent_outputs/*"),
+             *ROOT.glob("data/*.log"), *ROOT.glob("decisions/*.json")]
+    newest = max((f.stat().st_mtime for f in files if f.exists()), default=None)
+    idle_min = round((dt.datetime.now().timestamp() - newest) / 60, 1) if newest else None
     return {
+        "idle_min": idle_min,
         "budget": cli.research_budget(),
         "registry": read_json(ROOT / "registry" / "hypotheses.json"),
         "mandate": read_json(ROOT / "lab" / "mandate.json"),

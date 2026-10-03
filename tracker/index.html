@@ -164,7 +164,9 @@ function render(st) {
     $("planhead").innerHTML = ""; $("plan").innerHTML = '<div class="sub">Loop 3 has not opened yet.</div>'; $("plannote").textContent = "";
   }
 
-  $("alerts").innerHTML = (st.pending_engineering || []).map(r =>
+  const stall = st.idle_min != null && st.idle_min > 12
+    ? `<div class="alert" style="border-color:var(--bad);background:var(--bad-soft)"><b style="color:var(--bad)">Possible stall</b>: no lab file activity for ${st.idle_min} min. Check the Omnigent UI for a disconnected sub-agent.</div>` : "";
+  $("alerts").innerHTML = stall + (st.pending_engineering || []).map(r =>
     `<div class="alert"><b>Engineering request pending</b> (${hm(r.ts)}): ${esc(String(r.text).slice(0, 400))}</div>`).join("");
 
   const stages = ["literature", "design", "analysis", "adversarial"];
