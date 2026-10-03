@@ -111,3 +111,47 @@ def test_every_decision_and_review_is_on_the_timeline(lab):
     cli.main(["review", did, "--verdict", "PASS", "--findings", "ok"])
     stages = [json.loads(l)["stage"] for l in cli.TIMELINE.read_text().splitlines()]
     assert stages == ["pi_decision", "methodology_review"]
+
+
+def test_pass_with_note_allows_level2_and_block_stops_anything(lab):
+    root, started = lab
+    did = decide(2, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did, "--verdict", "pass with note", "--findings", "minor"])
+    cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
+    did1 = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did1, "--verdict", "BLOCK", "--findings", "post-hoc outcome change"])
+    with pytest.raises(cli.AuthorityError, match="BLOCKED"):
+        cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did1])
+    assert len(started) == 1
+
+
+def test_reviewer_escalation_forces_human_gate(lab):
+    root, started = lab
+    did = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did, "--verdict", "escalate to human", "--findings", "novelty claim"])
+    with pytest.raises(cli.AuthorityError, match="human approval"):
+        cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
+    cli.main(["escalate", did, "--question", "ok?"])
+    cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
+    assert len(started) == 1
+
+
+def test_review_records_automatic_checklist(lab):
+    root, _ = lab
+    did = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did, "--verdict", "PASS", "--findings", "ok", "--preregistered", "yes",
+              "--outcomes-unchanged", "yes"])
+    r = json.loads((cli.DECISIONS / f"{did}.json").read_text())["reviews"][-1]
+    assert r["auto_checks"] == {"decision_recorded_before_action": True, "spec_hash_verified": True,
+                                "model_within_mandate": True, "budget_compliant": True, "level_correct": True,
+                                "code_unchanged_since_decision": True, "inside_preregistered_condition_space": True}
+    d = json.loads((cli.DECISIONS / f"{did}.json").read_text())
+    assert set(d["code_hashes"]) == {"env.py", "env2.py", "org.py", "run.py", "prompt_hash"}
+    assert r["attested"]["preregistered"] == "yes"
+
+
+def test_legacy_verdicts_still_accepted(lab):
+    did = decide(2, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "x"])
+    with pytest.raises(cli.AuthorityError):
+        cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])

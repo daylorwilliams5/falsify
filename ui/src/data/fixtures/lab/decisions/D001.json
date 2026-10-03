@@ -1,0 +1,14 @@
+{
+  "id": "D001",
+  "ts": "2026-10-03T12:06:05",
+  "by": "PI",
+  "level": 1,
+  "action": "run",
+  "spec": "specs/exp009_v2_floor_probe.json",
+  "spec_hash": "e4d5f3d91f2df2f1",
+  "summary": "Every other open question is blocked on an unmeasured floor effect.",
+  "confidence": 0.82,
+  "rejected_summary": "Auditor-fidelity audit",
+  "decision": "Run specs/exp009_v2_floor_probe.json now (20 trials, single agent, 4 frozen v2 cells, seeds 1-5, qwen3:8b local, no external spend). Descriptive only.",
+  "reviews": []
+}

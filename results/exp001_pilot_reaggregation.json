@@ -1,0 +1,4233 @@
+{
+  "_meta": {
+    "label": "EXPLORATORY (EDGE_CASE_POLICY \u00a7K). Offline re-aggregation, 0 model calls, 0 new trials.",
+    "generated": "2026-10-03T12:10:04",
+    "authorized_by": "decisions/D002.json (PI, Level 1)",
+    "source_file": "data/trials/exp001_pilot.jsonl",
+    "source_sha256": "afdd0786dfc592db054725c310a8302ad0c1e65b1ac6ae4547fbbb998125e669",
+    "source_mutated": false,
+    "analysis_unit": "multi-agent rounds",
+    "n_multi_trials": 20,
+    "n_multi_rounds": 80,
+    "spec_hash": [
+      "2c7b3515aa9a90ec"
+    ],
+    "prompt_hash": [
+      "ccbb34cb3d7e"
+    ],
+    "no_hypothesis_status_change_proposed": true
+  },
+  "definitions": {
+    "route_intention": "the route (A|B|HOLD) a role's own output commits to acting on this round",
+    "structurally_recoverable_roles": [
+      "planner (plan_route)",
+      "executor (action)"
+    ],
+    "free_text_only_roles": [
+      "researcher (no route field in SCHEMAS, falsify/org.py:20)",
+      "reviewer (no route field in SCHEMAS, falsify/org.py:22)"
+    ],
+    "aggregation_rule": "plurality over route intentions; ties -> HOLD (critiques/loop1_design.md \u00a74)",
+    "authority_rule": "planner plan_route is final (EDGE_CASE_POLICY \u00a7F)"
+  },
+  "measurement_validity": {
+    "role_round_cells": 320,
+    "intention_basis_counts": {
+      "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)": 6,
+      "structured_field:plan_route": 80,
+      "structured_field:action": 80,
+      "explicit_named_route": 146,
+      "no_route_named": 8
+    },
+    "structurally_recoverable_role_rounds": 160,
+    "unrecoverable_role_rounds": 14,
+    "unrecoverable_list": [
+      [
+        "exp001_pilot-D-001",
+        1,
+        "researcher",
+        "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)"
+      ],
+      [
+        "exp001_pilot-D-001",
+        4,
+        "reviewer",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-C-001",
+        1,
+        "researcher",
+        "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)"
+      ],
+      [
+        "exp001_pilot-D0-001",
+        1,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-C-002",
+        1,
+        "researcher",
+        "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)"
+      ],
+      [
+        "exp001_pilot-D-002",
+        1,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-D-002",
+        2,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-C-003",
+        1,
+        "researcher",
+        "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)"
+      ],
+      [
+        "exp001_pilot-D-003",
+        1,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-D0-003",
+        1,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-C-004",
+        1,
+        "researcher",
+        "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)"
+      ],
+      [
+        "exp001_pilot-D-004",
+        1,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-D0-004",
+        1,
+        "researcher",
+        "no_route_named"
+      ],
+      [
+        "exp001_pilot-D-005",
+        1,
+        "researcher",
+        "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)"
+      ]
+    ],
+    "executor_overridden_field_present_in_any_round": false
+  },
+  "primary_f9c1": {
+    "rounds_where_plurality_differs_from_authority_structured": {
+      "count": 0,
+      "n": 80,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.045818
+      ]
+    },
+    "rounds_where_plurality_differs_from_authority_all_recoverable": {
+      "count": 0,
+      "n": 80,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.045818
+      ]
+    },
+    "which_rounds_differ": [],
+    "trials_with_differing_action_sequence": [],
+    "n_trials_identical_sequence": 20,
+    "tie_frequency_structured": {
+      "count": 0,
+      "n": 80,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.045818
+      ]
+    },
+    "tie_frequency_all_recoverable": {
+      "count": 0,
+      "n": 80,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.045818
+      ]
+    },
+    "recorded_action_equals_planner_authority": {
+      "count": 80,
+      "n": 80,
+      "rate": 1.0,
+      "wilson95": [
+        0.954182,
+        1.0
+      ]
+    }
+  },
+  "disagreement_comparison": {
+    "route_intention_disagreement_structured": {
+      "count": 0,
+      "n": 80,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.045818
+      ]
+    },
+    "route_intention_disagreement_all_recoverable": {
+      "count": 0,
+      "n": 80,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.045818
+      ]
+    },
+    "legacy_disagreement_field_org_py_160": {
+      "count": 6,
+      "n": 80,
+      "rate": 0.075,
+      "wilson95": [
+        0.034825,
+        0.15412
+      ]
+    },
+    "legacy_true_rounds": [
+      "exp001_pilot-D-001#r1",
+      "exp001_pilot-D-002#r1",
+      "exp001_pilot-D-002#r2",
+      "exp001_pilot-D-003#r1",
+      "exp001_pilot-C-004#r1",
+      "exp001_pilot-D-004#r1"
+    ],
+    "absolute_gap_rate": 0.075,
+    "note": "legacy flags 7.5% of rounds; route-intention disagreement is 0.0%. Every legacy-True round is a CONTINUE/REPLAN token difference with a unanimous route intention (confirms critiques/exp001_pilot_skeptic.md \u00a71.4)."
+  },
+  "by_cell": {
+    "C": {
+      "n_rounds": 20,
+      "n_trials": 5,
+      "legacy_disagreement": {
+        "count": 1,
+        "n": 20,
+        "rate": 0.05,
+        "wilson95": [
+          0.008881,
+          0.236131
+        ]
+      },
+      "route_intention_disagreement": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "plurality_differs_from_authority": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "ties": 0
+    },
+    "C0": {
+      "n_rounds": 20,
+      "n_trials": 5,
+      "legacy_disagreement": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "route_intention_disagreement": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "plurality_differs_from_authority": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "ties": 0
+    },
+    "D": {
+      "n_rounds": 20,
+      "n_trials": 5,
+      "legacy_disagreement": {
+        "count": 5,
+        "n": 20,
+        "rate": 0.25,
+        "wilson95": [
+          0.111862,
+          0.468701
+        ]
+      },
+      "route_intention_disagreement": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "plurality_differs_from_authority": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "ties": 0
+    },
+    "D0": {
+      "n_rounds": 20,
+      "n_trials": 5,
+      "legacy_disagreement": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "route_intention_disagreement": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "plurality_differs_from_authority": {
+        "count": 0,
+        "n": 20,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.161125
+        ]
+      },
+      "ties": 0
+    }
+  },
+  "trials": [
+    {
+      "trial_id": "exp001_pilot-D-001",
+      "cell": "D",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D-001",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": true,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-001",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-001",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-001",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": null
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "no_route_named"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C-001",
+      "cell": "C",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C-001",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-001",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-001",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-001",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D0-001",
+      "cell": "D0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D0-001",
+          "cell": "D0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-001",
+          "cell": "D0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-001",
+          "cell": "D0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-001",
+          "cell": "D0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C0-001",
+      "cell": "C0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C0-001",
+          "cell": "C0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-001",
+          "cell": "C0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-001",
+          "cell": "C0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-001",
+          "cell": "C0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C-002",
+      "cell": "C",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C-002",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-002",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-002",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-002",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D-002",
+      "cell": "D",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D-002",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": true,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-002",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": true,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-002",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-002",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D0-002",
+      "cell": "D0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D0-002",
+          "cell": "D0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-002",
+          "cell": "D0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-002",
+          "cell": "D0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-002",
+          "cell": "D0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C0-002",
+      "cell": "C0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C0-002",
+          "cell": "C0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-002",
+          "cell": "C0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-002",
+          "cell": "C0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-002",
+          "cell": "C0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C-003",
+      "cell": "C",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C-003",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-003",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-003",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-003",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D-003",
+      "cell": "D",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D-003",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": true,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-003",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-003",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-003",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C0-003",
+      "cell": "C0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C0-003",
+          "cell": "C0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-003",
+          "cell": "C0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-003",
+          "cell": "C0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-003",
+          "cell": "C0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D0-003",
+      "cell": "D0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D0-003",
+          "cell": "D0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-003",
+          "cell": "D0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-003",
+          "cell": "D0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-003",
+          "cell": "D0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C-004",
+      "cell": "C",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C-004",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": true,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-004",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-004",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-004",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D-004",
+      "cell": "D",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D-004",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": true,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-004",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-004",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-004",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D0-004",
+      "cell": "D0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D0-004",
+          "cell": "D0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "no_route_named",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-004",
+          "cell": "D0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-004",
+          "cell": "D0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-004",
+          "cell": "D0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C0-004",
+      "cell": "C0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C0-004",
+          "cell": "C0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-004",
+          "cell": "C0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-004",
+          "cell": "C0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-004",
+          "cell": "C0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C-005",
+      "cell": "C",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C-005",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-005",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-005",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C-005",
+          "cell": "C",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D-005",
+      "cell": "D",
+      "update": "invalidating",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B",
+        "ADVANCE_B"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D-005",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 1,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": null,
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "elimination_only_A_declared_dead_no_act_route(B_or_HOLD_ambiguous)",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 3,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 3
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-005",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 2,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-005",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 3,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D-005",
+          "cell": "D",
+          "update": "invalidating",
+          "round": 4,
+          "recorded_action": "ADVANCE_B",
+          "planner_authority_action": "ADVANCE_B",
+          "vote_vector_structured": {
+            "planner": "B",
+            "executor": "B"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "B",
+            "planner": "B",
+            "executor": "B",
+            "reviewer": "B"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "B": 2
+          },
+          "tally_all_recoverable": {
+            "B": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_B",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_B",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-D0-005",
+      "cell": "D0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-D0-005",
+          "cell": "D0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-005",
+          "cell": "D0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-005",
+          "cell": "D0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-D0-005",
+          "cell": "D0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    },
+    {
+      "trial_id": "exp001_pilot-C0-005",
+      "cell": "C0",
+      "update": "benign",
+      "n_rounds": 4,
+      "authority_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "plurality_sequence": [
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A",
+        "ADVANCE_A"
+      ],
+      "sequences_identical": true,
+      "differing_rounds": [],
+      "rounds": [
+        {
+          "trial_id": "exp001_pilot-C0-005",
+          "cell": "C0",
+          "update": "benign",
+          "round": 1,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-005",
+          "cell": "C0",
+          "update": "benign",
+          "round": 2,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-005",
+          "cell": "C0",
+          "update": "benign",
+          "round": 3,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        },
+        {
+          "trial_id": "exp001_pilot-C0-005",
+          "cell": "C0",
+          "update": "benign",
+          "round": 4,
+          "recorded_action": "ADVANCE_A",
+          "planner_authority_action": "ADVANCE_A",
+          "vote_vector_structured": {
+            "planner": "A",
+            "executor": "A"
+          },
+          "vote_vector_all_roles": {
+            "researcher": "A",
+            "planner": "A",
+            "executor": "A",
+            "reviewer": "A"
+          },
+          "intention_basis": {
+            "researcher": "explicit_named_route",
+            "planner": "structured_field:plan_route",
+            "executor": "structured_field:action",
+            "reviewer": "explicit_named_route"
+          },
+          "n_roles_recoverable": 4,
+          "n_roles_total": 4,
+          "tally_structured": {
+            "A": 2
+          },
+          "tally_all_recoverable": {
+            "A": 4
+          },
+          "plurality_action_structured_tieHOLD": "ADVANCE_A",
+          "plurality_action_all_recoverable_tieHOLD": "ADVANCE_A",
+          "tie_structured": false,
+          "tie_all_recoverable": false,
+          "route_intention_disagreement_structured": false,
+          "route_intention_disagreement_all_recoverable": false,
+          "legacy_disagreement_field": false,
+          "differs_structured_vs_authority": false,
+          "differs_all_vs_authority": false,
+          "recorded_equals_authority": true,
+          "executor_overridden_field_present": false
+        }
+      ]
+    }
+  ]
+}

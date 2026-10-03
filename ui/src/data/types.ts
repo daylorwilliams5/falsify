@@ -236,3 +236,80 @@ export interface ResearchPlan {
   first_experiment: { title: string; design: string; environment: string; trials: number; est_time: string; est_cost: string };
   risks: string[];
 }
+
+// ---------- PI architecture (lab/, decisions/, reviews, results/) ----------
+
+export type AuthorityLevel = 1 | 2 | 3;
+
+// lab/mandate.json — set by the human
+export interface Mandate {
+  set_by: string;
+  set_at: string;
+  summary: string;
+  research_objective: string;
+  subject_model: { provider: string; name: string };
+}
+
+// decisions/D*.json — written by the PI
+export interface PIDecision {
+  id: string;
+  ts: string;
+  level: AuthorityLevel;
+  action: string;
+  spec?: string;
+  spec_hash?: string;
+  summary?: string; // one-sentence reason; falls back to truncated `reason`
+  reason?: string;
+  confidence: number;
+  rejected_summary?: string;
+  alternatives_rejected?: string;
+}
+
+// reviewer audit record for a decision
+export interface ReviewRecord {
+  decision: string;
+  status: 'AUDITING' | 'COMPLETE';
+  verdict: 'PASS' | 'CONCERNS' | 'FAIL' | null;
+  checks: { id: string; label: string; ok: boolean }[];
+}
+
+export interface Finding {
+  experiment_id: string;
+  label: string;
+  headline: string;
+  status: HypothesisStatus;
+  status_reason: string;
+  invalidating_trials_wasted_actions: number[];
+}
+
+export interface RoleStatus { role: string; state: 'RUNNING' | 'WAITING' | 'IDLE'; detail: string }
+
+export interface Escalation { id: string; decision: string; title: string; why: string; detail: string }
+
+export interface LabState {
+  status: 'RUNNING' | 'PAUSED';
+  active_experiment: { id: string; done: number; total: number };
+  loop_stage: string;
+  roles: RoleStatus[];
+  budget: {
+    experiments_completed: number;
+    experiments_running: number;
+    model_calls_used: number;
+    model_calls_estimated: boolean;
+    calls_remaining_current: number;
+    calls_budget_current: number;
+    research_started: string;
+    hypotheses_eliminated: number;
+    hypotheses_unresolved: number;
+  };
+  escalations: Escalation[];
+}
+
+/** Everything the Overview needs: the latest of each object, nothing more. */
+export interface LabView {
+  mandate: Mandate;
+  finding: Finding;
+  decision: PIDecision;
+  review: ReviewRecord | null;
+  state: LabState;
+}

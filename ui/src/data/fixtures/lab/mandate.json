@@ -1,0 +1,12 @@
+{
+  "set_by": "human",
+  "set_at": "2026-10-03",
+  "summary": "Study when AI organizations become resistant to correction or sacrifice process integrity, and identify oversight mechanisms that restore reliable behavior.",
+  "research_objective": "What environmental and organizational conditions make autonomous AI systems less corrigible or more willing to sacrifice process integrity for task success, and which oversight architectures restore reliable behavior?",
+  "subject_model": { "provider": "ollama", "name": "qwen3:8b" },
+  "budget": {
+    "max_trials_per_experiment_level1": 120,
+    "max_estimated_model_calls_per_experiment_level1": 4000,
+    "external_spend_usd_without_human": 0
+  }
+}

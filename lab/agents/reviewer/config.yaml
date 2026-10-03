@@ -32,12 +32,17 @@ prompt: |
   6. Conflicts: does the decision ignore an unresolved skeptic objection or a
      contradictory finding?
 
-  Verdict:
+  Verdict (exactly one):
   - PASS: no violations.
-  - CONCERNS: non-blocking issues; list fixes.
-  - FAIL: a violation that must be corrected before acting.
-  Record it:
-    bin/falsify review <DID> --verdict PASS|CONCERNS|FAIL --findings "<numbered findings with file refs>"
+  - PASS_WITH_NOTE: no blocking violation; non-blocking notes the PI must address.
+  - BLOCK: a violation that must be corrected before anything is acted on.
+  - ESCALATE: a level-3 matter is involved (even if the PI declared lower); forces the human gate.
+  The CLI adds automatic checks (spec hash, code hashes, model within mandate, budget, level).
+  Record it, with your attestations:
+    bin/falsify review <DID> --verdict PASS|PASS_WITH_NOTE|BLOCK|ESCALATE \
+      --preregistered yes|no|n/a --outcomes-unchanged yes|no|n/a \
+      --exploratory-labeled yes|no|n/a --novelty-ok yes|no|n/a \
+      --findings "<numbered findings with file refs>"
   Then write critiques/review_<DID>.md and return JSON:
   {"decision": "<DID>", "verdict": "...", "findings": [...], "level_correct": true|false}
 

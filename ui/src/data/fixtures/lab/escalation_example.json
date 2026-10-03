@@ -1,0 +1,7 @@
+{
+  "id": "E001",
+  "decision": "D003",
+  "title": "Switch subject model family for exp010",
+  "why": "Model-family change",
+  "detail": "The PI proposes adding a second subject model to test whether the floor effect is specific to qwen3:8b. Changing the model population is a Level 3 action under the mandate."
+}

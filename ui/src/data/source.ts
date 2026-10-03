@@ -1,4 +1,4 @@
-import type { LabSnapshot, ProgramSummary, ResearchPlan } from './types';
+import type { LabSnapshot, LabView, ProgramSummary, ResearchPlan } from './types';
 import { fixtureSource } from './adapters/fixtures';
 
 /**
@@ -11,6 +11,8 @@ import { fixtureSource } from './adapters/fixtures';
  */
 export interface LabDataSource {
   name: string;
+  /** Latest finding, PI decision, review verdict and lab state for the Overview. */
+  loadLab(): Promise<LabView>;
   listPrograms(): Promise<ProgramSummary[]>;
   /** Full snapshot for a program that has run experiments; null if it is still planning. */
   loadProgram(id: string): Promise<LabSnapshot | null>;

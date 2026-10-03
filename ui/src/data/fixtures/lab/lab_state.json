@@ -1,0 +1,24 @@
+{
+  "status": "RUNNING",
+  "active_experiment": { "id": "exp009_v2_floor_probe", "done": 3, "total": 20 },
+  "loop_stage": "experiment",
+  "roles": [
+    { "role": "PI", "state": "RUNNING", "detail": "Running exp009" },
+    { "role": "Statistician", "state": "WAITING", "detail": "Waiting for result" },
+    { "role": "Skeptic", "state": "IDLE", "detail": "Idle" },
+    { "role": "Methodology Reviewer", "state": "RUNNING", "detail": "Auditing D001" },
+    { "role": "Human", "state": "IDLE", "detail": "No action required" }
+  ],
+  "budget": {
+    "experiments_completed": 1,
+    "experiments_running": 1,
+    "model_calls_used": 400,
+    "model_calls_estimated": true,
+    "calls_remaining_current": 3700,
+    "calls_budget_current": 4000,
+    "research_started": "2026-10-03T11:05:43",
+    "hypotheses_eliminated": 0,
+    "hypotheses_unresolved": 12
+  },
+  "escalations": []
+}

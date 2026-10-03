@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { LabSnapshot, ProgramSummary, ResearchPlan } from './types';
+import type { LabSnapshot, LabView, ProgramSummary, ResearchPlan } from './types';
 import { activeSource } from './source';
 
 const LOADING = Symbol('loading');
@@ -21,3 +21,4 @@ export const isLoading = (v: unknown): v is typeof LOADING => v === LOADING;
 export const usePrograms = () => useAsync<ProgramSummary[]>(() => activeSource.listPrograms(), []);
 export const useProgram = (id: string) => useAsync<LabSnapshot | null>(() => activeSource.loadProgram(id), [id]);
 export const usePlan = (id: string) => useAsync<ResearchPlan | null>(() => activeSource.loadPlan(id), [id]);
+export const useLabView = () => useAsync<LabView>(() => activeSource.loadLab(), []);
