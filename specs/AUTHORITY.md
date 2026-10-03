@@ -29,4 +29,6 @@ The PI can't declare a decision below the computed level.
 - An overridden decision can't be acted on.
 - Every decision, review, escalation and override is written to `decisions/DXXX.json` and `timeline.jsonl`.
 
+**Fixed 2026-10-03 (D006):** the level check used to validate only known fields, so renaming a manipulation field lowered the level. It now uses allowlists: any unrecognized cell, environment or model field, or any changed preregistered value, forces level 2.
+
 **Known limitation:** enforcement assumes agents use the CLI. An agent with shell access could edit files directly. Raw data immutability and the reviewer's timeline audit are the controls for that; a sandboxed shell would be the next step.

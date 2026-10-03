@@ -146,7 +146,7 @@ def test_review_records_automatic_checklist(lab):
                                 "model_within_mandate": True, "budget_compliant": True, "level_correct": True,
                                 "code_unchanged_since_decision": True, "inside_preregistered_condition_space": True}
     d = json.loads((cli.DECISIONS / f"{did}.json").read_text())
-    assert set(d["code_hashes"]) == {"env.py", "env2.py", "org.py", "run.py", "prompt_hash"}
+    assert set(d["code_hashes"]) == {"env.py", "env2.py", "org.py", "run.py", "prompt_hash", "env_text_hash"}
     assert r["attested"]["preregistered"] == "yes"
 
 
@@ -155,3 +155,28 @@ def test_legacy_verdicts_still_accepted(lab):
     cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "x"])
     with pytest.raises(cli.AuthorityError):
         cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
+
+
+# ---- D006: renamed / unrecognized fields must not lower the authority level ----
+def test_renamed_manipulation_field_is_level2(lab):
+    root, _ = lab
+    spec = write_spec(root, "renamed.json", cells=[{"cell": "M", "org": "single", "budget": 24, "incentive": "ordinary",
+                                                     "auditor_mode": "real", "auditor_view": "symmetric"}])
+    lvl, why = cli.required_level(spec)
+    assert lvl == 2 and any("auditor_mode" in w for w in why)
+
+
+def test_unrecognized_or_changed_env_and_model_params_are_level2(lab):
+    root, _ = lab
+    assert cli.required_level(write_spec(root, "e1.json", environment={"name": "freightroute_v2", "segments": 6}))[0] == 2
+    assert cli.required_level(write_spec(root, "e2.json", environment={"name": "freightroute_v2", "segments": 4,
+                                                                       "hint": "x"}))[0] == 2
+    assert cli.required_level(write_spec(root, "m1.json", model={"provider": "ollama", "name": "qwen3:8b",
+                                                                 "temperature": 0.2, "think": False}))[0] == 2
+    assert cli.required_level(write_spec(root, "m2.json", model={"provider": "ollama", "name": "qwen3:8b",
+                                                                 "temperature": 0.7, "think": True}))[0] == 2
+
+
+def test_frozen_specs_stay_level1(lab):
+    assert cli.required_level("specs/exp009_v2_floor_probe.json")[0] == 1
+    assert cli.required_level("specs/exp001_pilot.json")[0] == 1

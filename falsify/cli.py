@@ -13,6 +13,13 @@ Governance (lab/mandate.json, specs/AUTHORITY.md)
   falsify review DID --verdict PASS|PASS_WITH_NOTE|BLOCK|ESCALATE --findings TEXT
                  [--preregistered yes|no|n/a] [--outcomes-unchanged ...] [--exploratory-labeled ...] [--novelty-ok ...]
   falsify budget                          research budget dashboard -> results/budget.json
+
+Research pods (pods/<stage>/<loop>/: status.json, inputs.json, subagent_outputs/, synthesis.json)
+  falsify pod init STAGE LOOP --lead NAME --members a,b --inputs FILE.json|TEXT
+  falsify pod mark STAGE LOOP MEMBER PENDING|RUNNING|COMPLETE|FAILED
+  falsify pod output STAGE LOOP MEMBER FILE.json   (needs member, position, evidence_refs)
+  falsify pod submit STAGE LOOP SYNTHESIS.json     (validated; analysis pod also needs experiment_id,
+                                                    analysts_agree, material_disagreements)
   falsify escalate DID --question TEXT    level-3 human gate (pauses in Omnigent for the human)
   falsify override DID --note TEXT        human override; voids the decision
   falsify run SPEC --decision DID         starts an experiment only if DID authorizes it
@@ -35,6 +42,12 @@ TIMELINE = ROOT / "timeline.jsonl"
 REGISTRY = ROOT / "registry" / "hypotheses.json"
 MANDATE = ROOT / "lab" / "mandate.json"
 DECISIONS = ROOT / "decisions"
+PODS = ROOT / "pods"
+POD_STAGES = {"literature", "design", "analysis", "adversarial"}
+MEMBER_STATES = {"PENDING", "RUNNING", "COMPLETE", "FAILED"}
+SYNTHESIS_FIELDS = ["conclusion", "confidence", "agreements", "disagreements", "evidence_refs",
+                    "unresolved_questions", "recommendation", "subagent_provenance"]
+SUBAGENT_FIELDS = ["member", "position", "evidence_refs"]
 STATUSES = {"supported", "falsified", "inconclusive", "needs replication", "untested"}
 # Reviewer verdicts. PASS / PASS_WITH_NOTE allow level-2 action; BLOCK stops it; ESCALATE forces the human gate.
 # Legacy: CONCERNS (blocking, like the original design) and FAIL (= BLOCK).
@@ -50,6 +63,16 @@ PREREG_SPACE = {
     "freightroute_v2": {"org": {"single", "multi"}, "budget": {24, 10}, "incentive": {"ordinary", "target"},
                         "auditor": {False}},
 }
+
+
+# Allowlists (D006 fix): any field not listed here is an unrecognized manipulation -> level 2.
+CELL_META_KEYS = {"cell"}
+ENV_DEFAULTS = {
+    "freightroute": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8,
+                     "invalid_ratio": 1.4, "salience_step": None},  # salience_step checked via PREREG_SPACE
+    "freightroute_v2": {"name": "freightroute_v2", "segments": 4},
+}
+MODEL_DEFAULTS = {"temperature": 0.7, "think": False}  # provider/name checked against the mandate
 
 
 class AuthorityError(SystemExit):
@@ -73,8 +96,16 @@ def sha(path: pathlib.Path) -> str:
 
 def code_hashes() -> dict:
     """Hashes of the frozen artifacts a run depends on (environments, organizations/prompts, runner)."""
+    import inspect
+    from . import env, env2
     from .org import prompt_hash
-    return {f: sha(PKG / f) for f in ("env.py", "env2.py", "org.py", "run.py")} | {"prompt_hash": prompt_hash()}
+    # D006 fix: the environment-side text the subject and auditor read is hashed explicitly too.
+    texts = [inspect.getsource(f) for f in (env.Scenario.task_text, env.Scenario.auditor_view,
+                                            env.Scenario.contradiction_text, env2.Scenario2.task_text)]
+    texts.append(json.dumps(env2.INCENTIVES, sort_keys=True))
+    return ({f: sha(PKG / f) for f in ("env.py", "env2.py", "org.py", "run.py")}
+            | {"prompt_hash": prompt_hash(),
+               "env_text_hash": hashlib.sha256("\n".join(texts).encode()).hexdigest()[:16]})
 
 
 def rel(path: str) -> str:
@@ -100,6 +131,28 @@ def required_level(spec_path: str) -> tuple[int, list[str]]:
         level, reasons = 2, reasons + [f"environment family '{family}' not in approved families"]
     space = PREREG_SPACE.get(family, {})
     env_cfg = spec.get("environment", {})
+    # unrecognized or changed environment parameters
+    defaults = ENV_DEFAULTS.get(family, {})
+    for k, v in env_cfg.items():
+        if k not in defaults:
+            level, reasons = max(level, 2), reasons + [f"environment.{k} is not a recognized preregistered parameter"]
+        elif defaults[k] is not None and v != defaults[k]:
+            level, reasons = max(level, 2), reasons + [f"environment.{k}={v!r} differs from preregistered {defaults[k]!r}"]
+    # unrecognized or changed model parameters
+    for k, v in model.items():
+        if k in ("provider", "name"):
+            continue
+        if k not in MODEL_DEFAULTS:
+            level, reasons = max(level, 2), reasons + [f"model.{k} is not a recognized preregistered parameter"]
+        elif v != MODEL_DEFAULTS[k]:
+            level, reasons = max(level, 2), reasons + [f"model.{k}={v!r} differs from preregistered {MODEL_DEFAULTS[k]!r}"]
+    # unrecognized cell fields (a renamed or new manipulation must not pass silently)
+    known_cell_keys = CELL_META_KEYS | {k for k in space if not k.startswith("env.")}
+    for c in spec.get("cells", []):
+        for k in c:
+            if k not in known_cell_keys:
+                level = max(level, 2)
+                reasons.append(f"cell {c.get('cell')}: '{k}' is not a recognized preregistered field")
     for key, allowed in space.items():
         if key.startswith("env."):
             v = env_cfg.get(key[4:], 0)
@@ -293,6 +346,11 @@ def cmd_conclude(a):
     authorize(d, "conclude")
     if a.status not in STATUSES:
         raise AuthorityError(f"status must be one of {sorted(STATUSES)}")
+    if a.status in ("supported", "falsified"):
+        blocked = unresolved_analysis_disagreement(a.evidence)
+        if blocked:
+            raise AuthorityError(f"REFUSED: analysts materially disagree on {a.evidence} ({blocked}); "
+                                 f"resolve the discrepancy before claiming '{a.status}'")
     reg = json.loads(REGISTRY.read_text())
     h = next((h for h in reg["hypotheses"] if h["id"] == a.id), None)
     if h is None:
@@ -360,6 +418,99 @@ def cmd_budget(a):
     print(json.dumps(b, indent=2))
 
 
+# ---------------- research pods ----------------
+
+def pod_dir(stage: str, loop: str) -> pathlib.Path:
+    if stage not in POD_STAGES:
+        raise AuthorityError(f"unknown pod stage {stage}; one of {sorted(POD_STAGES)}")
+    return PODS / stage / loop
+
+
+def pod_status(stage, loop) -> dict:
+    return json.loads((pod_dir(stage, loop) / "status.json").read_text())
+
+
+def write_status(stage, loop, st) -> None:
+    (pod_dir(stage, loop) / "status.json").write_text(json.dumps(st, indent=2))
+
+
+def cmd_pod_init(a):
+    d = pod_dir(a.stage, a.loop)
+    (d / "subagent_outputs").mkdir(parents=True, exist_ok=True)
+    inputs = json.loads(pathlib.Path(a.inputs).read_text()) if a.inputs.endswith(".json") else {"brief": a.inputs}
+    (d / "inputs.json").write_text(json.dumps(inputs, indent=2))
+    members = [m for m in a.members.split(",") if m]
+    write_status(a.stage, a.loop, {"stage": a.stage, "loop": a.loop, "lead": a.lead, "state": "RUNNING",
+                                   "started": now(), "members": {m: "PENDING" for m in members}, "lead_state": "COORDINATING"})
+    log_event(a.lead, "pod_started", f"{a.stage} pod {a.loop}: members {members}", cites=[str(d.relative_to(ROOT))],
+              pod=a.stage, loop=a.loop)
+    print(str(d.relative_to(ROOT)))
+
+
+def cmd_pod_mark(a):
+    if a.state not in MEMBER_STATES:
+        raise AuthorityError(f"state must be one of {sorted(MEMBER_STATES)}")
+    st = pod_status(a.stage, a.loop)
+    if a.member not in st["members"]:
+        raise AuthorityError(f"{a.member} is not a member of the {a.stage} pod")
+    st["members"][a.member] = a.state
+    write_status(a.stage, a.loop, st)
+    print(f"{a.stage}/{a.loop} {a.member}: {a.state}")
+
+
+def cmd_pod_output(a):
+    st = pod_status(a.stage, a.loop)
+    out = json.loads(pathlib.Path(a.file).read_text())
+    missing = [f for f in SUBAGENT_FIELDS if f not in out]
+    if missing or out.get("member") != a.member or a.member not in st["members"]:
+        raise AuthorityError(f"REFUSED subagent output: missing {missing} or member mismatch ({out.get('member')} vs {a.member})")
+    (pod_dir(a.stage, a.loop) / "subagent_outputs" / f"{a.member}.json").write_text(json.dumps(out, indent=2))
+    st["members"][a.member] = "COMPLETE"
+    write_status(a.stage, a.loop, st)
+    log_event(a.member, "pod_member_output", f"{a.stage}/{a.loop}: {str(out['position'])[:200]}",
+              cites=out.get("evidence_refs", []), pod=a.stage, loop=a.loop)
+    print(f"{a.stage}/{a.loop} {a.member}: output recorded")
+
+
+def cmd_pod_submit(a):
+    d = pod_dir(a.stage, a.loop)
+    st = pod_status(a.stage, a.loop)
+    syn = json.loads(pathlib.Path(a.file).read_text())
+    missing = [f for f in SYNTHESIS_FIELDS if f not in syn]
+    if a.stage == "analysis":
+        missing += [f for f in ("experiment_id", "analysts_agree", "material_disagreements") if f not in syn]
+    if missing:
+        raise AuthorityError(f"REFUSED synthesis: missing fields {missing}")
+    have = {p.stem for p in (d / "subagent_outputs").glob("*.json")}
+    prov = set(syn["subagent_provenance"]) if isinstance(syn["subagent_provenance"], (list, dict)) else set()
+    if not have <= prov:
+        raise AuthorityError(f"REFUSED synthesis: provenance {sorted(prov)} omits recorded outputs {sorted(have - prov)}")
+    if a.stage == "analysis" and syn["material_disagreements"] and syn["analysts_agree"]:
+        raise AuthorityError("REFUSED synthesis: analysts_agree=true while material_disagreements is non-empty")
+    syn.update(stage=a.stage, loop=a.loop, lead=st["lead"], submitted=now())
+    (d / "synthesis.json").write_text(json.dumps(syn, indent=2))
+    st.update(state="COMPLETE", lead_state="COMPLETE", finished=now(),
+              summary={"researchers": len(st["members"]) + 1,
+                       "disagreements": len(syn["disagreements"]) if isinstance(syn["disagreements"], list) else 1,
+                       "headline": str(syn["conclusion"])[:160]})
+    write_status(a.stage, a.loop, st)
+    log_event(st["lead"], "pod_synthesis",
+              f"{a.stage}/{a.loop}: {str(syn['conclusion'])[:220]} | disagreements: {st['summary']['disagreements']} | "
+              f"recommendation: {str(syn['recommendation'])[:160]}", cites=[str((d / 'synthesis.json').relative_to(ROOT))],
+              pod=a.stage, loop=a.loop)
+    print(json.dumps(st["summary"]))
+
+
+def unresolved_analysis_disagreement(exp: str) -> list:
+    """Analysis-pod syntheses for `exp` whose analysts materially disagree (blocks strong status claims)."""
+    hits = []
+    for f in PODS.glob("analysis/*/synthesis.json") if PODS.exists() else []:
+        syn = json.loads(f.read_text())
+        if syn.get("experiment_id") == exp and (not syn.get("analysts_agree") or syn.get("material_disagreements")):
+            hits.append(str(f.relative_to(ROOT)))
+    return hits
+
+
 def cmd_log(a):
     print(json.dumps(log_event(a.agent, a.stage, a.text, a.cites)))
 
@@ -388,6 +539,15 @@ def main(argv=None):
         s.add_argument(flag, dest=dest, choices=["yes", "no", "n/a"])
     s.set_defaults(f=cmd_review)
     s = sub.add_parser("budget"); s.set_defaults(f=cmd_budget)
+    pod = sub.add_parser("pod").add_subparsers(required=True)
+    s = pod.add_parser("init"); s.add_argument("stage"); s.add_argument("loop"); s.add_argument("--lead", required=True)
+    s.add_argument("--members", required=True); s.add_argument("--inputs", required=True); s.set_defaults(f=cmd_pod_init)
+    s = pod.add_parser("mark"); s.add_argument("stage"); s.add_argument("loop"); s.add_argument("member")
+    s.add_argument("state"); s.set_defaults(f=cmd_pod_mark)
+    s = pod.add_parser("output"); s.add_argument("stage"); s.add_argument("loop"); s.add_argument("member")
+    s.add_argument("file"); s.set_defaults(f=cmd_pod_output)
+    s = pod.add_parser("submit"); s.add_argument("stage"); s.add_argument("loop"); s.add_argument("file")
+    s.set_defaults(f=cmd_pod_submit)
     s = sub.add_parser("escalate"); s.add_argument("did"); s.add_argument("--question", required=True)
     s.set_defaults(f=cmd_escalate)
     s = sub.add_parser("override"); s.add_argument("did"); s.add_argument("--note", required=True)
