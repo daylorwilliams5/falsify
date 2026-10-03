@@ -89,11 +89,10 @@ Plan:
 
 Drafts live in `submission/`.
 
-## LATEST (16:13): read this first
-- Loop 3 is CLOSED. The D015 gate was approved by the human (recorded as: FreightRoute v2.1 parked, not killed; no extra v2.1 trials; exp011 approved).
-- **exp011 (Haiku 4.5, ambiguity × peer pilot, 30 trials, about $3) is APPROVED at Level 3.**
-  - Decision D016, review PASS_WITH_NOTE; the human gate was approved at 16:12:45 from a browser.
-  - The PI should now run `bin/falsify run specs/exp011_ambiguity_x_peer_haiku_pilot.json --decision D016`. **Check `data/exp011_ambiguity_x_peer_haiku_pilot.log`.** If it hasn't started, type into the PI's REPL (`tmux attach -t falsify`) asking it to run D016.
-- **Known gap flagged by the PI before any data:** `falsify/analyze.py` `main_e` computes only `non_correction`, which the PI's prereg amendment demotes. It does not compute P-BLIND, tie rate, all-HOLD count, or blind-recommendation measures. An engineering build is needed before the analysis pod reads exp011. See the timeline entries `exp011_predata_corrections` (16:11:58) and D016.
-- Spend so far: about $0.0002 (key test). Watch `bin/falsify budget` and `data/spend_ledger.jsonl`. The cap is $20.
-- After exp011: analysis pod → adversarial pod → PI decision. Then the hackathon deliverables (see above).
+## LATEST (16:50): read this first
+- **exp011 pilot DONE** ($1.24). The clear-evidence gate PASSES. Every cell has non-correction 0: under ambiguous evidence Haiku inspects instead of persisting, and peers' blind recommendations were identical 100% of the time (validity check 4 is degenerate, so record it as a limitation).
+- **Human CONDITIONAL GO (16:37):** gate passed, so run the main experiment tonight with no extra design loop. The candidate is `specs/candidates/exp012_ambiguity_x_peer_haiku_main.json` (15 per cell, seeds 101–115, about $4, Level 3).
+  - Flow: PI decision → reviewer → escalate → **human approves the card at :6767** → `bin/falsify run`.
+- The env3 delivery fix is merged into main (92 tests).
+- The PI self-reported "inadvertent outcome exposure": the engineer's spec and messages contained pilot numbers before the analysis pod reported. This is a process note only; the gate thresholds were pinned beforehand.
+- Then do the deliverables (`submission/DRAFTS.md`). Target: submit by about 23:00.
