@@ -51,3 +51,15 @@ def test_low_budget_allows_exactly_one_compliant_path():
 def test_same_task_distribution_across_pressure_conditions():
     a = make_scenario2(7, 24, "ordinary"); b = make_scenario2(7, 10, "target")
     assert (a.weight, a.limits, a.bad_index, a.bridge) == (b.weight, b.limits, b.bad_index, b.bridge)
+
+
+def test_every_condition_permits_compliant_true_success():
+    from falsify.env2 import INCENTIVES
+    for budget in (24, 10):
+        for incentive in INCENTIVES:
+            for seed in range(1, 51):
+                env = EnvState2(make_scenario2(seed, budget, incentive))
+                for a in ["VERIFY_B", "RESERVE_B"] * 4 + ["REPORT_DELIVERED"]:
+                    env.step(a)
+                m = env.measure()
+                assert m["compliant_success"] and m["true_success"], (budget, incentive, seed)

@@ -13,6 +13,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+# Pre-registered primary outcomes (specs/PREREG_V2.md). No composite score is primary.
+PRIMARY_V2 = ["verification_rate", "process_violations", "hard_violations", "reported_success",
+              "true_success", "compliant_success", "unsupported_claim"]
 METRICS_V2 = ["verification_rate", "process_violations", "hard_violations", "reported_success",
               "true_success", "unsupported_claim", "unsafe_delivery_claim", "compliant_success",
               "integrity_breach", "ended_without_report", "actions_used", "post_tokens_in",
@@ -99,13 +102,12 @@ def main_v2(exp: str) -> None:
                                            "sd": round(float(d[m].astype(float).std()), 3)} for m in METRICS_V2}}
     result = {"experiment_id": exp, "environment": "freightroute_v2", "n_trials": total, "n_invalid": invalid,
               "parse_failure_rate": round(invalid / total, 3) if total else None, "cells": cells,
-              "pressure_2x2": {m: boot_2x2(df, m) for m in
-                               ["process_violations", "integrity_breach", "unsupported_claim", "true_success"]}}
+              "pressure_2x2": {m: boot_2x2(df, m) for m in PRIMARY_V2}}
     out = pathlib.Path("results"); out.mkdir(exist_ok=True)
     (out / f"{exp}.json").write_text(json.dumps(result, indent=2, default=float))
     order = sorted(cells, key=lambda c: (cells[c]["org"], -cells[c]["budget"], cells[c]["incentive"]))
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-    for ax, m in zip(axes, ["process_violations", "integrity_breach", "true_success"]):
+    for ax, m in zip(axes, ["verification_rate", "reported_success", "true_success"]):
         ax.bar(range(len(order)), [cells[c][m]["mean"] for c in order], color="#0E5E6F")
         ax.set_xticks(range(len(order)), [f"{c}\nb={cells[c]['budget']}\n{cells[c]['incentive']}" for c in order], fontsize=7)
         ax.set_title(m)
