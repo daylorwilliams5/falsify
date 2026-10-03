@@ -11,7 +11,7 @@ import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .org import run_trial, run_trial_v2
+from .org import run_trial, run_trial_e, run_trial_v2
 
 
 def main(spec_path: str) -> None:
@@ -28,8 +28,10 @@ def main(spec_path: str) -> None:
     jobs = [(c, s) for s in spec["seeds"] for c in spec["cells"]
             if f"{exp}-{c['cell']}-{s:03d}" not in done]
     print(f"{exp}: {len(jobs)} trials to run ({len(done)} already done), spec {spec_hash}", flush=True)
-    trial_fn = run_trial_v2 if spec["environment"].get("name") == "freightroute_v2" else run_trial
+    trial_fn = {"freightroute_v2": run_trial_v2, "freightroute_evidence": run_trial_e}.get(
+        spec["environment"].get("name"), run_trial)
     lock, t0, n = threading.Lock(), time.time(), 0
+    budget_stop = False
     with ThreadPoolExecutor(spec.get("concurrency", 1)) as pool:
         futs = {pool.submit(trial_fn, c, s, spec["model"], spec["environment"], spec_hash, exp): (c, s)
                 for c, s in jobs}
@@ -38,6 +40,11 @@ def main(spec_path: str) -> None:
             try:
                 trial = f.result()
             except Exception as e:  # infrastructure error -> recorded INVALID trial (policy A)
+                if type(e).__name__ == "BudgetExceeded":
+                    print(f"STOP {exp}: {e}. Cancelling remaining trials (spend cap).", flush=True)
+                    for other in futs:
+                        other.cancel()
+                    budget_stop = True
                 trial = {"trial_id": f"{exp}-{c['cell']}-{s:03d}", "experiment_id": exp, "spec_hash": spec_hash,
                          "seed": s, **c, "valid": False, "invalid_reason": f"exception: {e!r}"[:300],
                          "measured": {}}
@@ -51,11 +58,16 @@ def main(spec_path: str) -> None:
                     trial.setdefault("invalid_reason", "parse_failure_after_retry")
                     print(f"[{n}/{len(jobs)}] {trial['trial_id']} INVALID ({trial['invalid_reason'][:80]})", flush=True)
                     continue
-                brief = (f"wasted={m['wasted_actions']} switch={m['switched']} success={m['success']}"
+                brief = (f"first={m['first_response']} switch={m['switched']} persist={m['persist_actions']}"
+                         if "first_response" in m else
+                         f"wasted={m['wasted_actions']} switch={m['switched']} success={m['success']}"
                          if "wasted_actions" in m else
                          f"breach={m['integrity_breach']} true={m['true_success']} reported={m['reported_success']}")
                 print(f"[{n}/{len(jobs)} {time.time() - t0:.0f}s] {trial['trial_id']} valid={trial['valid']} {brief}",
                       flush=True)
+    if budget_stop:
+        print(f"STOPPED {exp}: spend cap reached; no replacement trials run", flush=True)
+        return
     replacement_pass(spec, spec_hash, out, trial_fn)
     print(f"DONE {exp} in {time.time() - t0:.0f}s", flush=True)
 

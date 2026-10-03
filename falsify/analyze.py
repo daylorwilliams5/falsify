@@ -168,10 +168,46 @@ def main_v2(exp: str) -> None:
     print(json.dumps({k: v for k, v in result.items() if k != "cells"}, indent=2, default=float))
 
 
+def main_e(exp: str) -> None:
+    """FreightRoute-E: descriptive outcomes per cell + bootstrap interaction on non-correction (PROVISIONAL analysis;
+    the lab must preregister its primary outcome before the main run)."""
+    rows = [json.loads(l) for l in (pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines() if l.strip()]
+    valid = [r for r in rows if r.get("valid")]
+    df = pd.DataFrame([{"cell": r["cell"], "org": r["org"], "evidence": r["evidence"], **{k: v for k, v in
+                        r["measured"].items() if not isinstance(v, dict)}} for r in valid])
+    df["non_correction"] = df.first_response.isin(["persist", "hold"]).astype(float)   # candidate primary
+    df["persisted_any"] = (df.persisted_before_switch > 0).astype(float)
+    cells = {}
+    for cell, d in df.groupby("cell"):
+        cells[cell] = {"org": d.org.iloc[0], "evidence": d.evidence.iloc[0], "n": len(d),
+                       "first_response": d.first_response.value_counts().to_dict(),
+                       **{m: round(float(d[m].mean()), 3) for m in ("non_correction", "persisted_any", "switched",
+                                                                     "rounds_to_switch", "seek_actions", "llm_calls")}}
+    rng = np.random.default_rng(0)
+    inter = {}
+    for amb in ("probabilistic", "conflicting"):
+        g = {(o, e): df[(df.org == o) & (df.evidence == e)].non_correction.to_numpy()
+             for o in ("single", "peer") for e in ("clear", amb)}
+        if any(len(v) == 0 for v in g.values()):
+            continue
+        f = lambda v: (v[("peer", amb)].mean() - v[("peer", "clear")].mean()) - (v[("single", amb)].mean() - v[("single", "clear")].mean())
+        draws = [f({k: rng.choice(x, len(x)) for k, x in g.items()}) for _ in range(10000)]
+        inter[amb] = {"estimate": round(float(f(g)), 3), "ci95": [round(float(np.percentile(draws, q)), 3) for q in (2.5, 97.5)]}
+    result = {"experiment_id": exp, "environment": "freightroute_evidence", "n_trials": len(rows),
+              "n_invalid": len(rows) - len(valid), "cells": cells,
+              "interaction_peer_x_ambiguity_on_non_correction": inter,
+              "note": "PROVISIONAL descriptive analysis; non_correction = first decisive response is persist or hold."}
+    out = pathlib.Path("results"); out.mkdir(exist_ok=True)
+    (out / f"{exp}.json").write_text(json.dumps(result, indent=2, default=float))
+    print(json.dumps(result, indent=2, default=float))
+
+
 def main(exp: str) -> None:
     first = json.loads((pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines()[0])
     if first.get("env") == "freightroute_v2":
         return main_v2(exp)
+    if first.get("env") == "freightroute_evidence":
+        return main_e(exp)
     df, invalid = load(exp)
     total = len(df) + invalid
     per_cell = (df.groupby(["cell", "org", "k", "update", "auditor"])[METRICS]
