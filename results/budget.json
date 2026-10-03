@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-10-03T15:49:11",
-  "elapsed_research_minutes": 283.5,
+  "as_of": "2026-10-03T16:13:47",
+  "elapsed_research_minutes": 308.1,
   "external_spend_usd": 0.0,
   "external_spend_cap_without_human_usd": 0,
   "subject_model": {
@@ -61,13 +61,13 @@
     "H1"
   ],
   "decisions": {
-    "total": 15,
+    "total": 16,
     "by_level": {
       "1": 13,
       "2": 2,
-      "3": 0
+      "3": 1
     },
-    "human_escalations": 0,
+    "human_escalations": 2,
     "human_overrides": 0
   }
 }

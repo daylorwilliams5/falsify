@@ -1,0 +1,11 @@
+{
+  "reason": "invalid-trial rate > 10% in cell(s); human decision required",
+  "cells": {
+    "S_conf": 1.0,
+    "P_prob": 1.0,
+    "P_conf": 1.0,
+    "S_clear": 1.0,
+    "S_prob": 1.0,
+    "P_clear": 1.0
+  }
+}

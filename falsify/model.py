@@ -90,7 +90,9 @@ def call_anthropic(model: str, messages: list[dict], schema: dict, seed: int, te
             if spent_usd() >= spend_cap_usd():
                 raise BudgetExceeded(f"spend cap ${spend_cap_usd():.2f} reached (${spent_usd():.4f} spent)")
         r = _anthropic_client().messages.create(
-            model=model, max_tokens=1024, temperature=temperature, system=system, messages=convo,
+            # anthropic SDK 1.x removed sampling kwargs from create(); Haiku 4.5 still honours temperature, and the
+            # preregistered spec fixes it at 0.7, so it is passed through extra_body (SDK upgrade guide, Step 6).
+            model=model, max_tokens=1024, system=system, messages=convo, extra_body={"temperature": temperature},
             cache_control={"type": "ephemeral"},
             output_config={"format": {"type": "json_schema", "schema": _strict(schema)}},
         )

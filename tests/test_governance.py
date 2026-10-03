@@ -336,3 +336,18 @@ def test_approved_spec_with_declarations_stays_level1_only_if_hash_matches(lab):
 def test_empty_seeds_fail_closed(lab):
     root, _ = lab
     assert cli.required_level(write_spec(root, "noseeds.json", seeds=[]))[0] == 2
+
+
+def test_resume_requires_pause_and_authorized_decision(lab):
+    root, started = lab
+    did = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    with pytest.raises(cli.AuthorityError, match="not paused"):
+        cli.main(["resume", "specs/exp009_v2_floor_probe.json", "--decision", did, "--human-note", "ok"])
+    (root / "results").mkdir(exist_ok=True)
+    (root / "results/exp009_v2_floor_probe_PAUSE.json").write_text("{}")
+    cli.main(["resume", "specs/exp009_v2_floor_probe.json", "--decision", did, "--human-note", "ok"])
+    assert len(started) == 1 and not (root / "results/exp009_v2_floor_probe_PAUSE.json").exists()
+    cli.main(["override", did, "--note", "stop"])
+    (root / "results/exp009_v2_floor_probe_PAUSE.json").write_text("{}")
+    with pytest.raises(cli.AuthorityError, match="overridden"):
+        cli.main(["resume", "specs/exp009_v2_floor_probe.json", "--decision", did, "--human-note", "ok"])

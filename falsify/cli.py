@@ -426,6 +426,28 @@ def cmd_run(a):
                       "trials_planned": len(spec["cells"]) * len(spec["seeds"])}))
 
 
+def cmd_resume(a):
+    """Resume a PAUSED experiment by running preregistered replacement trials. Requires the run decision to be
+    authorized (incl. its human approval for L3) AND an explicit human 'resume' note (EDGE_CASE_POLICY A)."""
+    spec_rel = rel(a.spec)
+    d = load_decision(a.decision)
+    authorize(d, "run")
+    if d.get("spec") != spec_rel or sha(ROOT / spec_rel) != d["spec_hash"]:
+        raise AuthorityError(f"REFUSED: {d['id']} does not authorize {spec_rel} at its current hash")
+    exp = json.loads((ROOT / spec_rel).read_text())["experiment_id"]
+    pause = ROOT / "results" / f"{exp}_PAUSE.json"
+    if not pause.exists():
+        raise AuthorityError(f"REFUSED: {exp} is not paused")
+    d.setdefault("resumes", []).append({"ts": now(), "human_note": a.human_note})
+    save_decision(d)
+    pause.rename(pause.with_name(f"{exp}_PAUSE_resolved_{now().replace(':', '')}.json"))
+    logf = ROOT / "data" / f"{exp}.log"
+    proc = subprocess.Popen([sys.executable, "-m", "falsify.run", spec_rel, "--resume-after-pause"], cwd=ROOT,
+                            stdout=logf.open("a"), stderr=subprocess.STDOUT, start_new_session=True)
+    log_event("human", "resume_after_pause", f"{exp} resumed under {d['id']}: {a.human_note}", cites=[d["id"], spec_rel])
+    print(json.dumps({"resumed": exp, "pid": proc.pid, "decision": d["id"]}))
+
+
 def cmd_status(a):
     trials = ROOT / "data" / "trials" / f"{a.exp}.jsonl"
     done = len(trials.read_text().splitlines()) if trials.exists() else 0
@@ -662,6 +684,8 @@ def main(argv=None):
     s = sub.add_parser("override"); s.add_argument("did"); s.add_argument("--note", required=True)
     s.set_defaults(f=cmd_override)
     s = sub.add_parser("decisions"); s.set_defaults(f=cmd_decisions)
+    s = sub.add_parser("resume"); s.add_argument("spec"); s.add_argument("--decision", required=True)
+    s.add_argument("--human-note", required=True); s.set_defaults(f=cmd_resume)
     s = sub.add_parser("run"); s.add_argument("spec"); s.add_argument("--decision", required=True)
     s.set_defaults(f=cmd_run)
     s = sub.add_parser("conclude"); s.add_argument("id"); s.add_argument("status")

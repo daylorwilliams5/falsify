@@ -40,7 +40,17 @@ def test_cost_is_logged_and_schema_is_strict(fake):
     kw = fake.calls[0]
     assert kw["system"] == "S" and kw["messages"] == [{"role": "user", "content": "U"}]
     assert kw["output_config"]["format"]["schema"]["additionalProperties"] is False
-    assert kw["model"] == "claude-haiku-4-5" and kw["temperature"] == 0.7
+    assert kw["model"] == "claude-haiku-4-5" and kw["extra_body"] == {"temperature": 0.7}
+
+
+def test_every_kwarg_is_accepted_by_the_real_sdk_signature(fake):
+    """The fake client accepts anything; this pins our call to the INSTALLED SDK's create() signature
+    (exp011 attempt 1 failed because temperature was removed from the 1.x signature)."""
+    import inspect
+    import anthropic
+    allowed = set(inspect.signature(anthropic.Anthropic(api_key="x").messages.create).parameters)
+    model.call_anthropic("claude-haiku-4-5", [{"role": "user", "content": "U"}], SCHEMA, 1, 0.7)
+    assert set(fake.calls[0]) <= allowed, set(fake.calls[0]) - allowed
 
 
 def test_hard_cap_refuses_calls(fake, monkeypatch):

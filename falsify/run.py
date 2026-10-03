@@ -75,8 +75,9 @@ def main(spec_path: str) -> None:
 REPLACEMENT_OFFSET = 10000  # preregistered: replacement seed = original seed + 10000 * attempt
 
 
-def replacement_pass(spec, spec_hash, out, trial_fn) -> None:
-    """Policy A: rerun invalid trials once with a preregistered replacement seed; pause if >10% invalid."""
+def replacement_pass(spec, spec_hash, out, trial_fn, human_override: bool = False) -> None:
+    """Policy A: rerun invalid trials once with a preregistered replacement seed; pause if >10% invalid,
+    unless the human has approved resuming after a pause (human_override, set only via `falsify resume`)."""
     exp = spec["experiment_id"]
     trials = [json.loads(l) for l in out.read_text().splitlines() if l.strip()]
     by_cell = {}
@@ -84,7 +85,7 @@ def replacement_pass(spec, spec_hash, out, trial_fn) -> None:
         by_cell.setdefault(t["cell"], []).append(t)
     rates = {c: sum(not t["valid"] for t in ts) / len(ts) for c, ts in by_cell.items()}
     flagged = {c: round(r, 3) for c, r in rates.items() if r > 0.10}
-    if flagged:
+    if flagged and not human_override:
         flag = pathlib.Path("results") / f"{exp}_PAUSE.json"
         flag.parent.mkdir(exist_ok=True)
         flag.write_text(json.dumps({"reason": "invalid-trial rate > 10% in cell(s); human decision required",
@@ -111,5 +112,22 @@ def replacement_pass(spec, spec_hash, out, trial_fn) -> None:
         print(f"REPLACEMENT {new_id} for {t['trial_id']} valid={rep['valid']}", flush=True)
 
 
+def resume_after_pause(spec_path: str) -> None:
+    """Human-approved resume: run preregistered replacement trials for every invalid trial (seed + 10000)."""
+    raw = pathlib.Path(spec_path).read_bytes()
+    spec = json.loads(raw)
+    exp = spec["experiment_id"]
+    out = pathlib.Path("data/trials") / f"{exp}.jsonl"
+    trial_fn = {"freightroute_v2": run_trial_v2, "freightroute_evidence": run_trial_e}.get(
+        spec["environment"].get("name"), run_trial)
+    t0 = time.time()
+    print(f"RESUME {exp}: replacement trials for invalid records (human-approved)", flush=True)
+    replacement_pass(spec, hashlib.sha256(raw).hexdigest()[:16], out, trial_fn, human_override=True)
+    print(f"DONE {exp} (replacements) in {time.time() - t0:.0f}s", flush=True)
+
+
 if __name__ == "__main__":
-    main(sys.argv[1])
+    if len(sys.argv) > 2 and sys.argv[2] == "--resume-after-pause":
+        resume_after_pause(sys.argv[1])
+    else:
+        main(sys.argv[1])
