@@ -14,9 +14,9 @@ import { LiteratureSource } from '../components/LiteratureSource';
 
 const ORDER = ['MEASURED', 'DERIVED', 'INFERRED', 'HYPOTHESIS'] as const;
 
-export function HypothesesPage({ lab }: { lab: LabSnapshot }) {
+export function HypothesesPage({ lab, base }: { lab: LabSnapshot; base: string }) {
   return (
-    <DetailPage kicker="Hypotheses" title="Competing explanations" lede={lab.state.question}>
+    <DetailPage base={base} kicker="Hypotheses" title="Competing explanations" lede={lab.state.question}>
       <Panel title="Registry" meta={<span className="mono">registry/hypotheses.json</span>}>
         <div className="hyp-cols mono"><span>ID</span><span>mechanism · claim</span><span>evidence ±</span><span>tested by</span><span>status</span></div>
         {lab.hypotheses.map((h) => <HypothesisRow key={h.id} h={h} />)}
@@ -25,11 +25,11 @@ export function HypothesesPage({ lab }: { lab: LabSnapshot }) {
   );
 }
 
-export function ExperimentPage({ lab, id }: { lab: LabSnapshot; id?: string }) {
+export function ExperimentPage({ lab, base, id }: { lab: LabSnapshot; base: string; id?: string }) {
   const exp = lab.experiments.find((e) => e.id === id) ?? lab.experiments[0];
   const evidence = lab.state.evidence.filter((e) => e.hypothesis === exp.hypothesis);
   return (
-    <DetailPage kicker={`Experiment · ${exp.id}`} title={lab.state.latest_result.headline} lede={exp.question}>
+    <DetailPage base={base} kicker={`Experiment · ${exp.id}`} title={lab.state.latest_result.headline} lede={exp.question}>
       <div className="detail-grid">
         <Panel title="Result" meta={<span className="mono">results/{exp.id}.json</span>}>
           <ExperimentCard x={exp} />
@@ -42,9 +42,9 @@ export function ExperimentPage({ lab, id }: { lab: LabSnapshot; id?: string }) {
   );
 }
 
-export function DecisionPage({ lab }: { lab: LabSnapshot }) {
+export function DecisionPage({ lab, base }: { lab: LabSnapshot; base: string }) {
   return (
-    <DetailPage kicker="Next move" title="Proposed next experiment" lede="The lab pauses here for human approval before building or running anything.">
+    <DetailPage base={base} kicker="Next move" title="Proposed next experiment" lede="The lab pauses here for human approval before building or running anything.">
       <Panel title="Decision" meta={<span className="mono">{lab.state.next_decision.rationale_path}</span>} className="decision-panel">
         <DecisionCard d={lab.state.next_decision} />
       </Panel>
@@ -52,9 +52,9 @@ export function DecisionPage({ lab }: { lab: LabSnapshot }) {
   );
 }
 
-export function LiteraturePage({ lab }: { lab: LabSnapshot }) {
+export function LiteraturePage({ lab, base }: { lab: LabSnapshot; base: string }) {
   return (
-    <DetailPage kicker="Literature" title="What prior work says" lede="Provisionally approved for synthesis and gap analysis. No strong novelty claims.">
+    <DetailPage base={base} kicker="Literature" title="What prior work says" lede="Provisionally approved for synthesis and gap analysis. No strong novelty claims.">
       <div className="lit-grid">
         {lab.literature.map((s) => <LiteratureSource key={s.id} s={s} />)}
       </div>
@@ -62,9 +62,9 @@ export function LiteraturePage({ lab }: { lab: LabSnapshot }) {
   );
 }
 
-export function EvidencePage({ lab }: { lab: LabSnapshot }) {
+export function EvidencePage({ lab, base }: { lab: LabSnapshot; base: string }) {
   return (
-    <DetailPage kicker="Evidence" title="What we measured vs. what we believe" lede="Every claim carries its provenance: measured, derived, inferred, or still a hypothesis.">
+    <DetailPage base={base} kicker="Evidence" title="What we measured vs. what we believe" lede="Every claim carries its provenance: measured, derived, inferred, or still a hypothesis.">
       <div className="prov-legend mono">
         {ORDER.map((k) => <span key={k} className={`prov-${k.toLowerCase()}`}>{k}</span>)}
       </div>
@@ -73,7 +73,7 @@ export function EvidencePage({ lab }: { lab: LabSnapshot }) {
   );
 }
 
-export function AgentsPage({ lab }: { lab: LabSnapshot }) {
+export function AgentsPage({ lab, base }: { lab: LabSnapshot; base: string }) {
   const { activity, state, timeline } = lab;
   // Trace clock: the running span keeps growing so the waterfall feels live.
   const [tick, setTick] = useState(0);
@@ -82,7 +82,7 @@ export function AgentsPage({ lab }: { lab: LabSnapshot }) {
   const traceTotal = Math.max(60, traceNow + 6);
 
   return (
-    <DetailPage kicker="Agents" title="Who is doing what" lede={`Omnigent ${state.omnigent.version} · ${state.omnigent.workers} workers · ${state.model}`}>
+    <DetailPage base={base} kicker="Agents" title="Who is doing what" lede={`Omnigent ${state.omnigent.version} · ${state.omnigent.workers} workers · ${state.model}`}>
       <Panel title="Scientific loop" className="loop-panel">
         <ResearchLoop stages={activity.loop} loopIndex={state.loop_index} gated={state.awaiting_human} />
       </Panel>

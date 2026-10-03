@@ -1,6 +1,10 @@
 /**
  * PLANNED — not wired. Maps live Falsify artifacts into a LabSnapshot.
  *
+ * One program = one lab directory (today the repo root is the single program).
+ * listPrograms() scans program directories; loadPlan() reads a draft plan file
+ * written by the director before the human approves it.
+ *
  *   registry/hypotheses.json       → state.question, hypotheses[]
  *       status: lowercase → HypothesisStatus (e.g. "inconclusive" → "INCONCLUSIVE")
  *       supporting/contradicting: counted from evidence items citing the id

@@ -24,9 +24,9 @@ export function HypothesisRow({ h }: { h: Hypothesis }) {
           ))}
         </span>
       </div>
-      <a className="hyp-link mono" href="#experiment">
+      <span className="hyp-link mono">
         {h.tested_by[0] ?? '—'}
-      </a>
+      </span>
       <StatusBadge status={h.status} />
     </div>
   );

@@ -15,7 +15,7 @@ export function LiteratureSource({ s }: { s: LS }) {
         <dt>Relevance</dt><dd>{s.relevance}</dd>
       </dl>
       <div className="lit-hyps mono">
-        {s.hypotheses.map((h) => <a key={h} href="#hypotheses" className="chip">{h}</a>)}
+        {s.hypotheses.map((h) => <span key={h} className="chip">{h}</span>)}
       </div>
     </article>
   );

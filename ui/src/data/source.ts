@@ -1,21 +1,24 @@
-import type { LabSnapshot } from './types';
+import type { LabSnapshot, ProgramSummary, ResearchPlan } from './types';
 import { fixtureSource } from './adapters/fixtures';
 
 /**
  * A LabDataSource is the only thing the UI knows about where data comes from.
  *
  *   fixtureSource  — static JSON in ./fixtures (today)
- *   artifactSource — maps registry/, results/, timeline.jsonl, critiques/,
- *                    sources/ into the same LabSnapshot (later; see
+ *   artifactSource — maps each program's registry/, results/, timeline.jsonl,
+ *                    critiques/, sources/ into the same shapes (later; see
  *                    ./adapters/artifacts.ts for the planned mapping)
- *
- * `subscribe` lets a live source push updates (file watcher, SSE, websocket)
- * without components caring.
  */
 export interface LabDataSource {
   name: string;
-  load(): Promise<LabSnapshot>;
-  subscribe?(onChange: (snap: LabSnapshot) => void): () => void;
+  listPrograms(): Promise<ProgramSummary[]>;
+  /** Full snapshot for a program that has run experiments; null if it is still planning. */
+  loadProgram(id: string): Promise<LabSnapshot | null>;
+  /** The plan awaiting approval for a program, if any. */
+  loadPlan(id: string): Promise<ResearchPlan | null>;
+  /** Ask the lab to plan a new question. Mocked in fixture mode. */
+  draftPlan(question: string): Promise<ResearchPlan>;
+  subscribe?(onChange: () => void): () => void;
 }
 
 export const activeSource: LabDataSource = fixtureSource;

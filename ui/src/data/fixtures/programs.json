@@ -1,0 +1,41 @@
+[
+  {
+    "id": "corrigibility",
+    "title": "Corrigibility in AI Organizations",
+    "question": "What makes multi-agent AI systems resistant to correction?",
+    "status": "AWAITING",
+    "phase": "critique",
+    "needs_you": "Approve the next experiment",
+    "activity": "Skeptic is analyzing the floor effect",
+    "latest": "Prior investment did not produce a detectable effect.",
+    "experiments_run": 1,
+    "hypotheses": 5,
+    "opened": "Today"
+  },
+  {
+    "id": "eval-gaming",
+    "title": "Metric gaming under evaluation",
+    "question": "Do LLM agents game their evaluation metric when they know they're being scored?",
+    "status": "PLANNING",
+    "phase": "hypothesis",
+    "needs_you": "Approve the research plan",
+    "activity": "Plan drafted: 4 hypotheses, 1 pilot",
+    "latest": null,
+    "experiments_run": 0,
+    "hypotheses": 4,
+    "opened": "Today"
+  },
+  {
+    "id": "tool-horizon",
+    "title": "Long-horizon tool reliability",
+    "question": "Why do agents' tool-use errors compound over long tasks?",
+    "status": "RUNNING",
+    "phase": "literature",
+    "needs_you": null,
+    "activity": "Literature agent is reading prior work",
+    "latest": null,
+    "experiments_run": 0,
+    "hypotheses": 0,
+    "opened": "Today"
+  }
+]

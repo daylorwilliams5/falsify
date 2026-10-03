@@ -1,7 +1,7 @@
 import type { LabSnapshot } from './data/types';
 import { LoopTimeline } from './components/LoopTimeline';
 
-export function Overview({ lab }: { lab: LabSnapshot }) {
+export function Overview({ lab, base }: { lab: LabSnapshot; base: string }) {
   const { state, activity } = lab;
   const r = state.latest_result;
   const d = state.next_decision;
@@ -19,7 +19,7 @@ export function Overview({ lab }: { lab: LabSnapshot }) {
           <p className="ov-headline">{r.headline}</p>
           <p className="ov-body">{r.finding}</p>
           <p className="ov-verdict"><span>{r.verdict}</span> — {r.reason}</p>
-          <a className="ov-link" href={`#/experiments/${r.experiment}`}>View experiment <span>→</span></a>
+          <a className="ov-link" href={`${base}/experiments/${r.experiment}`}>View experiment <span>→</span></a>
         </section>
 
         <section className="ov-block">
@@ -41,7 +41,7 @@ export function Overview({ lab }: { lab: LabSnapshot }) {
               <li key={f.agent}><span className="focus-dot" />{f.agent} <span>is {f.verb}</span></li>
             ))}
           </ul>
-          <a className="ov-link" href="#/decision">Review proposal <span>→</span></a>
+          <a className="ov-link" href={`${base}/decision`}>Review proposal <span>→</span></a>
         </section>
       </div>
 

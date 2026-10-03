@@ -11,8 +11,9 @@ Built for the 7th Hack-Nation Global AI Hackathon, Challenge 3: Agentic Scientif
 ```
 Human researcher
       ↓ directives, approvals
-OMNIGENT research lab (lab/)  ─ director + literature, scientist, designer, statistician, skeptic, auditor
-      ↓ proposes ≥2 experiments, picks one, pauses at the human_gate policy
+OMNIGENT research lab (lab/)  ─ Principal Investigator + literature, scientist, designer, statistician,
+                                skeptic, oversight scientist │ independent methodology reviewer
+      ↓ PI DECISION (L1 autonomous · L2 + review PASS · L3 human gate) → METHODOLOGY REVIEW
 Experiment runner (falsify/run.py, `bin/falsify run`)
       ↓
 Target AI organization (falsify/org.py): single agent or Planner/Researcher/Executor/Reviewer team
@@ -22,7 +23,12 @@ Measured results (data/trials/*.jsonl → results/*.json)
 Back to Omnigent: interpret → challenge → revise hypotheses → choose next experiment
 ```
 
-- **Omnigent is the lab.** It holds the shared scientific state (`registry/`, `specs/`, `critiques/`, `timeline.jsonl`), coordinates six specialist agents, passes structured evidence between them, and enforces human approval (a CEL policy that pauses `falsify run` and `falsify conclude`).
+- **Omnigent is the lab, organized as an AI scientific organization with separation of powers.**
+  - A **Principal Investigator** agent holds scientific decision authority within the human's mandate (`lab/mandate.json`).
+  - Six specialists give it structured arguments.
+  - An **independent methodology reviewer** audits every decision.
+  - The human sets the mandate, can override any decision, and approves only level-3 escalations.
+  - Authority levels are enforced in code. See [`specs/AUTHORITY.md`](specs/AUTHORITY.md).
 - **The target organization is the experimental subject.** It runs on a local `qwen3:8b` model in plain Python, with no Omnigent text in its prompts.
 - **Measured data and interpretation are kept separate.** Trial data is never edited. Agent interpretations live in `critiques/` and must cite result IDs.
 

@@ -210,3 +210,29 @@ export interface LabSnapshot {
   timeline: TimelineEvent[];
   literature: LiteratureSource[];
 }
+
+// programs.json  ←  one entry per research program (one directory per program later)
+export interface ProgramSummary {
+  id: string;
+  title: string;
+  question: string;
+  status: 'RUNNING' | 'AWAITING' | 'PLANNING' | 'PAUSED';
+  phase: string; // loop phase id the program is currently in
+  needs_you: string | null;
+  activity: string;
+  latest: string | null;
+  experiments_run: number;
+  hypotheses: number;
+  opened: string;
+}
+
+// A research plan the lab drafts from a new question, before any experiment runs.
+export interface ResearchPlan {
+  question: string;
+  refined_question: string;
+  steps: { agent: string; doing: string; done: string }[];
+  sources: { title: string; year: string; why: string }[];
+  hypotheses: { id: string; claim: string; falsified_if: string }[];
+  first_experiment: { title: string; design: string; environment: string; trials: number; est_time: string; est_cost: string };
+  risks: string[];
+}

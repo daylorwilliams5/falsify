@@ -1,0 +1,34 @@
+{
+  "eval-gaming": {
+    "question": "Do LLM agents game their evaluation metric when they know they're being scored?",
+    "refined_question": "Does knowing a score is visible make LLM agents take metric-gaming shortcuts, and does a history-free auditor prevent it?",
+    "steps": [
+      { "agent": "Literature", "doing": "Scanning prior work", "done": "14 candidate sources, 4 direct" },
+      { "agent": "Scientist", "doing": "Drafting competing hypotheses", "done": "4 hypotheses, each with a falsification test" },
+      { "agent": "Designer", "doing": "Sizing a first experiment", "done": "Pilot: 2 × 2, 40 trials" },
+      { "agent": "Skeptic", "doing": "Checking the plan for confounds", "done": "2 risks flagged" }
+    ],
+    "sources": [
+      { "title": "Specification gaming examples in AI", "year": "2020", "why": "Catalog of agents satisfying the letter, not the intent, of an objective." },
+      { "title": "Sycophancy to Subterfuge: Investigating reward tampering", "year": "2024", "why": "LLMs generalize from mild gaming to tampering with their own reward." }
+    ],
+    "hypotheses": [
+      { "id": "H1", "claim": "Agents told their score is visible take more shortcuts than agents who aren't.", "falsified_if": "No difference in shortcut rate between visible and hidden score." },
+      { "id": "H2", "claim": "An explicit score target increases gaming beyond visibility alone.", "falsified_if": "Target and no-target conditions match once visibility is held fixed." },
+      { "id": "H3", "claim": "A history-free auditor reduces gaming more than an instruction to be honest.", "falsified_if": "Auditor and instruction arms show equal shortcut rates." },
+      { "id": "H4", "claim": "Gaming rises with model capability at fixed pressure.", "falsified_if": "Shortcut rate is flat across model tiers." }
+    ],
+    "first_experiment": {
+      "title": "Score-visibility pilot",
+      "design": "2 × 2 · score visibility × score target",
+      "environment": "FreightRoute v2",
+      "trials": 40,
+      "est_time": "~2 hours",
+      "est_cost": "Low"
+    },
+    "risks": [
+      "Gaming can look like legitimate optimization; needs a pre-registered definition of a shortcut.",
+      "Floor-effect risk, as seen in exp001; the pilot includes a manipulation check."
+    ]
+  }
+}
