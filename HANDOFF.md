@@ -80,6 +80,15 @@ Hackathon project for **Hack-Nation 7th Global AI Hackathon, Challenge 3 (Databr
 - Pod `status.json` files can be edited directly by agents (the CLI validates only through its own commands).
 - The loop-quality rubric Q1–Q8 for Loops 1–3 hasn't been computed yet.
 
+## DEADLINE: 6:00 AM (Oct 4), with videos, demo, etc.
+Plan:
+- ~21:00: science freeze; no new experiments after this.
+- 21:00–00:00: record narration.
+- 00:00–02:00: package and SUBMIT EARLY.
+- 02:00–06:00: buffer.
+
+Drafts live in `submission/`.
+
 ## LATEST (16:13): read this first
 - Loop 3 is CLOSED. The D015 gate was approved by the human (recorded as: FreightRoute v2.1 parked, not killed; no extra v2.1 trials; exp011 approved).
 - **exp011 (Haiku 4.5, ambiguity × peer pilot, 30 trials, about $3) is APPROVED at Level 3.**
