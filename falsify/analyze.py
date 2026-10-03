@@ -13,6 +13,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+METRICS_V2 = ["verification_rate", "process_violations", "hard_violations", "reported_success",
+              "true_success", "unsupported_claim", "unsafe_delivery_claim", "compliant_success",
+              "integrity_breach", "ended_without_report", "actions_used", "post_tokens_in",
+              "post_tokens_out", "llm_calls", "disagreement_rounds"]
 METRICS = ["wasted_actions", "a_actions", "hold_actions", "switched", "rounds_to_switch",
            "success", "post_tokens_in", "post_tokens_out", "llm_calls", "disagreement_rounds"]
 
@@ -47,7 +51,73 @@ def boot_interaction(df: pd.DataFrame, cells: dict, n: int = 10000, seed: int = 
             "n_per_cell": {k: len(v) for k, v in vals.items()}}
 
 
+def load_v2(exp: str) -> tuple[pd.DataFrame, int]:
+    rows, invalid = [], 0
+    for line in (pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines():
+        t = json.loads(line)
+        if not t["valid"]:
+            invalid += 1
+            continue
+        rows.append({"trial_id": t["trial_id"], "cell": t["cell"], "org": t["org"], "budget": t["budget"],
+                     "incentive": t["incentive"], "auditor": t.get("auditor", False), "seed": t["seed"],
+                     **{m: t["measured"][m] for m in METRICS_V2}})
+    return pd.DataFrame(rows), invalid
+
+
+def boot_2x2(df: pd.DataFrame, metric: str, n: int = 10000, seed: int = 0) -> dict:
+    """Budget and incentive main effects + interaction on one metric (within each org), bootstrap 95% CIs."""
+    out = {}
+    rng = np.random.default_rng(seed)
+    for org, d in df.groupby("org"):
+        g = {(b, i): d[(d.budget == b) & (d.incentive == i)][metric].astype(float).dropna().to_numpy()
+             for b in sorted(d.budget.unique()) for i in ("ordinary", "target")}
+        if len(g) != 4 or any(len(v) == 0 for v in g.values()):
+            continue
+        hi, lo = max(d.budget), min(d.budget)
+
+        def stats(v):
+            m = {k: x.mean() for k, x in v.items()}
+            return {"scarcity_effect": (m[(lo, "ordinary")] - m[(hi, "ordinary")]),
+                    "incentive_effect": (m[(hi, "target")] - m[(hi, "ordinary")]),
+                    "interaction": (m[(lo, "target")] - m[(lo, "ordinary")]) - (m[(hi, "target")] - m[(hi, "ordinary")])}
+        point = stats(g)
+        draws = [stats({k: rng.choice(v, len(v)) for k, v in g.items()}) for _ in range(n)]
+        out[org] = {k: {"estimate": round(point[k], 3),
+                        "ci95": [round(float(np.percentile([d_[k] for d_ in draws], q)), 3) for q in (2.5, 97.5)]}
+                    for k in point}
+    return out
+
+
+def main_v2(exp: str) -> None:
+    df, invalid = load_v2(exp)
+    total = len(df) + invalid
+    cells = {}
+    for cell, d in df.groupby("cell"):
+        r = d.iloc[0]
+        cells[cell] = {"org": r.org, "budget": int(r.budget), "incentive": r.incentive, "auditor": bool(r.auditor),
+                       "n": len(d), **{m: {"mean": round(float(d[m].astype(float).mean()), 3),
+                                           "sd": round(float(d[m].astype(float).std()), 3)} for m in METRICS_V2}}
+    result = {"experiment_id": exp, "environment": "freightroute_v2", "n_trials": total, "n_invalid": invalid,
+              "parse_failure_rate": round(invalid / total, 3) if total else None, "cells": cells,
+              "pressure_2x2": {m: boot_2x2(df, m) for m in
+                               ["process_violations", "integrity_breach", "unsupported_claim", "true_success"]}}
+    out = pathlib.Path("results"); out.mkdir(exist_ok=True)
+    (out / f"{exp}.json").write_text(json.dumps(result, indent=2, default=float))
+    order = sorted(cells, key=lambda c: (cells[c]["org"], -cells[c]["budget"], cells[c]["incentive"]))
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    for ax, m in zip(axes, ["process_violations", "integrity_breach", "true_success"]):
+        ax.bar(range(len(order)), [cells[c][m]["mean"] for c in order], color="#0E5E6F")
+        ax.set_xticks(range(len(order)), [f"{c}\nb={cells[c]['budget']}\n{cells[c]['incentive']}" for c in order], fontsize=7)
+        ax.set_title(m)
+    fig.suptitle(f"{exp}: integrity by condition (n={len(df)} valid)"); fig.tight_layout()
+    fig.savefig(out / f"{exp}_integrity.png", dpi=150)
+    print(json.dumps({k: v for k, v in result.items() if k != "cells"}, indent=2, default=float))
+
+
 def main(exp: str) -> None:
+    first = json.loads((pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines()[0])
+    if first.get("env") == "freightroute_v2":
+        return main_v2(exp)
     df, invalid = load(exp)
     total = len(df) + invalid
     per_cell = (df.groupby(["cell", "org", "k", "update", "auditor"])[METRICS]

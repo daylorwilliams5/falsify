@@ -184,3 +184,67 @@ def measure(rounds, sc, env, tok_in, tok_out, calls) -> dict:
         "post_tokens_in": tok_in, "post_tokens_out": tok_out, "llm_calls": calls,
         "disagreement_rounds": sum(1 for r in rounds if r["disagreement"]),
     }
+
+
+# ---------- FreightRoute v2: process integrity under pressure ----------
+
+from .env2 import ACTIONS as ACTIONS_V2, EnvState2, make_scenario2  # noqa: E402
+
+ACTION_V2 = {"type": "string", "enum": ACTIONS_V2}
+SCHEMAS_V2 = {
+    **SCHEMAS,
+    "executor": _schema({"action": ACTION_V2}),
+    "single": _schema({"evidence_summary": {"type": "string"}, "plan_route": ROUTE,
+                       "action": ACTION_V2, "recommendation": REC}),
+}
+
+
+def run_trial_v2(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: str, exp_id: str) -> dict:
+    sc = make_scenario2(seed, cell["budget"], cell["incentive"], env_cfg.get("segments", 4))
+    env = EnvState2(sc)
+    task = sc.task_text()
+    org = cell["org"]
+    log: list[tuple[str, str]] = [("ENV", "Operation begins. " + env.status_line())]
+    trial = {"trial_id": f"{exp_id}-{cell['cell']}-{seed:03d}", "experiment_id": exp_id, "env": "freightroute_v2",
+             "spec_hash": spec_hash, "prompt_hash": prompt_hash(), "seed": seed,
+             "model": model_cfg["name"], "temperature": model_cfg["temperature"], **cell,
+             "scenario": {"weight": sc.weight, "a_limits": sc.limits["A"], "bad_index": sc.bad_index,
+                          "budget": sc.budget, "a_listed_first": sc.a_listed_first},
+             "valid": True}
+    rounds, tok_in, tok_out, calls = [], 0, 0, 0
+    try:
+        if cell.get("auditor"):
+            r = call_ollama(model_cfg["name"], [
+                {"role": "system", "content": system_prompt("auditor", task)},
+                {"role": "user", "content": env.status_line() + " The team is about to begin."}],
+                SCHEMAS_V2["auditor"], seed * 100 + 99, model_cfg["temperature"])
+            tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
+            log.append(("independent auditor", json.dumps(r["output"])))
+            trial["auditor_output"] = r["output"]
+        rnd = 0
+        while env.remaining() > 0 and env.ended is None:
+            rnd += 1
+            outs = {}
+            roles = ["single"] if org == "single" else ROLES
+            for i, role in enumerate(roles):
+                turn = f"Round {rnd}. Your turn" + ("." if org == "single" else f" as {role.capitalize()}.")
+                r = call_ollama(model_cfg["name"], build_messages(role, task, log, turn), SCHEMAS_V2[role],
+                                seed * 1000 + rnd * 10 + i, model_cfg["temperature"])
+                tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
+                outs[role] = r["output"]
+                log.append((role, json.dumps(r["output"])))
+            action = outs["single" if org == "single" else "executor"]["action"]
+            result = env.step(action)
+            recs = [o["recommendation"] for o in outs.values() if "recommendation" in o]
+            rounds.append({"round": rnd, "agent_outputs": outs, "action": action, "env_result": result,
+                           "disagreement": len(set(recs)) > 1 if org != "single" else None})
+            log.append(("ENV", result + " " + env.status_line()))
+    except ParseFailure as e:
+        trial["valid"] = False
+        trial["parse_failure_raw"] = str(e)[:500]
+    trial["rounds"] = rounds
+    trial["env_events"] = env.events
+    trial["measured"] = {**env.measure(), "post_tokens_in": tok_in, "post_tokens_out": tok_out,
+                         "llm_calls": calls,
+                         "disagreement_rounds": sum(1 for r in rounds if r["disagreement"])}
+    return trial

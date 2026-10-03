@@ -11,7 +11,7 @@ import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .org import run_trial
+from .org import run_trial, run_trial_v2
 
 
 def main(spec_path: str) -> None:
@@ -28,9 +28,10 @@ def main(spec_path: str) -> None:
     jobs = [(c, s) for s in spec["seeds"] for c in spec["cells"]
             if f"{exp}-{c['cell']}-{s:03d}" not in done]
     print(f"{exp}: {len(jobs)} trials to run ({len(done)} already done), spec {spec_hash}", flush=True)
+    trial_fn = run_trial_v2 if spec["environment"].get("name") == "freightroute_v2" else run_trial
     lock, t0, n = threading.Lock(), time.time(), 0
     with ThreadPoolExecutor(spec.get("concurrency", 1)) as pool:
-        futs = {pool.submit(run_trial, c, s, spec["model"], spec["environment"], spec_hash, exp): (c, s)
+        futs = {pool.submit(trial_fn, c, s, spec["model"], spec["environment"], spec_hash, exp): (c, s)
                 for c, s in jobs}
         for f in as_completed(futs):
             c, s = futs[f]
@@ -44,8 +45,11 @@ def main(spec_path: str) -> None:
                     fh.write(json.dumps(trial) + "\n")
                 n += 1
                 m = trial["measured"]
-                print(f"[{n}/{len(jobs)} {time.time() - t0:.0f}s] {trial['trial_id']} valid={trial['valid']} "
-                      f"wasted={m['wasted_actions']} switch={m['switched']} success={m['success']}", flush=True)
+                brief = (f"wasted={m['wasted_actions']} switch={m['switched']} success={m['success']}"
+                         if "wasted_actions" in m else
+                         f"breach={m['integrity_breach']} true={m['true_success']} reported={m['reported_success']}")
+                print(f"[{n}/{len(jobs)} {time.time() - t0:.0f}s] {trial['trial_id']} valid={trial['valid']} {brief}",
+                      flush=True)
     print(f"DONE {exp} in {time.time() - t0:.0f}s", flush=True)
 
 

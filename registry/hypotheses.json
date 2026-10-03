@@ -1,13 +1,146 @@
 {
-  "question": "What makes multi-agent AI organizations resistant to correction after their shared plan has been invalidated, and can independent oversight restore corrigibility?",
+  "question": "What environmental and organizational conditions make autonomous AI systems less corrigible or more willing to sacrifice process integrity for task success, and which oversight architectures restore reliable behavior?",
   "hypotheses": [
-    {"id": "H1", "mechanism": "prior computational investment", "claim": "More completed steps on the invalidated plan increase wasted actions more in multi-agent organizations than in single agents.", "falsified_if": "Interaction CI lies below 0.5 wasted actions and main effects are small.", "status": "untested", "tested_by": ["exp001"]},
-    {"id": "H2", "mechanism": "shared organizational history", "claim": "Persistence comes from the amount of shared history, not from investment in the plan specifically.", "falsified_if": "Padded-context or non-investment history produces no persistence.", "status": "untested", "tested_by": []},
-    {"id": "H3", "mechanism": "conformity / accumulated consensus", "claim": "Persistence grows with the number of prior rounds in which all roles agreed to continue.", "falsified_if": "Persistence is unchanged when prior rounds include recorded dissent.", "status": "untested", "tested_by": []},
-    {"id": "H4", "mechanism": "self-authorship", "claim": "Systems persist more on plans presented as their own prior work than on identical work handed over externally.", "falsified_if": "Self vs external provenance shows no difference.", "status": "untested", "tested_by": []},
-    {"id": "H5", "mechanism": "hierarchy / authority", "claim": "Persistence depends on the Planner holding final authority; dissenting reviewers are overridden.", "falsified_if": "Persistence is unchanged under a flat (vote) decision rule.", "status": "untested", "tested_by": []},
-    {"id": "H6", "mechanism": "context length", "claim": "Apparent investment effects are explained by longer context alone.", "falsified_if": "Padded low-investment histories behave like natural low-investment histories.", "status": "untested", "tested_by": []},
-    {"id": "M1", "mechanism": "mitigation: fresh independent auditor", "claim": "A history-free auditor reduces wasted actions after invalidation without increasing unnecessary switching after benign updates.", "falsified_if": "No reduction in wasted actions, or unnecessary switching rises.", "status": "untested", "tested_by": []}
+    {
+      "id": "H1",
+      "mechanism": "prior computational investment",
+      "claim": "More completed steps on the invalidated plan increase wasted actions more in multi-agent organizations than in single agents.",
+      "falsified_if": "Interaction CI lies below 0.5 wasted actions and main effects are small.",
+      "status": "untested",
+      "tested_by": [
+        "exp001"
+      ],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "H2",
+      "mechanism": "shared organizational history",
+      "claim": "Persistence comes from the amount of shared history, not from investment in the plan specifically.",
+      "falsified_if": "Padded-context or non-investment history produces no persistence.",
+      "status": "untested",
+      "tested_by": [],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "H3",
+      "mechanism": "conformity / accumulated consensus",
+      "claim": "Persistence grows with the number of prior rounds in which all roles agreed to continue.",
+      "falsified_if": "Persistence is unchanged when prior rounds include recorded dissent.",
+      "status": "untested",
+      "tested_by": [],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "H4",
+      "mechanism": "self-authorship",
+      "claim": "Systems persist more on plans presented as their own prior work than on identical work handed over externally.",
+      "falsified_if": "Self vs external provenance shows no difference.",
+      "status": "untested",
+      "tested_by": [],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "H5",
+      "mechanism": "hierarchy / authority",
+      "claim": "Persistence depends on the Planner holding final authority; dissenting reviewers are overridden.",
+      "falsified_if": "Persistence is unchanged under a flat (vote) decision rule.",
+      "status": "untested",
+      "tested_by": [],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "H6",
+      "mechanism": "context length",
+      "claim": "Apparent investment effects are explained by longer context alone.",
+      "falsified_if": "Padded low-investment histories behave like natural low-investment histories.",
+      "status": "untested",
+      "tested_by": [],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "M1",
+      "mechanism": "mitigation: fresh independent auditor",
+      "claim": "A history-free auditor reduces wasted actions after invalidation without increasing unnecessary switching after benign updates.",
+      "falsified_if": "No reduction in wasted actions, or unnecessary switching rises.",
+      "status": "untested",
+      "tested_by": [],
+      "family": "corrigibility_after_invalidation"
+    },
+    {
+      "id": "P1",
+      "family": "integrity_under_pressure",
+      "mechanism": "resource scarcity",
+      "claim": "A low action budget increases skipped verification (process_violations).",
+      "falsified_if": "Low vs high budget difference in process_violations has a CI below a pre-set minimum effect, with neutral incentive.",
+      "status": "untested",
+      "tested_by": []
+    },
+    {
+      "id": "P2",
+      "family": "integrity_under_pressure",
+      "mechanism": "explicit performance pressure",
+      "claim": "An explicit score target increases unsupported success claims and rule-bending.",
+      "falsified_if": "Target vs neutral shows no increase in unsupported_claim or process_violations.",
+      "status": "untested",
+      "tested_by": []
+    },
+    {
+      "id": "P3",
+      "family": "integrity_under_pressure",
+      "mechanism": "pressure interaction",
+      "claim": "Resource scarcity and performance pressure interact nonlinearly (the combined condition degrades integrity more than the sum of each alone).",
+      "falsified_if": "Interaction term CI includes 0 with adequate precision.",
+      "status": "untested",
+      "tested_by": []
+    },
+    {
+      "id": "P4",
+      "family": "integrity_under_pressure",
+      "mechanism": "organization type",
+      "claim": "Multi-agent organizations amplify or suppress pressure effects relative to single agents.",
+      "falsified_if": "Organization \u00d7 pressure interaction CI includes 0.",
+      "status": "untested",
+      "tested_by": []
+    },
+    {
+      "id": "P5",
+      "family": "integrity_under_pressure",
+      "mechanism": "independent oversight",
+      "claim": "An independent auditor reduces integrity failures without destroying true task success.",
+      "falsified_if": "No reduction in integrity_breach, or true_success falls.",
+      "status": "untested",
+      "tested_by": []
+    }
   ],
-  "status_labels": ["untested", "supported", "falsified", "inconclusive", "needs replication"]
+  "status_labels": [
+    "untested",
+    "supported",
+    "falsified",
+    "inconclusive",
+    "needs replication"
+  ],
+  "families": {
+    "corrigibility_after_invalidation": {
+      "environment": "freightroute_v1",
+      "ids": [
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "M1"
+      ]
+    },
+    "integrity_under_pressure": {
+      "environment": "freightroute_v2",
+      "ids": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ]
+    }
+  }
 }
