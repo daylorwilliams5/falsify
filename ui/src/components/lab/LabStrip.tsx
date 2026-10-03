@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { LabState } from '../../data/types';
+import type { Budget, LabState, Mandate } from '../../data/types';
 import { elapsedSince } from '../../data/view';
 
 export function LabStatus({ roles }: { roles: LabState['roles'] }) {
@@ -15,16 +15,19 @@ export function LabStatus({ roles }: { roles: LabState['roles'] }) {
   );
 }
 
-export function BudgetStrip({ b }: { b: LabState['budget'] }) {
+export function BudgetStrip({ b, mandate, active }: { b: Budget; mandate: Mandate; active: LabState['active_experiment'] }) {
   const [now, setNow] = useState(Date.now());
   useEffect(() => { const i = setInterval(() => setNow(Date.now()), 30_000); return () => clearInterval(i); }, []);
-  const k = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n));
+  // Research clock starts where the budget report says it did.
+  const started = new Date(new Date(b.as_of).getTime() - b.elapsed_research_minutes * 60000).toISOString();
+  const maxTrials = mandate.budget.max_trials_per_experiment_level1;
+  const pending = active.done === active.total && !b.experiments[active.id]?.finished;
   const cells = [
-    ['Experiments completed', String(b.experiments_completed), `${b.experiments_running} running`],
-    ['Model calls used', `${b.model_calls_estimated ? '≈' : ''}${k(b.model_calls_used)}`, 'local model, $0 external'],
-    ['Compute remaining', `${k(b.calls_remaining_current)} calls`, `of ${k(b.calls_budget_current)} on current run`],
-    ['Research time', elapsedSince(b.research_started, now), 'since loop 1 opened'],
-    ['Hypotheses', `${b.hypotheses_eliminated} / ${b.hypotheses_unresolved}`, 'eliminated / unresolved'],
+    ['Experiments completed', String(b.experiments_completed), pending ? '1 awaiting analysis' : `${active.id.split('_')[0]} running`],
+    ['Model calls used', b.model_calls_used.toLocaleString(), `local model · $${b.external_spend_usd.toFixed(0)} external`],
+    ['Compute remaining', `${maxTrials - active.done} trials`, `of ${maxTrials} Level 1 budget, ${active.id.split('_')[0]}`],
+    ['Research time', elapsedSince(started, now), 'since loop 1 opened'],
+    ['Hypotheses', `${b.hypotheses_eliminated.length} / ${b.unresolved.length}`, 'eliminated / unresolved'],
   ];
   return (
     <div className="strip">

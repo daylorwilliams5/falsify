@@ -1,0 +1,69 @@
+{
+  "as_of": "2026-10-03T12:10:18",
+  "elapsed_research_minutes": 64.6,
+  "external_spend_usd": 0.0,
+  "external_spend_cap_without_human_usd": 0,
+  "subject_model": {
+    "provider": "ollama",
+    "name": "qwen3:8b"
+  },
+  "model_calls_used": 466,
+  "subject_tokens_in": 749343,
+  "subject_tokens_out": 30327,
+  "trials_run": 45,
+  "trials_invalid": 0,
+  "experiments": {
+    "exp001_pilot": {
+      "trials": 40,
+      "finished": true
+    },
+    "exp009_v2_floor_probe": {
+      "trials": 5,
+      "finished": false
+    }
+  },
+  "experiments_completed": 1,
+  "hypotheses_by_status": {
+    "inconclusive": [
+      "H1"
+    ],
+    "untested": [
+      "H2",
+      "H3",
+      "H4",
+      "H5",
+      "H6",
+      "M1",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ]
+  },
+  "hypotheses_eliminated": [],
+  "unresolved": [
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "M1",
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "H1"
+  ],
+  "decisions": {
+    "total": 2,
+    "by_level": {
+      "1": 2,
+      "2": 0,
+      "3": 0
+    },
+    "human_escalations": 0,
+    "human_overrides": 0
+  }
+}

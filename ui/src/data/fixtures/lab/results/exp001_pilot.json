@@ -4,5 +4,10 @@
   "headline": "Prior investment did not produce a detectable persistence effect.",
   "status": "INCONCLUSIVE",
   "status_reason": "Floor effect detected",
-  "invalidating_trials_wasted_actions": [0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0]
+  "invalidating_trials": 20,
+  "corrected_immediately": 18,
+  "persistence_events": [
+    { "trial": "A-005", "seed": 5, "wasted_actions": 4 },
+    { "trial": "C-005", "seed": 5, "wasted_actions": 4 }
+  ]
 }

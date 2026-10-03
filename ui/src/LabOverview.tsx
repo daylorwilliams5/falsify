@@ -7,7 +7,8 @@ import { BudgetStrip, LabStatus } from './components/lab/LabStrip';
 import { EscalationCard, OverrideControl } from './components/lab/HumanControl';
 
 export function LabOverview({ lab }: { lab: LabView }) {
-  const { mandate, finding, decision, review, state } = lab;
+  const { mandate, finding, decisions, budget, state } = lab;
+  const decision = decisions[decisions.length - 1];
   const x = state.active_experiment;
   return (
     <div className="lab">
@@ -21,12 +22,12 @@ export function LabOverview({ lab }: { lab: LabView }) {
       <div className="objects">
         <FindingBlock f={finding} />
         <DecisionBlock d={decision} />
-        <ReviewBlock r={review} decisionId={decision.id} />
+        <ReviewBlock d={decision} auditing={state.reviewer.auditing === decision.id} />
       </div>
 
       <section className="lab-sec">
         <div className="label">Autonomous scientific loop</div>
-        <LoopTimeline phases={phasesAt(state.loop_stage, `${x.id} running · ${x.done} of ${x.total} trials`, LAB_PHASES)} />
+        <LoopTimeline phases={phasesAt(state.loop_stage, x.done === x.total ? `${x.id} complete · ${x.total} of ${x.total} trials · readout pending` : `${x.id} running · ${x.done} of ${x.total} trials`, LAB_PHASES)} />
       </section>
 
       <section className="lab-sec lab-sec-tight">
@@ -36,7 +37,7 @@ export function LabOverview({ lab }: { lab: LabView }) {
 
       <section className="lab-sec lab-sec-tight">
         <div className="label">Research budget</div>
-        <BudgetStrip b={state.budget} />
+        <BudgetStrip b={budget} mandate={mandate} active={x} />
       </section>
 
       <OverrideControl />

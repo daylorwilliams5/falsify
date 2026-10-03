@@ -5,7 +5,7 @@ export function useRoute(): string[] {
   const read = () => window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   const [route, setRoute] = useState(read);
   useEffect(() => {
-    const on = () => { setRoute(read()); document.querySelector('.main')?.scrollTo(0, 0); };
+    const on = () => { setRoute(read()); window.scrollTo(0, 0); };
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
   }, []);

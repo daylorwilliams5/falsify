@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp012_v1_step0_baseline",
+  "tests": ["H1", "H11"],
+  "scope_note": "The matched partner run for specs/candidates/exp011_v1_salience2.json: byte-identical cells, seeds and model, differing ONLY in environment.salience_step (0 here, 2 there). Run as a pair, the two specs give the contemporaneous salience contrast that one spec cannot contain, because falsify/org.py:104-107 reads salience_step from spec.environment and not from the cell.",
+  "two_jobs": [
+    "(1) REPRODUCIBILITY CHECK, free: cells S0A/S0B/S0C/S0D/S0B0/S0D0 at seeds 1-5 are an exact re-run of exp001_pilot cells A/B/C/D/B0/D0 (same scenario constructor, same per-call seed formula seed*1000+rnd*10+i, same temperature). The measured outcomes should reproduce trial-for-trial. If they do not, seeded sampling does not control the subject's behaviour and every result in the lab's record is less replicable than it has been reported to be. This is a go/no-go on the whole v1 data record and costs nothing extra.",
+    "(2) BASE RATE of the non-zero a_actions event at n = 60 instead of n = 20. The entire v1 phenomenon to date is 2 trials on ONE seed (critiques/exp001_pilot_skeptic.md §1.1). This measures it with a Wilson width of roughly +/-0.08 instead of +/-0.14, and splits it by the binding classifier."
+  ],
+  "primary_outcome": "nonzero_a_actions_rate over the four pooled invalidating cells, n = 60, with a Wilson 95% interval. Identical definition to exp011 so the two runs are directly differenceable.",
+  "decision_rule": {
+    "note": "Fixed and hashed BEFORE the first trial.",
+    "paired_contrast": "If BOTH exp012 and exp011 are run, the headline is the difference in nonzero_a_actions_rate (step 2 minus step 0), n = 60 per arm, with a 95% Newcombe interval. Powered for 0.10 -> 0.30 at about 80%; NOT powered for anything smaller, and no smaller difference may be interpreted.",
+    "reproducibility": "If the seeds 1-5 re-run does not reproduce exp001_pilot's measured outcomes trial-for-trial, write the discrepancy to timeline.jsonl, and every subsequent v1 claim carries a stated sampling-nondeterminism limitation. This is recorded as a fact about the instrument, never used to revise an existing result.",
+    "standalone": "If exp012 is run WITHOUT exp011, it licenses only a precision statement about the step-0 base rate and the reproducibility fact. It does NOT license retiring v1, because the preregistered §8 ladder would be unexecuted."
+  },
+  "secondary_outcomes": "Identical to exp011: the same preregistered binding classifier (DETECTION_FAILURE / MISBOUND / COMPLIANT_READING) with the same regexes and the same <0.80-agreement invalidation rule, plus the PROTOCOL §5 set. Same org x k descriptive-only restriction.",
+  "known_limitations": [
+    "A null here is the expected result (18/20 pilot trials at zero) and on its own changes nothing. Its value is as the contemporaneous control arm for exp011 and as the reproducibility check.",
+    "Run as a pair with exp011 this is 180 trials, which exceeds the level-1 per-experiment cap of 120 only if the pair is treated as ONE experiment. Splitting a single scientific question into two specs to stay under a budget cap is budget-gaming; see critiques/loop2_design.md for the recommendation that the PI declare the pair as one experiment and take the level-2 reviewer PASS."
+  ],
+  "invalid_trial_budget": "Per §A: rerun once at seed + 10000; >10% invalid in a cell pauses the run.",
+  "cost_estimate": "90 trials; ~900 model calls. ~38 min at the empirical 10.2 s/call/slot anchor (exp001_pilot: 400 calls in 1017 s at concurrency 4); ~19 min at 5 s/call.",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8, "invalid_ratio": 1.4, "salience_step": 0},
+  "cells": [
+    {"cell": "S0A",  "org": "single", "k": 1,  "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "S0B",  "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "S0C",  "org": "multi",  "k": 1,  "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "S0D",  "org": "multi",  "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "S0B0", "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false},
+    {"cell": "S0D0", "org": "multi",  "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "concurrency": 4
+}

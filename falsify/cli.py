@@ -13,6 +13,9 @@ Governance (lab/mandate.json, specs/AUTHORITY.md)
   falsify review DID --verdict PASS|PASS_WITH_NOTE|BLOCK|ESCALATE --findings TEXT
                  [--preregistered yes|no|n/a] [--outcomes-unchanged ...] [--exploratory-labeled ...] [--novelty-ok ...]
   falsify budget                          research budget dashboard -> results/budget.json
+  falsify timing EXP                      machine-derived timing phase (1 before completion / 2 after completion,
+                                          before outcome inspection / 3 after outcome inspection)
+  falsify disposition LOOP --decisions D1,D2 --note TEXT   end-of-loop batch of NON_MATERIAL review notes
 
 Research pods (pods/<stage>/<loop>/: status.json, inputs.json, subagent_outputs/, synthesis.json)
   falsify pod init STAGE LOOP --lead NAME --members a,b --inputs FILE.json|TEXT
@@ -175,6 +178,45 @@ def required_level(spec_path: str) -> tuple[int, list[str]]:
     return level, reasons
 
 
+# ---------------- timing (REVIEW_POLICY: timing claims) ----------------
+
+TIMING_PHASES = {1: "before run completion", 2: "after run completion, before outcome inspection",
+                 3: "after outcome inspection"}
+
+
+def experiment_timing(exp: str) -> dict | None:
+    """Machine-derived timing facts for an experiment, from the run log and the timeline."""
+    logf = ROOT / "data" / f"{exp}.log"
+    trials = ROOT / "data" / "trials" / f"{exp}.jsonl"
+    if not logf.exists() and not trials.exists():
+        return None
+    events = [json.loads(l) for l in TIMELINE.read_text().splitlines() if l.strip()] if TIMELINE.exists() else []
+    started = next((e["ts"] for e in events if e.get("stage") == "experiment_started" and exp in e.get("text", "")), None)
+    done = logf.exists() and any(l.startswith("DONE") for l in logf.read_text().splitlines())
+    finished_at = None
+    if done:
+        finished_at = datetime.datetime.fromtimestamp(trials.stat().st_mtime).isoformat(timespec="seconds") \
+            if trials.exists() else None
+    inspected = [e["ts"] for e in events if e.get("stage") in ("analysis_written", "pod_synthesis")
+                 and exp in json.dumps(e)]
+    first_inspection = min(inspected) if inspected else None
+    phase = 1 if not done else (3 if first_inspection else 2)
+    return {"experiment": exp, "run_started": started, "run_finished": done, "last_trial_written": finished_at,
+            "first_outcome_inspection_logged": first_inspection, "phase": phase, "phase_label": TIMING_PHASES[phase]}
+
+
+def timing_for(cites: list[str], spec: str | None) -> list[dict]:
+    exps = set()
+    for c in list(cites or []) + ([spec] if spec else []):
+        stem = pathlib.Path(str(c)).stem
+        if (ROOT / "data" / "trials" / f"{stem}.jsonl").exists() or (ROOT / "data" / f"{stem}.log").exists():
+            exps.add(stem)
+        for f in (ROOT / "data" / "trials").glob("*.jsonl") if (ROOT / "data" / "trials").exists() else []:
+            if f.stem in str(c):
+                exps.add(f.stem)
+    return [t for t in (experiment_timing(e) for e in sorted(exps)) if t]
+
+
 # ---------------- decision records ----------------
 
 def load_decision(did: str) -> dict:
@@ -199,6 +241,9 @@ def authorize(d: dict, action: str) -> None:
     latest = reviews[-1]["verdict"] if reviews else None
     if latest in ("BLOCK", "FAIL"):
         raise AuthorityError(f"REFUSED: {d['id']} was BLOCKED by the methodology reviewer")
+    if latest == "CONCERNS" and (reviews[-1].get("material_concerns") or 0) > 0:
+        raise AuthorityError(f"REFUSED: {d['id']} has {reviews[-1]['material_concerns']} MATERIAL concern(s); "
+                             f"resolve them before the affected action proceeds")
     if d["level"] >= 2 and latest not in ALLOWING:
         raise AuthorityError(f"REFUSED: {d['id']} is level {d['level']}; needs a methodology review PASS "
                              f"(latest: {latest or 'none'})")
@@ -223,7 +268,8 @@ def cmd_level(a):
 def cmd_decide(a):
     d = {"id": next_id(), "ts": now(), "by": "PI", "level": a.level, "action": a.action,
          "decision": a.decision, "reason": a.reason, "confidence": a.confidence,
-         "alternatives_rejected": a.alternatives, "cites": a.cites or [], "reviews": []}
+         "alternatives_rejected": a.alternatives, "cites": a.cites or [], "reviews": [],
+         "timing_at_decision": timing_for(a.cites or [], a.spec)}
     if a.spec:
         spec = rel(a.spec)
         req, why = required_level(spec)
@@ -260,7 +306,12 @@ def auto_checks(d: dict) -> dict:
 
 def cmd_review(a):
     d = load_decision(a.did)
+    if a.verdict in ("CONCERNS", "PASS_WITH_NOTE") and a.material is None:
+        raise AuthorityError("REFUSED: label materiality: --material N (count of MATERIAL concerns; 0 if all NON_MATERIAL)")
+    if a.verdict == "PASS_WITH_NOTE" and a.material:
+        raise AuthorityError("REFUSED: PASS_WITH_NOTE cannot carry MATERIAL concerns; use CONCERNS or BLOCK")
     review = {"ts": now(), "by": "methodology_reviewer", "verdict": a.verdict, "findings": a.findings,
+              "material_concerns": a.material,
               "auto_checks": auto_checks(d),
               "attested": {"preregistered": a.preregistered, "primary_outcomes_unchanged": a.outcomes_unchanged,
                            "exploratory_labeled": a.exploratory_labeled, "novelty_language_ok": a.novelty_ok}}
@@ -270,7 +321,8 @@ def cmd_review(a):
     save_decision(d)
     failed = [k for k, v in review["auto_checks"].items() if v is False]
     log_event("methodology_reviewer", "methodology_review",
-              f"{a.did}: {a.verdict}. {a.findings}" + (f" | AUTO-CHECK FAILURES: {failed}" if failed else ""),
+              f"{a.did}: {a.verdict}" + (f" ({a.material} MATERIAL)" if a.material is not None else "") +
+              f". {a.findings}" + (f" | AUTO-CHECK FAILURES: {failed}" if failed else ""),
               cites=[a.did], decision_id=a.did, verdict=a.verdict, auto_checks=review["auto_checks"])
     print(json.dumps({"decision": a.did, "verdict": a.verdict, **review["auto_checks"],
                       **{k: v for k, v in review["attested"].items() if v is not None}}, indent=2))
@@ -291,6 +343,28 @@ def cmd_override(a):
     save_decision(d)
     log_event("human", "human_override", f"{a.did} OVERRIDDEN: {a.note}", cites=[a.did], decision_id=a.did)
     print(f"{a.did}: overridden")
+
+
+def cmd_disposition(a):
+    """End-of-loop batch disposition of NON_MATERIAL review concerns (one record, no per-concern decisions)."""
+    ids = [x for x in a.decisions.split(",") if x]
+    items = []
+    for did in ids:
+        d = load_decision(did)
+        for r in d.get("reviews", []):
+            if r["verdict"] in ("CONCERNS", "PASS_WITH_NOTE"):
+                items.append({"decision": did, "review_ts": r["ts"], "verdict": r["verdict"],
+                              "material_concerns": r.get("material_concerns"), "findings": r["findings"]})
+    rec = {"loop": a.loop, "ts": now(), "by": "PI", "note": a.note, "items": items}
+    DECISIONS.mkdir(exist_ok=True)
+    (DECISIONS / f"disposition_{a.loop}.json").write_text(json.dumps(rec, indent=2))
+    log_event("PI", "end_of_loop_disposition", f"{a.loop}: {len(items)} review notes dispositioned across {ids}. {a.note}",
+              cites=[f"decisions/disposition_{a.loop}.json", *ids])
+    print(f"disposition_{a.loop}: {len(items)} items")
+
+
+def cmd_timing(a):
+    print(json.dumps(experiment_timing(a.exp), indent=2))
 
 
 def cmd_decisions(a):
@@ -537,7 +611,11 @@ def main(argv=None):
     for flag, dest in (("--preregistered", "preregistered"), ("--outcomes-unchanged", "outcomes_unchanged"),
                        ("--exploratory-labeled", "exploratory_labeled"), ("--novelty-ok", "novelty_ok")):
         s.add_argument(flag, dest=dest, choices=["yes", "no", "n/a"])
+    s.add_argument("--material", type=int, help="number of MATERIAL concerns (required for CONCERNS / PASS_WITH_NOTE)")
     s.set_defaults(f=cmd_review)
+    s = sub.add_parser("disposition"); s.add_argument("loop"); s.add_argument("--decisions", required=True)
+    s.add_argument("--note", required=True); s.set_defaults(f=cmd_disposition)
+    s = sub.add_parser("timing"); s.add_argument("exp"); s.set_defaults(f=cmd_timing)
     s = sub.add_parser("budget"); s.set_defaults(f=cmd_budget)
     pod = sub.add_parser("pod").add_subparsers(required=True)
     s = pod.add_parser("init"); s.add_argument("stage"); s.add_argument("loop"); s.add_argument("--lead", required=True)

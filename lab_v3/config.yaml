@@ -86,6 +86,13 @@ prompt: |
     PI DECISION <DID> (Level N)
     Decision / Reason / Confidence / Alternatives rejected + why /
     Disagreements with specialists / Methodology review: <verdict>
+
+  REVIEW MATERIALITY AND TIMING (specs/REVIEW_POLICY.md). Level 1: PASS / PASS_WITH_NOTE proceed; CONCERNS proceed unless
+  the reviewer marked a concern MATERIAL; BLOCK/FAIL stop until corrected. Never create a decision solely to clear
+  NON_MATERIAL concerns: batch them once per loop with `bin/falsify disposition <loop> --decisions ... --note ...`.
+  Resolve MATERIAL concerns before the affected scientific action. Prioritize analysis of completed data over review
+  bookkeeping. TIMING: never write 'pre-data'; state the machine phase from `bin/falsify timing <exp>`:
+  (1) before run completion, (2) after completion before outcome inspection, (3) after outcome inspection.
 async: true
 cancellable: true
 timers: true

@@ -232,29 +232,45 @@ export interface Mandate {
   summary: string;
   research_objective: string;
   subject_model: { provider: string; name: string };
+  budget: { max_trials_per_experiment_level1: number; max_estimated_model_calls_per_experiment_level1: number; external_spend_usd_without_human: number };
 }
 
-// decisions/D*.json — written by the PI
+// decisions/D*.json — written by the PI. Fields marked NEW are what the PI and
+// reviewer should emit natively; legacy records are normalized in adapters/normalize.ts.
+export type Verdict = 'PASS' | 'PASS_WITH_NOTE' | 'BLOCK' | 'ESCALATE' | 'CONCERNS' | 'FAIL';
+
+export interface Review {
+  ts: string;
+  by: string;
+  verdict: Verdict;
+  findings: string;
+  highlights?: string[]; // NEW: 1–3 one-line findings
+  auto_checks?: Record<string, boolean>;
+  attested?: Record<string, boolean | null>;
+}
+
+export interface RejectedAlternative { label: string; reason: string }
+
 export interface PIDecision {
   id: string;
   ts: string;
+  by: string;
   level: AuthorityLevel;
   action: string;
+  confidence: number;
+  decision: string; // full decision text
+  reason: string; // full reasoning
+  summary?: string; // NEW: one sentence, what was decided
+  rationale?: string; // NEW: one sentence, why
+  alternatives_rejected: RejectedAlternative[]; // NEW structure (legacy: " | "-separated text)
+  responds_to?: string[]; // NEW: decisions this one corrects or discharges
+  resulting_action?: string; // NEW: what actually happened
+  human_intervention?: { by: string; ts: string; text: string };
+  cites: string[];
+  reviews: Review[];
   spec?: string;
   spec_hash?: string;
-  summary?: string; // one-sentence reason; falls back to truncated `reason`
-  reason?: string;
-  confidence: number;
-  rejected_summary?: string;
-  alternatives_rejected?: string;
-}
-
-// reviewer audit record for a decision
-export interface ReviewRecord {
-  decision: string;
-  status: 'AUDITING' | 'COMPLETE';
-  verdict: 'PASS' | 'CONCERNS' | 'FAIL' | null;
-  checks: { id: string; label: string; ok: boolean }[];
+  code_hashes?: Record<string, string>;
 }
 
 export interface Finding {
@@ -263,7 +279,22 @@ export interface Finding {
   headline: string;
   status: HypothesisStatus;
   status_reason: string;
-  invalidating_trials_wasted_actions: number[];
+  invalidating_trials: number;
+  corrected_immediately: number;
+  persistence_events: { trial: string; seed: number; wasted_actions: number }[];
+}
+
+// results/budget.json — written by `falsify budget`
+export interface Budget {
+  as_of: string;
+  elapsed_research_minutes: number;
+  external_spend_usd: number;
+  model_calls_used: number;
+  trials_run: number;
+  experiments: Record<string, { trials: number; finished: boolean }>;
+  experiments_completed: number;
+  hypotheses_eliminated: string[];
+  unresolved: string[];
 }
 
 export interface RoleStatus { role: string; state: 'RUNNING' | 'WAITING' | 'IDLE'; detail: string }
@@ -274,18 +305,8 @@ export interface LabState {
   status: 'RUNNING' | 'PAUSED';
   active_experiment: { id: string; done: number; total: number };
   loop_stage: string;
+  reviewer: { auditing: string | null };
   roles: RoleStatus[];
-  budget: {
-    experiments_completed: number;
-    experiments_running: number;
-    model_calls_used: number;
-    model_calls_estimated: boolean;
-    calls_remaining_current: number;
-    calls_budget_current: number;
-    research_started: string;
-    hypotheses_eliminated: number;
-    hypotheses_unresolved: number;
-  };
   escalations: Escalation[];
 }
 
@@ -293,7 +314,7 @@ export interface LabState {
 export interface LabView {
   mandate: Mandate;
   finding: Finding;
-  decision: PIDecision;
-  review: ReviewRecord | null;
+  decisions: PIDecision[]; // oldest first
+  budget: Budget;
   state: LabState;
 }

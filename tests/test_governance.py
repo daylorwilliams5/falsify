@@ -58,7 +58,7 @@ def test_new_manipulation_needs_level2_and_review(lab):
     did = decide(2, spec=spec)
     with pytest.raises(cli.AuthorityError, match="review PASS"):
         cli.main(["run", spec, "--decision", did])
-    cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "f"])
+    cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "f", "--material", "0"])
     with pytest.raises(cli.AuthorityError):
         cli.main(["run", spec, "--decision", did])
     cli.main(["review", did, "--verdict", "PASS", "--findings", "ok"])
@@ -116,7 +116,7 @@ def test_every_decision_and_review_is_on_the_timeline(lab):
 def test_pass_with_note_allows_level2_and_block_stops_anything(lab):
     root, started = lab
     did = decide(2, spec="specs/exp009_v2_floor_probe.json")
-    cli.main(["review", did, "--verdict", "pass with note", "--findings", "minor"])
+    cli.main(["review", did, "--verdict", "pass with note", "--findings", "minor", "--material", "0"])
     cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
     did1 = decide(1, spec="specs/exp009_v2_floor_probe.json")
     cli.main(["review", did1, "--verdict", "BLOCK", "--findings", "post-hoc outcome change"])
@@ -152,7 +152,7 @@ def test_review_records_automatic_checklist(lab):
 
 def test_legacy_verdicts_still_accepted(lab):
     did = decide(2, spec="specs/exp009_v2_floor_probe.json")
-    cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "x"])
+    cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "x", "--material", "0"])
     with pytest.raises(cli.AuthorityError):
         cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
 
@@ -244,3 +244,48 @@ def test_analyst_disagreement_blocks_strong_conclusions(pods):
     with pytest.raises(cli.AuthorityError, match="materially disagree"):
         cli.main(["conclude", "P1", "supported", "--evidence", "exp009_v2_floor_probe", "--note", "n", "--decision", did])
     cli.main(["conclude", "P1", "inconclusive", "--evidence", "exp009_v2_floor_probe", "--note", "n", "--decision", did])
+
+
+# ---- review materiality and timing phases ----
+def test_level1_concerns_block_only_when_material(lab):
+    root, started = lab
+    did = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "wording", "--material", "0"])
+    cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did])
+    did2 = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    cli.main(["review", did2, "--verdict", "CONCERNS", "--findings", "timing claim false", "--material", "1"])
+    with pytest.raises(cli.AuthorityError, match="MATERIAL"):
+        cli.main(["run", "specs/exp009_v2_floor_probe.json", "--decision", did2])
+    assert len(started) == 1
+
+
+def test_materiality_label_required(lab):
+    did = decide(1, spec="specs/exp009_v2_floor_probe.json")
+    with pytest.raises(cli.AuthorityError, match="label materiality"):
+        cli.main(["review", did, "--verdict", "CONCERNS", "--findings", "x"])
+    with pytest.raises(cli.AuthorityError, match="cannot carry MATERIAL"):
+        cli.main(["review", did, "--verdict", "PASS_WITH_NOTE", "--findings", "x", "--material", "1"])
+
+
+def test_disposition_batches_nonmaterial_notes(lab):
+    d1 = decide(1, action="other"); d2 = decide(1, action="other")
+    cli.main(["review", d1, "--verdict", "PASS_WITH_NOTE", "--findings", "typo", "--material", "0"])
+    cli.main(["review", d2, "--verdict", "CONCERNS", "--findings", "format", "--material", "0"])
+    cli.main(["disposition", "loop2", "--decisions", f"{d1},{d2}", "--note", "all non-material"])
+    rec = json.loads((cli.DECISIONS / "disposition_loop2.json").read_text())
+    assert len(rec["items"]) == 2
+
+
+def test_timing_phases_are_machine_derived(lab):
+    root, _ = lab
+    (root / "data" / "trials").mkdir(parents=True)
+    (root / "data" / "trials" / "expT.jsonl").write_text("{}\n")
+    (root / "data" / "expT.log").write_text("[1/2] running\n")
+    assert cli.experiment_timing("expT")["phase"] == 1
+    (root / "data" / "expT.log").write_text("DONE expT in 5s\n")
+    assert cli.experiment_timing("expT")["phase"] == 2
+    cli.log_event("statistician-tool", "analysis_written", "results/expT.json", cites=["expT"])
+    assert cli.experiment_timing("expT")["phase"] == 3
+    did = decide(1, action="other")
+    d = json.loads((cli.DECISIONS / f"{did}.json").read_text())
+    assert "timing_at_decision" in d

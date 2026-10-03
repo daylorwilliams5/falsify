@@ -1,15 +1,15 @@
 import type { LabDataSource } from '../source';
 import type {
-  AgentActivity, Escalation, Finding, LabState, Mandate, PIDecision, ReviewRecord, Experiment, ExperimentRun, Hypothesis, LabSnapshot,
+  AgentActivity, Budget, Escalation, Finding, LabState, Mandate, Experiment, ExperimentRun, Hypothesis, LabSnapshot,
   LiteratureSource, ProgramSummary, ResearchPlan, ResearchState, TimelineEvent,
 } from '../types';
 
 import mandate from '../fixtures/lab/mandate.json';
-import d001 from '../fixtures/lab/decisions/D001.json';
-import reviewD001 from '../fixtures/lab/reviews/D001.json';
+import budget from '../fixtures/lab/results/budget.json';
 import exp001 from '../fixtures/lab/results/exp001_pilot.json';
 import labState from '../fixtures/lab/lab_state.json';
 import escalationExample from '../fixtures/lab/escalation_example.json';
+import { normalizeDecision } from './normalize';
 import programs from '../fixtures/programs.json';
 import plans from '../fixtures/plans.json';
 import researchState from '../fixtures/corrigibility/research_state.json';
@@ -18,6 +18,12 @@ import experiments from '../fixtures/corrigibility/experiments.json';
 import agentStatus from '../fixtures/corrigibility/agent_status.json';
 import timeline from '../fixtures/corrigibility/timeline.json';
 import literature from '../fixtures/corrigibility/literature.json';
+
+// decisions/D*.json, loaded the way a directory listing would be.
+const decisionFiles = import.meta.glob('../fixtures/lab/decisions/D*.json', { eager: true, import: 'default' });
+const decisions = Object.values(decisionFiles)
+  .map((d) => normalizeDecision(d as Record<string, unknown>))
+  .sort((a, b) => a.ts.localeCompare(b.ts));
 
 const snapshots: Record<string, LabSnapshot> = {
   corrigibility: {
@@ -36,17 +42,15 @@ const planFixtures = plans as Record<string, ResearchPlan>;
 export const fixtureSource: LabDataSource = {
   name: 'fixtures',
   async loadLab() {
-    // Demo switches: ?review=pass shows a completed review, ?escalation=1 a Level 3 card.
+    // Demo switch: ?escalation=1 shows a Level 3 card.
     const q = new URLSearchParams(window.location.search);
-    const review = { ...(reviewD001 as ReviewRecord) };
-    if (q.get('review') === 'pass') Object.assign(review, { status: 'COMPLETE', verdict: 'PASS' });
     const state = { ...(labState as LabState) };
     if (q.get('escalation')) state.escalations = [escalationExample as Escalation];
     return {
       mandate: mandate as Mandate,
       finding: exp001 as Finding,
-      decision: d001 as PIDecision,
-      review,
+      decisions,
+      budget: budget as Budget,
       state,
     };
   },
