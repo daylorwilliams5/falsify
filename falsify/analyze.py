@@ -267,7 +267,8 @@ def main_e(exp: str) -> None:
 
 
 def main(exp: str) -> None:
-    first = json.loads((pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines()[0])
+    recs = [json.loads(l) for l in (pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines() if l.strip()]
+    first = next((r for r in recs if r.get("env")), recs[0])  # invalid/exception records carry no env field
     if first.get("env") == "freightroute_v2":
         return main_v2(exp)
     if first.get("env") == "freightroute_evidence":

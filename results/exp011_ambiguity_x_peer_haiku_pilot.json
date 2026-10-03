@@ -1,0 +1,163 @@
+{
+  "experiment_id": "exp011_ambiguity_x_peer_haiku_pilot",
+  "environment": "freightroute_evidence",
+  "analysis": "PREREGISTERED per specs/PREREG_E.md (co-primaries P-TEAM, P-BLIND); DESCRIPTIVE ONLY, n=5/cell; no hypothesis verdict, no rate claim (sec 5)",
+  "n_trials": 60,
+  "n_invalid": 30,
+  "check1_comprehension_gate_CLEAR_cells": {
+    "peer_clear": {
+      "P_TEAM": 0.0,
+      "P_BLIND": 0.0
+    },
+    "single_clear": {
+      "P_TEAM": 0.0,
+      "P_BLIND": 0.0
+    }
+  },
+  "check3_invalid_trials": 30,
+  "cells": {
+    "peer_clear": {
+      "org": "peer",
+      "evidence": "clear",
+      "n_trials": 5,
+      "P_TEAM_non_correction_team": 0.0,
+      "P_BLIND_non_correction_blind": 0.0,
+      "P_BLIND_n_agents": 20,
+      "blind_recommendation_distribution": {
+        "ADVANCE_B": 20
+      },
+      "first_response_distribution": {
+        "switch": 5
+      },
+      "check4_peer_rounds": 10,
+      "check4_all_four_blind_identical_rate": 1.0,
+      "check4_round_blind_patterns": {
+        "ADVANCE_B-ADVANCE_B-ADVANCE_B-ADVANCE_B": 10
+      },
+      "check5_tie_rate": 0.0,
+      "check5_all_hold_trials": 0
+    },
+    "peer_conflicting": {
+      "org": "peer",
+      "evidence": "conflicting",
+      "n_trials": 5,
+      "P_TEAM_non_correction_team": 0.0,
+      "P_BLIND_non_correction_blind": 0.0,
+      "P_BLIND_n_agents": 20,
+      "blind_recommendation_distribution": {
+        "INSPECT": 20
+      },
+      "first_response_distribution": {
+        "seek": 5
+      },
+      "check4_peer_rounds": 15,
+      "check4_all_four_blind_identical_rate": 1.0,
+      "check4_round_blind_patterns": {
+        "INSPECT-INSPECT-INSPECT-INSPECT": 5,
+        "ADVANCE_B-ADVANCE_B-ADVANCE_B-ADVANCE_B": 10
+      },
+      "check5_tie_rate": 0.0,
+      "check5_all_hold_trials": 0
+    },
+    "peer_probabilistic": {
+      "org": "peer",
+      "evidence": "probabilistic",
+      "n_trials": 5,
+      "P_TEAM_non_correction_team": 0.0,
+      "P_BLIND_non_correction_blind": 0.0,
+      "P_BLIND_n_agents": 20,
+      "blind_recommendation_distribution": {
+        "INSPECT": 20
+      },
+      "first_response_distribution": {
+        "seek": 5
+      },
+      "check4_peer_rounds": 15,
+      "check4_all_four_blind_identical_rate": 1.0,
+      "check4_round_blind_patterns": {
+        "INSPECT-INSPECT-INSPECT-INSPECT": 5,
+        "ADVANCE_B-ADVANCE_B-ADVANCE_B-ADVANCE_B": 10
+      },
+      "check5_tie_rate": 0.0,
+      "check5_all_hold_trials": 0
+    },
+    "single_clear": {
+      "org": "single",
+      "evidence": "clear",
+      "n_trials": 5,
+      "P_TEAM_non_correction_team": 0.0,
+      "P_BLIND_non_correction_blind": 0.0,
+      "P_BLIND_n_agents": 5,
+      "blind_recommendation_distribution": {
+        "ADVANCE_B": 5
+      },
+      "first_response_distribution": {
+        "switch": 5
+      }
+    },
+    "single_conflicting": {
+      "org": "single",
+      "evidence": "conflicting",
+      "n_trials": 5,
+      "P_TEAM_non_correction_team": 0.0,
+      "P_BLIND_non_correction_blind": 0.0,
+      "P_BLIND_n_agents": 5,
+      "blind_recommendation_distribution": {
+        "ADVANCE_B": 1,
+        "INSPECT": 4
+      },
+      "first_response_distribution": {
+        "switch": 1,
+        "seek": 4
+      }
+    },
+    "single_probabilistic": {
+      "org": "single",
+      "evidence": "probabilistic",
+      "n_trials": 5,
+      "P_TEAM_non_correction_team": 0.0,
+      "P_BLIND_non_correction_blind": 0.0,
+      "P_BLIND_n_agents": 5,
+      "blind_recommendation_distribution": {
+        "INSPECT": 5
+      },
+      "first_response_distribution": {
+        "seek": 5
+      }
+    }
+  },
+  "interaction_peer_x_ambiguity": {
+    "P_TEAM_probabilistic": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ]
+    },
+    "P_BLIND_probabilistic": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ]
+    },
+    "P_TEAM_conflicting": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ]
+    },
+    "P_BLIND_conflicting": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "limitations": [
+    "P-BLIND single-agent units are EXECUTIVE actions; peer blind units are ADVISORY bids (PI 16:11:58)",
+    "rounds_to_switch / persisted_before_switch not comparable across organization (sec 4)"
+  ]
+}
