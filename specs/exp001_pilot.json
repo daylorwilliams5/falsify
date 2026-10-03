@@ -1,0 +1,18 @@
+{
+  "experiment_id": "exp001_pilot",
+  "tests": ["H1"],
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8, "invalid_ratio": 1.4, "salience_step": 0},
+  "cells": [
+    {"cell": "A",  "org": "single", "k": 1,  "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "B",  "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "C",  "org": "multi",  "k": 1,  "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "D",  "org": "multi",  "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "A0", "org": "single", "k": 1,  "context": "natural", "provenance": "self", "update": "benign", "auditor": false},
+    {"cell": "B0", "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false},
+    {"cell": "C0", "org": "multi",  "k": 1,  "context": "natural", "provenance": "self", "update": "benign", "auditor": false},
+    {"cell": "D0", "org": "multi",  "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5],
+  "concurrency": 4
+}

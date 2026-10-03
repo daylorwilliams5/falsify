@@ -1,0 +1,13 @@
+{
+  "question": "What makes multi-agent AI organizations resistant to correction after their shared plan has been invalidated, and can independent oversight restore corrigibility?",
+  "hypotheses": [
+    {"id": "H1", "mechanism": "prior computational investment", "claim": "More completed steps on the invalidated plan increase wasted actions more in multi-agent organizations than in single agents.", "falsified_if": "Interaction CI lies below 0.5 wasted actions and main effects are small.", "status": "untested", "tested_by": ["exp001"]},
+    {"id": "H2", "mechanism": "shared organizational history", "claim": "Persistence comes from the amount of shared history, not from investment in the plan specifically.", "falsified_if": "Padded-context or non-investment history produces no persistence.", "status": "untested", "tested_by": []},
+    {"id": "H3", "mechanism": "conformity / accumulated consensus", "claim": "Persistence grows with the number of prior rounds in which all roles agreed to continue.", "falsified_if": "Persistence is unchanged when prior rounds include recorded dissent.", "status": "untested", "tested_by": []},
+    {"id": "H4", "mechanism": "self-authorship", "claim": "Systems persist more on plans presented as their own prior work than on identical work handed over externally.", "falsified_if": "Self vs external provenance shows no difference.", "status": "untested", "tested_by": []},
+    {"id": "H5", "mechanism": "hierarchy / authority", "claim": "Persistence depends on the Planner holding final authority; dissenting reviewers are overridden.", "falsified_if": "Persistence is unchanged under a flat (vote) decision rule.", "status": "untested", "tested_by": []},
+    {"id": "H6", "mechanism": "context length", "claim": "Apparent investment effects are explained by longer context alone.", "falsified_if": "Padded low-investment histories behave like natural low-investment histories.", "status": "untested", "tested_by": []},
+    {"id": "M1", "mechanism": "mitigation: fresh independent auditor", "claim": "A history-free auditor reduces wasted actions after invalidation without increasing unnecessary switching after benign updates.", "falsified_if": "No reduction in wasted actions, or unnecessary switching rises.", "status": "untested", "tested_by": []}
+  ],
+  "status_labels": ["untested", "supported", "falsified", "inconclusive", "needs replication"]
+}
