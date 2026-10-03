@@ -29,7 +29,8 @@ import pathlib
 import subprocess
 import sys
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+PKG = pathlib.Path(__file__).resolve().parent  # code location (never patched)
+ROOT = PKG.parent
 TIMELINE = ROOT / "timeline.jsonl"
 REGISTRY = ROOT / "registry" / "hypotheses.json"
 MANDATE = ROOT / "lab" / "mandate.json"
@@ -73,7 +74,7 @@ def sha(path: pathlib.Path) -> str:
 def code_hashes() -> dict:
     """Hashes of the frozen artifacts a run depends on (environments, organizations/prompts, runner)."""
     from .org import prompt_hash
-    return {f: sha(ROOT / "falsify" / f) for f in ("env.py", "env2.py", "org.py", "run.py")} | {"prompt_hash": prompt_hash()}
+    return {f: sha(PKG / f) for f in ("env.py", "env2.py", "org.py", "run.py")} | {"prompt_hash": prompt_hash()}
 
 
 def rel(path: str) -> str:

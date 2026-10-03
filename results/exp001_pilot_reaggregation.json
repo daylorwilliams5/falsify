@@ -1,7 +1,7 @@
 {
   "_meta": {
     "label": "EXPLORATORY (EDGE_CASE_POLICY \u00a7K). Offline re-aggregation, 0 model calls, 0 new trials.",
-    "generated": "2026-10-03T12:10:04",
+    "generated": "2026-10-03T12:10:59",
     "authorized_by": "decisions/D002.json (PI, Level 1)",
     "source_file": "data/trials/exp001_pilot.jsonl",
     "source_sha256": "afdd0786dfc592db054725c310a8302ad0c1e65b1ac6ae4547fbbb998125e669",
@@ -4229,5 +4229,35 @@
         }
       ]
     }
-  ]
+  ],
+  "sensitivity_to_unrecoverable_intentions": {
+    "method": "adversarial: every unrecoverable role-round assigned the worst-case route (A/B/HOLD), all combinations enumerated",
+    "n_rounds_with_any_unrecoverable_role": 14,
+    "rounds_that_could_flip_under_any_imputation": [],
+    "count_rounds_that_could_flip": 0,
+    "structured_only_fallback": "dropping both free-text roles entirely leaves planner vs executor, which agree in 80/80 rounds; no tie, no difference"
+  },
+  "clustering_caveat": {
+    "note": "the 80 rounds are nested in 20 trials and are not independent: within a trial nothing changes between rounds, so a trial is effectively one route decision repeated ~4x. Rates are reported at both levels.",
+    "wilson95_0_of_80_rounds": [
+      0.0,
+      0.045818
+    ],
+    "wilson95_0_of_20_trials": [
+      0.0,
+      0.161125
+    ],
+    "wilson95_0_of_10_invalidating_multi_trials": [
+      0.0,
+      0.277533
+    ]
+  },
+  "findings": {
+    "F9C1_prediction_confirmed": true,
+    "headline": "0/80 multi-agent rounds differ between plurality(tie->HOLD) and planner authority; 0/80 route-intention disagreement; 0/80 ties; 20/20 action sequences identical. Rate is exactly 0/80.",
+    "legacy_vs_route_intention": "legacy disagreement 6/80 = 0.075 vs route-intention 0/80 = 0.000; absolute gap 0.075 (7.5 percentage points). All 6 legacy-True rounds are unanimous on route.",
+    "measurement_validity_finding": "2 of 4 roles (researcher, reviewer) have NO route field in their output schema (falsify/org.py SCHEMAS lines 20-23), so their route intention is never structurally recorded. 146/160 free-text role-rounds could be adjudicated from text; 14/160 (8.75%) could not and were left as null rather than imputed. This is a measurement-validity limitation, not a zero.",
+    "policy_F_audit": "no round record in data/trials/exp001_pilot.jsonl carries the executor_overridden field; that field postdates this run. Executor compliance (20/20 trials, 80/80 rounds) is confirmed by recomputation (planner plan_route maps to executor action in 80/80), not by a logged override flag. The policy-F override path is therefore unexercised and untested on this data.",
+    "exploratory_label": "EXPLORATORY per EDGE_CASE_POLICY \u00a7K. No hypothesis status change is proposed by this analysis."
+  }
 }
