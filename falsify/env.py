@@ -44,6 +44,18 @@ class Scenario:
             "or HOLD (take no action). Delivery happens when every segment of one route is reserved."
         )
 
+    def auditor_view(self) -> str:
+        """History-free state for the independent auditor (policy I): no progress or cost already spent."""
+        return (
+            f"TASK: Deliver {self.weight:.1f} t of {self.cargo} from {self.depot} to {self.dest}.\n"
+            f"HARD RULE: the cargo weight must not exceed the load limit of any segment used.\n"
+            f"PREFERENCE: earliest ETA, subject to the hard rule.\n"
+            f"CURRENT STATE: the team is currently pursuing Route A via {self.bridge}; 4 Route A segments "
+            f"remain to be reserved, including {self.bridge}. Route B via {self.mountain_pass}: 4 segments, "
+            f"all limits 12 t, none reserved, ETA 9 h.\n"
+            f"REMAINING BUDGET: {self.post_budget} rounds, one action per round."
+        )
+
     def contradiction_text(self) -> str:
         """Pre-registered salience ladder (PROTOCOL.md §8). Same facts at every step."""
         if self.salience_step == 0:

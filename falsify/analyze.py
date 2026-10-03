@@ -158,3 +158,114 @@ def main(exp: str) -> None:
 
 if __name__ == "__main__":
     main(sys.argv[1])
+
+
+# --- exp001 supplementary stats (PROTOCOL.md §6 main effects, §8 go/no-go, resolution) ---
+
+def boot_main_effects(df: pd.DataFrame, n: int = 10000, seed: int = 0) -> dict:
+    """Pre-registered main effects on wasted_actions: investment (B+D vs A+C), org (C+D vs A+B)."""
+    rng = np.random.default_rng(seed)
+    v = {c: df[df.cell == c].wasted_actions.to_numpy(float) for c in "ABCD"}
+
+    def eff(x):
+        hi_k = np.concatenate([x["B"], x["D"]]).mean()
+        lo_k = np.concatenate([x["A"], x["C"]]).mean()
+        multi = np.concatenate([x["C"], x["D"]]).mean()
+        single = np.concatenate([x["A"], x["B"]]).mean()
+        return {"investment": hi_k - lo_k, "organization": multi - single}
+
+    point = eff(v)
+    draws = [eff({k: rng.choice(x, len(x)) for k, x in v.items()}) for _ in range(n)]
+    return {name: {"estimate": round(point[name], 3),
+                   "ci95": [round(float(np.percentile([d[name] for d in draws], q)), 3)
+                            for q in (2.5, 97.5)]}
+            for name in point}
+
+
+def power_sim(n_per_cell: int, p_base: float, dp: float, n_sim: int = 2000,
+              n_boot: int = 2000, scale: float = 4.0, seed: int = 0) -> float:
+    """Power of the pre-registered rule (bootstrap 95% CI entirely above 0) for a true
+    interaction of scale*dp wasted actions, outcome being scale*Bernoulli(p)."""
+    rng = np.random.default_rng(seed)
+    ps = {"A": p_base, "B": p_base, "C": p_base, "D": min(p_base + dp, 1.0)}
+    hits = 0
+    for _ in range(n_sim):
+        v = {c: scale * (rng.random(n_per_cell) < ps[c]) for c in "ABCD"}
+        idx = rng.integers(0, n_per_cell, size=(n_boot, 4, n_per_cell))
+        d = ((v["D"][idx[:, 0]].mean(1) - v["C"][idx[:, 1]].mean(1))
+             - (v["B"][idx[:, 2]].mean(1) - v["A"][idx[:, 3]].mean(1)))
+        if np.percentile(d, 2.5) > 0:
+            hits += 1
+    return hits / n_sim
+
+
+def main_stats(exp: str) -> None:
+    df, invalid = load(exp)
+    raw = {json.loads(l)["trial_id"]: json.loads(l)
+           for l in (pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines()}
+    df["returned_to_A"] = [raw[t]["measured"]["returned_to_A"] for t in df.trial_id]
+    df["rounds_played"] = [raw[t]["measured"]["rounds_played"] for t in df.trial_id]
+    df["rounds_unused"] = [raw[t]["measured"]["rounds_unused"] for t in df.trial_id]
+    inv = df[df["update"] == "invalidating"]
+    ben = df[df["update"] == "benign"]
+
+    per_trial = {}
+    for c, d in df.groupby("cell"):
+        d = d.sort_values("seed")
+        per_trial[c] = {"trial_ids": list(d.trial_id), "seeds": [int(s) for s in d.seed],
+                        "wasted_actions": [int(x) for x in d.wasted_actions],
+                        "rounds_to_switch": [int(x) for x in d.rounds_to_switch],
+                        "switched": [bool(x) for x in d.switched],
+                        "success": [bool(x) for x in d.success],
+                        "returned_to_A": [bool(x) for x in d.returned_to_A],
+                        "disagreement_rounds": [int(x) for x in d.disagreement_rounds]}
+
+    floor = {"invalidating_trials": len(inv),
+             "n_wasted_zero": int((inv.wasted_actions == 0).sum()),
+             "frac_wasted_zero": round(float((inv.wasted_actions == 0).mean()), 3),
+             "distinct_wasted_values_all_trials": sorted(int(x) for x in df.wasted_actions.unique()),
+             "switched_rate_invalidating": round(float(inv.switched.mean()), 3),
+             "rounds_to_switch_counts_invalidating":
+                 {str(k): int(v) for k, v in inv.rounds_to_switch.value_counts().sort_index().items()},
+             "rounds_played_set": sorted(int(x) for x in df.rounds_played.unique()),
+             "rounds_unused_set": sorted(int(x) for x in df.rounds_unused.unique()),
+             "post_budget_R": 8,
+             "max_attainable_wasted_observed": int(df.wasted_actions.max()),
+             "cell_mean_grain_at_n5": 0.8}
+
+    resolution = {"note": "wasted_actions took only the values {0,4}; a cell mean is a multiple of 4/n.",
+                  "smallest_nonzero_cell_mean_difference_at_n5": 0.8,
+                  "min_n_per_cell_for_0.5_grain": 8,
+                  "power_curve_dp0.125_equals_0.5_wasted":
+                      {str(n): power_sim(n, 0.1, 0.125, seed=n) for n in (5, 10, 20, 30, 60, 100)},
+                  "power_curve_dp0.5_equals_2.0_wasted":
+                      {str(n): power_sim(n, 0.1, 0.5, seed=n) for n in (5, 10, 20, 30)}}
+
+    benign = {"n": len(ben),
+              "unnecessary_switch_rate": round(float(ben.switched.mean()), 3),
+              "n_switched": int(ben.switched.sum()),
+              "success_rate": round(float(ben.success.mean()), 3),
+              "by_cell": {c: {"n": len(d), "unnecessary_switch_rate": round(float(d.switched.mean()), 3),
+                              "wasted_actions_mean": round(float(d.wasted_actions.mean()), 3),
+                              "success_mean": round(float(d.success.mean()), 3)}
+                          for c, d in ben.groupby("cell")}}
+
+    sec = {c: {m: {"mean": round(float(d[m].astype(float).mean()), 3),
+                   "sd": round(float(d[m].astype(float).std()), 3)}
+               for m in ["switched", "rounds_to_switch", "success", "returned_to_A",
+                         "disagreement_rounds", "post_tokens_in", "post_tokens_out", "llm_calls"]}
+           for c, d in df.groupby("cell")}
+
+    result = {"experiment_id": exp, "source_trials": f"data/trials/{exp}.jsonl",
+              "source_primary_results": f"results/{exp}.json",
+              "n_trials": len(df) + invalid, "n_invalid": invalid,
+              "parse_failure_rate": round(invalid / (len(df) + invalid), 3),
+              "H1_interaction_wasted": boot_interaction(inv, {c: c for c in "ABCD"}),
+              "main_effects_wasted": boot_main_effects(inv),
+              "per_trial": per_trial, "secondary_by_cell": sec,
+              "floor_ceiling": floor, "resolution": resolution, "benign_specificity": benign}
+    out = pathlib.Path("results") / f"{exp}_stats.json"
+    out.write_text(json.dumps(result, indent=2, default=float))
+    print(json.dumps({k: v for k, v in result.items()
+                      if k in ("H1_interaction_wasted", "main_effects_wasted", "floor_ceiling",
+                               "resolution", "benign_specificity")}, indent=2, default=float))

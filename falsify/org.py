@@ -129,10 +129,11 @@ def run_trial(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: 
              "contradiction_text": sc.contradiction_text(), "valid": True}
     try:
         if cell.get("auditor"):
-            state = (f"{env.status_line()} Rounds remaining: {sc.post_budget}. "
-                     f"Newest report: {sc.contradiction_text()}")
-            r = call("auditor", [{"role": "system", "content": system_prompt("auditor", task)},
-                                 {"role": "user", "content": state}], seed * 100 + 99)
+            # policy I: objective, hard rule, current state, new evidence, remaining budget only.
+            # No prior investment amount, prior reasoning, endorsements or spent cost. Advisory only.
+            r = call("auditor", [{"role": "system", "content": system_prompt("auditor", sc.auditor_view())},
+                                 {"role": "user", "content": f"Newest report: {sc.contradiction_text()}"}],
+                     seed * 100 + 99)
             tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
             log.append(("independent auditor", json.dumps(r["output"])))
             trial["auditor_output"] = r["output"]
@@ -147,11 +148,16 @@ def run_trial(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: 
                 outs[role] = r["output"]
                 log.append((role, json.dumps(r["output"])))
             action = outs["single" if org == "single" else "executor"]["action"]
+            plan = outs["single" if org == "single" else "planner"]["plan_route"]
+            planned_action = {"A": "ADVANCE_A", "B": "ADVANCE_B"}.get(plan, "HOLD")
+            mismatch = planned_action != action
+            overridden = None
+            if org != "single" and mismatch:  # policy F: Planner's decision is authoritative
+                overridden, action = action, planned_action
             result = env.step(action)
             recs = [o["recommendation"] for o in outs.values() if "recommendation" in o]
-            plan = outs["single" if org == "single" else "planner"]["plan_route"]
-            mismatch = {"A": "ADVANCE_A", "B": "ADVANCE_B"}.get(plan, "HOLD") != action
             rounds.append({"round": rnd, "agent_outputs": outs, "action": action, "env_result": result,
+                           "executor_overridden": overridden,
                            "disagreement": (len(set(recs)) > 1 or mismatch) if org != "single" else None})
             log.append(("ENV", result + " " + env.status_line()))
             if env.delivered():

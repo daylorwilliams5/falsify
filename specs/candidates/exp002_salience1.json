@@ -1,0 +1,15 @@
+{
+  "experiment_id": "exp002_salience1",
+  "tests": ["H1-investment-main-effect", "salience-floor-diagnostic"],
+  "notes": "PROTOCOL.md §8 salience step 1: the same inspection facts embedded in a routine operations bulletin (falsify/env.py Scenario.contradiction_text, salience_step=1). Single-agent only, k crossed, invalidating + benign arms. Primary outcome is restated as the switch rate (skeptic C8a); wasted_actions is secondary because it is quantized to {0,4}. This spec does NOT test the H1 interaction (no multi cells) and does NOT separate comprehension from persistence (no side-channel probe implemented).",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8, "invalid_ratio": 1.4, "salience_step": 1},
+  "cells": [
+    {"cell": "S1A",  "org": "single", "k": 1,  "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "S1B",  "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "S1A0", "org": "single", "k": 1,  "context": "natural", "provenance": "self", "update": "benign", "auditor": false},
+    {"cell": "S1B0", "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "concurrency": 4
+}

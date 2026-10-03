@@ -1,0 +1,911 @@
+{
+  "experiment_id": "exp001_pilot",
+  "source_trials": "data/trials/exp001_pilot.jsonl",
+  "source_primary_results": "results/exp001_pilot.json",
+  "n_trials": 40,
+  "n_invalid": 0,
+  "parse_failure_rate": 0.0,
+  "H1_interaction_wasted": {
+    "delta": 0.0,
+    "ci95": [
+      -1.6,
+      1.6
+    ],
+    "n_boot": 10000,
+    "n_per_cell": {
+      "A": 5,
+      "B": 5,
+      "C": 5,
+      "D": 5
+    }
+  },
+  "main_effects_wasted": {
+    "investment": {
+      "estimate": -0.8,
+      "ci95": [
+        -2.0,
+        0.0
+      ]
+    },
+    "organization": {
+      "estimate": 0.0,
+      "ci95": [
+        -0.8,
+        0.8
+      ]
+    }
+  },
+  "per_trial": {
+    "A": {
+      "trial_ids": [
+        "exp001_pilot-A-001",
+        "exp001_pilot-A-002",
+        "exp001_pilot-A-003",
+        "exp001_pilot-A-004",
+        "exp001_pilot-A-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        4
+      ],
+      "rounds_to_switch": [
+        1,
+        1,
+        1,
+        1,
+        9
+      ],
+      "switched": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "A0": {
+      "trial_ids": [
+        "exp001_pilot-A0-001",
+        "exp001_pilot-A0-002",
+        "exp001_pilot-A0-003",
+        "exp001_pilot-A0-004",
+        "exp001_pilot-A0-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rounds_to_switch": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "switched": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "B": {
+      "trial_ids": [
+        "exp001_pilot-B-001",
+        "exp001_pilot-B-002",
+        "exp001_pilot-B-003",
+        "exp001_pilot-B-004",
+        "exp001_pilot-B-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rounds_to_switch": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "switched": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "B0": {
+      "trial_ids": [
+        "exp001_pilot-B0-001",
+        "exp001_pilot-B0-002",
+        "exp001_pilot-B0-003",
+        "exp001_pilot-B0-004",
+        "exp001_pilot-B0-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rounds_to_switch": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "switched": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "C": {
+      "trial_ids": [
+        "exp001_pilot-C-001",
+        "exp001_pilot-C-002",
+        "exp001_pilot-C-003",
+        "exp001_pilot-C-004",
+        "exp001_pilot-C-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        4
+      ],
+      "rounds_to_switch": [
+        1,
+        1,
+        1,
+        1,
+        9
+      ],
+      "switched": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "C0": {
+      "trial_ids": [
+        "exp001_pilot-C0-001",
+        "exp001_pilot-C0-002",
+        "exp001_pilot-C0-003",
+        "exp001_pilot-C0-004",
+        "exp001_pilot-C0-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rounds_to_switch": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "switched": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "D": {
+      "trial_ids": [
+        "exp001_pilot-D-001",
+        "exp001_pilot-D-002",
+        "exp001_pilot-D-003",
+        "exp001_pilot-D-004",
+        "exp001_pilot-D-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rounds_to_switch": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "switched": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ]
+    },
+    "D0": {
+      "trial_ids": [
+        "exp001_pilot-D0-001",
+        "exp001_pilot-D0-002",
+        "exp001_pilot-D0-003",
+        "exp001_pilot-D0-004",
+        "exp001_pilot-D0-005"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "wasted_actions": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rounds_to_switch": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "switched": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "returned_to_A": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "disagreement_rounds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "secondary_by_cell": {
+    "A": {
+      "switched": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "rounds_to_switch": {
+        "mean": 2.6,
+        "sd": 3.578
+      },
+      "success": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 2532.8,
+        "sd": 18.593
+      },
+      "post_tokens_out": {
+        "mean": 369.4,
+        "sd": 11.059
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      }
+    },
+    "A0": {
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 2493.6,
+        "sd": 80.798
+      },
+      "post_tokens_out": {
+        "mean": 340.2,
+        "sd": 56.601
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      }
+    },
+    "B": {
+      "switched": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 6228.4,
+        "sd": 33.344
+      },
+      "post_tokens_out": {
+        "mean": 334.8,
+        "sd": 18.593
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      }
+    },
+    "B0": {
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 6230.2,
+        "sd": 64.216
+      },
+      "post_tokens_out": {
+        "mean": 345.6,
+        "sd": 51.767
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      }
+    },
+    "C": {
+      "switched": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "rounds_to_switch": {
+        "mean": 2.6,
+        "sd": 3.578
+      },
+      "success": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.2,
+        "sd": 0.447
+      },
+      "post_tokens_in": {
+        "mean": 16272.6,
+        "sd": 669.195
+      },
+      "post_tokens_out": {
+        "mean": 880.8,
+        "sd": 83.107
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      }
+    },
+    "C0": {
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 16163.2,
+        "sd": 684.31
+      },
+      "post_tokens_out": {
+        "mean": 884.8,
+        "sd": 72.303
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      }
+    },
+    "D": {
+      "switched": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 1.0,
+        "sd": 0.707
+      },
+      "post_tokens_in": {
+        "mean": 41756.2,
+        "sd": 631.315
+      },
+      "post_tokens_out": {
+        "mean": 914.6,
+        "sd": 89.226
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      }
+    },
+    "D0": {
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "returned_to_A": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 40478.4,
+        "sd": 416.426
+      },
+      "post_tokens_out": {
+        "mean": 778.2,
+        "sd": 52.884
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      }
+    }
+  },
+  "floor_ceiling": {
+    "invalidating_trials": 20,
+    "n_wasted_zero": 18,
+    "frac_wasted_zero": 0.9,
+    "distinct_wasted_values_all_trials": [
+      0,
+      4
+    ],
+    "switched_rate_invalidating": 0.9,
+    "rounds_to_switch_counts_invalidating": {
+      "1": 18,
+      "9": 2
+    },
+    "rounds_played_set": [
+      4
+    ],
+    "rounds_unused_set": [
+      4
+    ],
+    "post_budget_R": 8,
+    "max_attainable_wasted_observed": 4,
+    "cell_mean_grain_at_n5": 0.8
+  },
+  "resolution": {
+    "note": "wasted_actions took only the values {0,4}; a cell mean is a multiple of 4/n.",
+    "smallest_nonzero_cell_mean_difference_at_n5": 0.8,
+    "min_n_per_cell_for_0.5_grain": 8,
+    "power_curve_dp0.125_equals_0.5_wasted": {
+      "5": 0.053,
+      "10": 0.0955,
+      "20": 0.1245,
+      "30": 0.1755,
+      "60": 0.2885,
+      "100": 0.4675,
+      "150": 0.633,
+      "200": 0.741,
+      "300": 0.908,
+      "400": 0.963
+    },
+    "power_curve_dp0.5_equals_2.0_wasted": {
+      "5": 0.3505,
+      "10": 0.574,
+      "20": 0.8515,
+      "30": 0.964
+    },
+    "n_per_cell_for_80pct_power_on_0.5_wasted": 300,
+    "n_per_cell_for_80pct_power_on_2.0_wasted": 20,
+    "method": "simulation, outcome 4*Bernoulli(p), p_base=0.1 (observed 2/20 persistence); pre-registered rule = bootstrap 95% CI entirely above 0"
+  },
+  "benign_specificity": {
+    "n": 20,
+    "unnecessary_switch_rate": 0.0,
+    "n_switched": 0,
+    "success_rate": 1.0,
+    "by_cell": {
+      "A0": {
+        "n": 5,
+        "unnecessary_switch_rate": 0.0,
+        "wasted_actions_mean": 0.0,
+        "success_mean": 1.0
+      },
+      "B0": {
+        "n": 5,
+        "unnecessary_switch_rate": 0.0,
+        "wasted_actions_mean": 0.0,
+        "success_mean": 1.0
+      },
+      "C0": {
+        "n": 5,
+        "unnecessary_switch_rate": 0.0,
+        "wasted_actions_mean": 0.0,
+        "success_mean": 1.0
+      },
+      "D0": {
+        "n": 5,
+        "unnecessary_switch_rate": 0.0,
+        "wasted_actions_mean": 0.0,
+        "success_mean": 1.0
+      }
+    }
+  },
+  "logistic_switched_org_x_k": {
+    "status": "non-identified (complete separation)",
+    "reason": "cells B and D have switched=5/5; k10 coef 23.120 with SE 93738.984, MLE did not converge",
+    "coefs": {
+      "Intercept": 1.386,
+      "multi": -0.0,
+      "k10": 23.12,
+      "multi:k10": 1.194
+    },
+    "switched_counts": {
+      "A": "4/5",
+      "B": "5/5",
+      "C": "4/5",
+      "D": "5/5"
+    }
+  },
+  "go_no_go_section8": {
+    "1_real_trial_json": {
+      "pass": true,
+      "evidence": "40 records in data/trials/exp001_pilot.jsonl, spec_hash 2c7b3515aa9a90ec, n_invalid 0"
+    },
+    "2_transcripts_readable": {
+      "pass": true,
+      "evidence": "per-round agent_outputs with rationale/evidence_summary/plan_route/action/recommendation present in every record"
+    },
+    "3_parse_failures_under_5pct": {
+      "pass": true,
+      "evidence": "parse_failure_rate 0.0 (results/exp001_pilot.json)"
+    },
+    "4_behavior_varies": {
+      "pass": true,
+      "qualified": true,
+      "evidence": "wasted_actions not constant across invalidating cells (A 0.8, B 0.0, C 0.8, D 0.0); benign cells 0/20 switched. Variation is carried entirely by 2 of 20 invalidating trials (exp001_pilot-A-005, exp001_pilot-C-005, both seed 5); the other 18 are identically 0."
+    },
+    "5_results_plot_exists": {
+      "pass": true,
+      "evidence": "results/exp001_pilot_wasted.png"
+    }
+  },
+  "h1_verdict_section6": {
+    "rule": "supported = CI entirely above 0; falsified = CI entirely below 0.5 AND main effects small; else inconclusive",
+    "delta": 0.0,
+    "ci95": [
+      -1.6,
+      1.6
+    ],
+    "supported_clause_met": false,
+    "supported_clause_reason": "CI lower bound -1.6 is not above 0",
+    "falsified_clause_met": false,
+    "falsified_clause_reason": "CI upper bound 1.6 is not below 0.5 (the organization main effect CI [-0.8, 0.8] and investment [-2.0, 0.0] are also not bounded under 0.5 in absolute terms)",
+    "verdict": "inconclusive"
+  }
+}

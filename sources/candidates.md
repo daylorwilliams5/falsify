@@ -1,6 +1,12 @@
 # Candidate literature: pending human approval
 
-**Status: NOT APPROVED.** The literature agent may not use any source here until it is marked approved.
+**Status: PROVISIONALLY APPROVED** by the human researcher (2026-10-03).
+Allowed: synthesis and gap analysis. **Not allowed: strong novelty claims.**
+Every citation must carry its verification level. Two flags:
+- `[abstract-only]`: applies to all entries unless noted. Only the abstract or landing page was checked, not the full paper.
+- `[2026 preprint]`: recent and not peer-reviewed.
+
+Entries noted "found by search, not fetched" are weaker still.
 
 Every entry was found online on 2026-10-03, mostly checked at the abstract or landing-page level. Entries marked "2026 preprint" are recent and not peer-reviewed.
 
@@ -19,10 +25,10 @@ Every entry was found online on 2026-10-03, mostly checked at the abstract or la
 | Title | Authors | Year | Link | Relevance | Directness |
 |---|---|---|---|---|---|
 | Getting out of the Big-Muddy: Escalation of Commitment in LLMs | Barkett, Long, Kröger | 2025 | https://arxiv.org/abs/2508.01545 | **Closest prior work.** A Staw-style vignette on one model (o4-mini). Little escalation for an individual; 46.2% in a hierarchy; 99.2% in peer deliberation. Not agentic, investment amount not varied, no auditor fix. | DIRECT |
-| ToolMaze: Dynamic Replanning and Anomaly Recovery in LLM Agents | Zhu et al. | 2026 preprint | https://arxiv.org/abs/2606.05806 | Single agents over-trust invalid tool paths. Investment not manipulated. | DIRECT (single agent) |
+| ToolMaze: Dynamic Replanning and Anomaly Recovery in LLM Agents | Zhu et al. | 2026 preprint [2026 preprint] | https://arxiv.org/abs/2606.05806 | Single agents over-trust invalid tool paths. Investment not manipulated. | DIRECT (single agent) |
 | CostBench | Liu, Qian, …, Fung | 2025 | https://arxiv.org/abs/2511.02734 | Mid-task disruptions cut performance by ~40%; weak replanning. Single agent. | DIRECT (single agent) |
-| When Agents Commit Too Soon | Mehta | 2026 preprint | https://arxiv.org/abs/2606.22936 | Premature commitment diagnosed from hidden states. No injected contradiction. | ADJACENT |
-| Plans Don't Persist | Mehta & Datta | 2026 preprint | https://arxiv.org/abs/2606.22953 | Plans are read back from context, so persistence depends on context. Relevant to the history-free auditor. | ADJACENT |
+| When Agents Commit Too Soon | Mehta | 2026 preprint [2026 preprint] | https://arxiv.org/abs/2606.22936 | Premature commitment diagnosed from hidden states. No injected contradiction. | ADJACENT |
+| Plans Don't Persist | Mehta & Datta | 2026 preprint [2026 preprint] | https://arxiv.org/abs/2606.22953 | Plans are read back from context, so persistence depends on context. Relevant to the history-free auditor. | ADJACENT |
 
 ## 3. Long-horizon agent failure
 | Title | Authors | Year | Link | Relevance | Directness |
@@ -39,7 +45,7 @@ Every entry was found online on 2026-10-03, mostly checked at the abstract or la
 | Exploring Collaboration Mechanisms for LLM Agents | Zhang, Xu, Zhang, Liu, Hooi, Deng | 2024 | https://aclanthology.org/2024.acl-long.782/ | Conformity and consensus in agent societies. | ADJACENT |
 | Herd Behavior in LLM Multi-Agent Systems | Cho, Guntuku, Ungar | 2025 | https://arxiv.org/abs/2505.21588 | How peer information is presented drives conformity. | ADJACENT |
 | Peacemaker or Troublemaker | Yao et al. | 2025 | https://arxiv.org/abs/2509.23055 | Sycophancy causes disagreement collapse. | ADJACENT |
-| LLMs Trust Their Own | Soffer, Shwartz-Ziv, Shani | 2026 preprint | https://arxiv.org/abs/2609.33495 | Agents conform more to in-group agents. | ADJACENT |
+| LLMs Trust Their Own | Soffer, Shwartz-Ziv, Shani | 2026 preprint [2026 preprint] | https://arxiv.org/abs/2609.33495 | Agents conform more to in-group agents. | ADJACENT |
 
 ## 5. Multi-agent organizations
 | Title | Authors | Year | Link | Relevance | Directness |
