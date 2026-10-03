@@ -22,7 +22,7 @@ export function TopNav({ section, status }: { section: string; status: string })
       </nav>
       <div className="live-status">
         <span className="live-dot" />
-        Autonomous lab <span className="live-sub">· {status.toLowerCase()}</span>
+        {status === 'RUNNING' ? 'Lab running' : 'Lab paused'}
       </div>
     </header>
   );

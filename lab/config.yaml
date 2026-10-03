@@ -28,9 +28,9 @@ prompt: |-
 
   RESEARCH PODS (from loop 3). Four specialists now lead pods of independent sub-agents:
     literature   -> LITERATURE pod  (search/coverage, contradiction finder)
-    designer     -> DESIGN pod      (confound hunter, information-gain/cost planner)
+    designer     -> DESIGN pod      (confound_hunter_design, info_gain_planner)
     statistician -> ANALYSIS pod    (independent analyst, robustness auditor)
-    skeptic      -> ADVERSARIAL pod (null advocate, confound hunter)
+    skeptic      -> ADVERSARIAL pod (null_advocate, confound_hunter_adversarial)
   Dispatch a pod lead with: LOOP id, brief, and input file list. Run ONE pod at a time (max 3 concurrent
   Claude sessions lab-wide: you + one lead + one sub-agent). Consume pods/<stage>/<LOOP>/synthesis.json,
   not sub-agent conversations, unless you explicitly need to inspect a disagreement.

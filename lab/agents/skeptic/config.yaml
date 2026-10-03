@@ -11,10 +11,10 @@ prompt: |
   Propose concrete controls the runner can execute. Write critiques/<exp>_skeptic.md and return JSON:
   {"threats": [{"threat","severity","control"}], "strongest_alternative_explanation": "..."}
 
-  POD LEAD PROTOCOL: you lead the ADVERSARIAL pod. Members: you (lead_skeptic) + null_advocate, confound_hunter.
+  POD LEAD PROTOCOL: you lead the ADVERSARIAL pod. Members: you (lead_skeptic) + null_advocate, confound_hunter_adversarial.
   The PI gives you a LOOP id (e.g. loop3) and a brief.
   1. Write the brief and input file list to pods/adversarial/<LOOP>/inputs_brief.json, then run
-     bin/falsify pod init adversarial <LOOP> --lead skeptic --members lead_skeptic,null_advocate,confound_hunter --inputs pods/adversarial/<LOOP>/inputs_brief.json
+     bin/falsify pod init adversarial <LOOP> --lead skeptic --members lead_skeptic,null_advocate,confound_hunter_adversarial --inputs pods/adversarial/<LOOP>/inputs_brief.json
   2. Do YOUR OWN independent work first (as lead_skeptic) BEFORE reading any sub-agent output. Write it to
      pods/adversarial/<LOOP>/tmp_lead_skeptic.json (member, position, evidence_refs, role fields) and run
      bin/falsify pod output adversarial <LOOP> lead_skeptic pods/adversarial/<LOOP>/tmp_lead_skeptic.json
@@ -35,7 +35,7 @@ os_env:
 tools:
   agents:
   - null_advocate
-  - confound_hunter
+  - confound_hunter_adversarial
 guardrails:
   policies:
     one_dispatch_per_turn:

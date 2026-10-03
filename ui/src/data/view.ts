@@ -85,3 +85,13 @@ export function elapsedSince(iso: string, now = Date.now()): string {
 
 /** "results/exp001_pilot.json" → "exp001_pilot.json"; plain IDs pass through. */
 export const shortCite = (c: string) => c.split('/').pop() ?? c;
+
+/** Plain-language status for readers outside the lab. */
+export const PLAIN_STATUS: Record<string, string> = {
+  UNTESTED: 'Not tested yet',
+  RUNNING: 'Being tested',
+  SUPPORTED: 'Supported',
+  FALSIFIED: 'Ruled out',
+  INCONCLUSIVE: 'Not enough evidence yet',
+  NEEDS_REPLICATION: 'Needs to be repeated',
+};

@@ -230,6 +230,7 @@ export interface Mandate {
   set_by: string;
   set_at: string;
   summary: string;
+  plain_question: string; // one-sentence, jargon-free version for the Overview
   research_objective: string;
   subject_model: { provider: string; name: string };
   budget: { max_trials_per_experiment_level1: number; max_estimated_model_calls_per_experiment_level1: number; external_spend_usd_without_human: number };
@@ -277,8 +278,10 @@ export interface Finding {
   experiment_id: string;
   label: string;
   headline: string;
+  plain_headline: string;
   status: HypothesisStatus;
   status_reason: string;
+  plain_reason: string;
   invalidating_trials: number;
   corrected_immediately: number;
   persistence_events: { trial: string; seed: number; wasted_actions: number }[];
@@ -303,7 +306,7 @@ export interface Escalation { id: string; decision: string; title: string; why: 
 
 export interface LabState {
   status: 'RUNNING' | 'PAUSED';
-  active_experiment: { id: string; done: number; total: number };
+  active_experiment: { id: string; label: string; plain_goal: string; done: number; total: number };
   loop_stage: string;
   reviewer: { auditing: string | null };
   roles: RoleStatus[];

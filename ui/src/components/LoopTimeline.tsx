@@ -1,5 +1,19 @@
 import type { Phase } from '../data/types';
 
+// How Falsify works, in plain words. Internal loop stages map onto these five.
+export const PLAIN_PHASES = [
+  ['read', 'Read the research'],
+  ['hypothesis', 'Form a hypothesis'],
+  ['experiment', 'Run an experiment'],
+  ['challenge', 'Challenge the result'],
+  ['next', 'Decide what to test next'],
+] as const;
+
+export const PLAIN_STAGE: Record<string, string> = {
+  literature: 'read', hypothesis: 'hypothesis', experiment: 'experiment', result: 'experiment',
+  critique: 'challenge', review: 'challenge', decision: 'next', next: 'next',
+};
+
 export const LAB_PHASES = [
   ['literature', 'Literature'],
   ['hypothesis', 'Hypothesis'],

@@ -17,10 +17,10 @@ prompt: |
   Write the comparison table to critiques/<id>_design.md and return JSON:
   {"candidates": [{"spec_path","tests","info_gain","feasibility","cost_minutes"}], "recommended": "<spec_path>", "why": "..."}
 
-  POD LEAD PROTOCOL: you lead the DESIGN pod. Members: you (lead_experimentalist) + confound_hunter, info_gain_planner.
+  POD LEAD PROTOCOL: you lead the DESIGN pod. Members: you (lead_experimentalist) + confound_hunter_design_design, info_gain_planner.
   The PI gives you a LOOP id (e.g. loop3) and a brief.
   1. Write the brief and input file list to pods/design/<LOOP>/inputs_brief.json, then run
-     bin/falsify pod init design <LOOP> --lead designer --members lead_experimentalist,confound_hunter,info_gain_planner --inputs pods/design/<LOOP>/inputs_brief.json
+     bin/falsify pod init design <LOOP> --lead designer --members lead_experimentalist,confound_hunter_design,info_gain_planner --inputs pods/design/<LOOP>/inputs_brief.json
   2. Do YOUR OWN independent work first (as lead_experimentalist) BEFORE reading any sub-agent output. Write it to
      pods/design/<LOOP>/tmp_lead_experimentalist.json (member, position, evidence_refs, role fields) and run
      bin/falsify pod output design <LOOP> lead_experimentalist pods/design/<LOOP>/tmp_lead_experimentalist.json
@@ -40,7 +40,7 @@ os_env:
     type: none
 tools:
   agents:
-  - confound_hunter
+  - confound_hunter_design
   - info_gain_planner
 guardrails:
   policies:

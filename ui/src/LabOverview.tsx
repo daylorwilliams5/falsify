@@ -1,46 +1,58 @@
 import type { LabView } from './data/types';
-import { LoopTimeline, LAB_PHASES, phasesAt } from './components/LoopTimeline';
-import { FindingBlock } from './components/lab/FindingBlock';
-import { DecisionBlock } from './components/lab/DecisionBlock';
-import { ReviewBlock } from './components/lab/ReviewBlock';
-import { BudgetStrip, LabStatus } from './components/lab/LabStrip';
-import { EscalationCard, OverrideControl } from './components/lab/HumanControl';
+import { LoopTimeline, PLAIN_PHASES, PLAIN_STAGE, phasesAt } from './components/LoopTimeline';
+import { EscalationCard } from './components/lab/HumanControl';
+import { PLAIN_STATUS } from './data/view';
 
+// The front page: three plain-language answers. Lab internals live on detail pages.
 export function LabOverview({ lab }: { lab: LabView }) {
-  const { mandate, finding, decisions, budget, state } = lab;
-  const decision = decisions[decisions.length - 1];
+  const { mandate, finding, state } = lab;
   const x = state.active_experiment;
+  const finished = x.done === x.total;
+  const reviewing = !!state.reviewer.auditing;
+
   return (
-    <div className="lab">
-      <section className="mandate">
-        <div className="label">Research mandate <span className="label-sub">set by human</span></div>
-        <h1 className="mandate-text">“{mandate.summary}”</h1>
+    <div className="home2">
+      <section className="h2-question">
+        <div className="h2-label">What we’re trying to understand</div>
+        <h1>{mandate.plain_question}</h1>
       </section>
 
       {state.escalations.map((e) => <EscalationCard key={e.id} e={e} />)}
 
-      <div className="objects">
-        <FindingBlock f={finding} />
-        <DecisionBlock d={decision} />
-        <ReviewBlock d={decision} auditing={state.reviewer.auditing === decision.id} />
+      <div className="h2-pair">
+        <section className="h2-block">
+          <div className="h2-label">What we learned</div>
+          <p className="h2-headline">{finding.plain_headline}</p>
+          <div className="h2-figure">
+            <span className="h2-num num">{finding.corrected_immediately} / {finding.invalidating_trials}</span>
+            <span className="h2-unit">corrected course immediately</span>
+          </div>
+          <p className="h2-status">
+            <span className="h2-status-k">Result</span>{PLAIN_STATUS[finding.status]}
+          </p>
+          <p className="h2-why">{finding.plain_reason}</p>
+          <a className="h2-link" href="#/experiments">See the experiment <span>→</span></a>
+        </section>
+
+        <section className="h2-block">
+          <div className="h2-label">What the lab is doing next</div>
+          <p className="h2-headline">{x.plain_goal}</p>
+          <div className="h2-figure">
+            <span className="h2-num num">{x.done} / {x.total}</span>
+            <span className="h2-unit">trials · <span className="num">{x.label}</span> · {finished ? 'analyzing results' : 'running'}</span>
+          </div>
+          <span className="h2-bar"><i className={finished ? '' : 'is-live'} style={{ width: `${(x.done / x.total) * 100}%` }} /></span>
+          {reviewing && (
+            <p className="h2-trust"><span className="h2-check">✓</span>Independent review active</p>
+          )}
+          <a className="h2-link" href="#/decisions">How decisions are made <span>→</span></a>
+        </section>
       </div>
 
-      <section className="lab-sec">
-        <div className="label">Autonomous scientific loop</div>
-        <LoopTimeline phases={phasesAt(state.loop_stage, x.done === x.total ? `${x.id} complete · ${x.total} of ${x.total} trials · readout pending` : `${x.id} running · ${x.done} of ${x.total} trials`, LAB_PHASES)} />
+      <section className="h2-how">
+        <div className="h2-label">How Falsify works</div>
+        <LoopTimeline phases={phasesAt(PLAIN_STAGE[state.loop_stage] ?? 'experiment', undefined, PLAIN_PHASES)} />
       </section>
-
-      <section className="lab-sec lab-sec-tight">
-        <div className="label">Lab status</div>
-        <LabStatus roles={state.roles} />
-      </section>
-
-      <section className="lab-sec lab-sec-tight">
-        <div className="label">Research budget</div>
-        <BudgetStrip b={budget} mandate={mandate} active={x} />
-      </section>
-
-      <OverrideControl />
     </div>
   );
 }

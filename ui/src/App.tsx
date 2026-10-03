@@ -29,7 +29,7 @@ export default function App() {
       case 'research': return <HypothesesPage lab={snapshot} base={base} />;
       case 'experiments': return <ExperimentPage lab={snapshot} base={base} id={a} />;
       case 'literature': return <LiteraturePage lab={snapshot} base={base} />;
-      case 'lab': return <AgentsPage lab={snapshot} base={base} />;
+      case 'lab': return <AgentsPage lab={snapshot} base={base} view={lab} />;
       case 'decisions': return <DecisionsPage key={a ?? ''} decisions={lab.decisions} focus={a} />;
       case 'timeline': return soon('Timeline', 'Lab timeline', 'The full timeline.jsonl record of human, PI, specialist and runner events. Not built yet.');
       default: return <LabOverview lab={lab} />;

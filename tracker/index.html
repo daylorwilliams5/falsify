@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Falsify Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: lab control board. KPI strip, research-loop pipeline, then decisions | timeline, then hypotheses + experiments. */
+:root {
+  --bg: #F4F6F5; --panel: #FFFFFF; --ink: #15201C; --muted: #5F6E68; --rule: #DCE3E0;
+  --accent: #1F6F5C; --accent-soft: #E1EFEA;
+  --ok: #217A4B; --ok-soft: #E2F2E8; --warn: #A3640B; --warn-soft: #FBEFD9; --bad: #B23A2E; --bad-soft: #F8E1DE;
+  --info: #2C5FA8; --info-soft: #E3ECF8;
+  --sans: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F1513; --panel: #161E1B; --ink: #E3EBE7; --muted: #8FA19A; --rule: #26322E;
+  --accent: #5CC2A5; --accent-soft: #173029; --ok: #6BCB92; --ok-soft: #15301F; --warn: #E3A64A; --warn-soft: #33270F;
+  --bad: #EE7F72; --bad-soft: #3A1B17; --info: #82AEEB; --info-soft: #18263A; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0F1513; --panel: #161E1B; --ink: #E3EBE7; --muted: #8FA19A; --rule: #26322E;
+  --accent: #5CC2A5; --accent-soft: #173029; --ok: #6BCB92; --ok-soft: #15301F; --warn: #E3A64A; --warn-soft: #33270F;
+  --bad: #EE7F72; --bad-soft: #3A1B17; --info: #82AEEB; --info-soft: #18263A; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--sans); }
+.wrap { max-width: 1380px; margin: 0 auto; padding-inline: 16px; padding-block: 16px 40px; display: grid; gap: 16px; }
+header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+h1 { font-size: 20px; margin: 0; font-weight: 600; } h1 span { color: var(--accent); }
+h2 { font-size: 12px; margin: 0; font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.sub { color: var(--muted); font-size: 12px; font-family: var(--mono); }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 14px; display: grid; gap: 10px; min-width: 0; align-content: start; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); }
+.kpi { padding: 12px 14px; border-left: 1px solid var(--rule); display: grid; gap: 2px; } .kpi:first-child { border-left: 0; }
+.kpi b { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; } .kpi span { font-size: 12px; color: var(--muted); }
+.pipe { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+.stage { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; background: var(--panel); display: grid; gap: 6px; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stage .name { font-weight: 600; display: flex; justify-content: space-between; gap: 6px; align-items: center; }
+.stage .meta { font-size: 12px; color: var(--muted); }
+.stage .head { font-size: 12.5px; }
+.members { display: grid; gap: 3px; font-family: var(--mono); font-size: 12px; border-top: 1px dashed var(--rule); padding-top: 6px; }
+.members div { display: flex; justify-content: space-between; gap: 8px; }
+.chip { font-family: var(--mono); font-size: 11px; padding: 1px 7px; border-radius: 99px; white-space: nowrap; background: var(--accent-soft); color: var(--accent); }
+.c-ok { background: var(--ok-soft); color: var(--ok); } .c-warn { background: var(--warn-soft); color: var(--warn); }
+.c-bad { background: var(--bad-soft); color: var(--bad); } .c-info { background: var(--info-soft); color: var(--info); }
+.c-mute { background: var(--bg); color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; }
+.grid2b { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.dec { border-top: 1px solid var(--rule); padding-top: 10px; display: grid; gap: 4px; }
+.dec:first-of-type { border-top: 0; padding-top: 0; }
+.dec .row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.dec .id { font-family: var(--mono); font-weight: 500; }
+.dec .txt { font-size: 13px; color: var(--ink); overflow-wrap: anywhere; }
+.dec details summary { cursor: pointer; color: var(--muted); font-size: 12px; }
+.scroll { max-height: 640px; overflow-y: auto; display: grid; gap: 10px; align-content: start; padding-right: 4px; }
+.ev { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 8px; font-size: 12.5px; border-top: 1px solid var(--rule); padding-top: 6px; }
+.ev:first-child { border-top: 0; padding-top: 0; }
+.ev time { font-family: var(--mono); color: var(--muted); font-size: 11.5px; }
+.ev .who { font-family: var(--mono); font-size: 11.5px; }
+.ev .t { overflow-wrap: anywhere; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+td.mono { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+.tablewrap { overflow-x: auto; }
+.bar { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; } .bar i { display: block; height: 100%; background: var(--accent); }
+.alert { border: 1px solid var(--warn); background: var(--warn-soft); color: var(--ink); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.alert b { color: var(--warn); }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--ok); margin-right: 6px; }
+.dot.stale { background: var(--bad); }
+@media (max-width: 900px) { .grid2, .grid2b { grid-template-columns: minmax(0, 1fr); } .scroll { max-height: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><h1>Falsify <span>Tracker</span></h1><div class="sub" id="question">Loading…</div></div>
+    <div class="sub"><span class="dot" id="live"></span><span id="updated">connecting…</span></div>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+  <div id="alerts"></div>
+
+  <section class="panel">
+    <h2>Research loop · pods (click to expand)</h2>
+    <div class="pipe" id="pipe"></div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel"><h2>PI decisions · methodology review</h2><div class="scroll" id="decisions"></div></section>
+    <section class="panel"><h2>Live timeline</h2><div class="scroll" id="timeline"></div></section>
+  </div>
+
+  <div class="grid2b">
+    <section class="panel"><h2>Hypotheses</h2><div class="tablewrap"><table id="hyp"></table></div></section>
+    <section class="panel"><h2>Experiments</h2><div class="tablewrap"><table id="exp"></table></div></section>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hm = ts => ts ? String(ts).slice(11, 16) : "";
+const open = new Set();
+const verdictChip = v => {
+  if (!v) return '<span class="chip c-mute">REVIEW PENDING</span>';
+  const cls = {PASS:"c-ok", PASS_WITH_NOTE:"c-ok", CONCERNS:"c-warn", BLOCK:"c-bad", FAIL:"c-bad", ESCALATE:"c-info"}[v.verdict] || "c-mute";
+  const mat = v.material != null ? ` · ${v.material} material` : "";
+  return `<span class="chip ${cls}">${esc(v.verdict)}${mat}</span>`;
+};
+const statusChip = s => {
+  const cls = {supported:"c-ok", falsified:"c-bad", inconclusive:"c-warn", "needs replication":"c-info", untested:"c-mute"}[s] || "c-mute";
+  return `<span class="chip ${cls}">${esc(s)}</span>`;
+};
+const memberChip = s => `<span class="chip ${({COMPLETE:"c-ok", RUNNING:"c-info", FAILED:"c-bad"})[s] || "c-mute"}">${esc(s)}</span>`;
+
+function render(st) {
+  const b = st.budget, reg = st.registry || {hypotheses: []};
+  $("question").textContent = (st.mandate && st.mandate.research_objective) || "";
+  const loop3 = st.loop3_started ? `since ${hm(st.loop3_started)}` : "";
+  const unresolved = (b.unresolved || []).length, total = reg.hypotheses.length;
+  $("kpis").innerHTML = [
+    ["Loop 3 · pods", loop3 || "—"],
+    [b.elapsed_research_minutes + " min", "elapsed research time"],
+    [b.decisions.total, `PI decisions (L1 ${b.decisions.by_level["1"]} · L2 ${b.decisions.by_level["2"]} · L3 ${b.decisions.by_level["3"]})`],
+    [b.trials_run, `trials · ${b.trials_invalid} invalid`],
+    [b.model_calls_used.toLocaleString(), "subject-model calls"],
+    ["$" + b.external_spend_usd.toFixed(2), "external spend"],
+    [`${total - unresolved}/${total}`, "hypotheses resolved"],
+  ].map(([v, l]) => `<div class="kpi"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("");
+
+  $("alerts").innerHTML = (st.pending_engineering || []).map(r =>
+    `<div class="alert"><b>Engineering request pending</b> (${hm(r.ts)}): ${esc(String(r.text).slice(0, 400))}</div>`).join("");
+
+  const stages = ["literature", "design", "analysis", "adversarial"];
+  const latest = {};
+  (st.pods || []).forEach(p => { if (!latest[p.stage] || p.started > latest[p.stage].started) latest[p.stage] = p; });
+  const titles = {literature: "Literature", design: "Experiment design", analysis: "Analysis", adversarial: "Adversarial review"};
+  $("pipe").innerHTML = stages.map(s => {
+    const p = latest[s];
+    if (!p) return `<button class="stage" disabled><div class="name">${titles[s]} <span class="chip c-mute">IDLE</span></div><div class="meta">no run this loop yet</div></button>`;
+    const members = Object.entries(p.members || {});
+    const dis = p.summary ? p.summary.disagreements : null;
+    const headline = p.synthesis ? p.synthesis.conclusion : (p.summary ? p.summary.headline : "");
+    const stateCls = p.state === "COMPLETE" ? "c-ok" : "c-info";
+    const exp = open.has(s);
+    const agree = p.synthesis && p.synthesis.analysts_agree === false ? ' <span class="chip c-bad">ANALYSTS DISAGREE</span>' : "";
+    return `<button class="stage" data-stage="${s}" aria-expanded="${exp}">
+      <div class="name">${titles[s]} <span class="chip ${stateCls}">${esc(p.state)}</span></div>
+      <div class="meta">${p.loop} · ${members.length + 1} researchers${dis != null ? ` · ${dis} disagreement${dis === 1 ? "" : "s"}` : ""}${agree}</div>
+      ${headline ? `<div class="head">“${esc(String(headline).slice(0, 180))}”</div>` : ""}
+      ${exp ? `<div class="members"><div><span>${esc(p.lead)} (lead)</span>${memberChip(p.lead_state)}</div>${members.map(([m, v]) => `<div><span>${esc(m)}</span>${memberChip(v)}</div>`).join("")}</div>` : ""}
+    </button>`;
+  }).join("") + `<div class="stage" style="cursor:default"><div class="name">Methodology review <span class="chip c-info">INDEPENDENT</span></div><div class="meta">audits every PI decision</div></div>`;
+  document.querySelectorAll(".stage[data-stage]").forEach(el => el.onclick = () => {
+    const s = el.dataset.stage; open.has(s) ? open.delete(s) : open.add(s); render(st);
+  });
+
+  $("decisions").innerHTML = [...(st.decisions || [])].reverse().map(d => {
+    const last = d.reviews[d.reviews.length - 1];
+    const flags = (d.human_approval ? ' <span class="chip c-info">HUMAN APPROVED</span>' : "") + (d.overridden ? ' <span class="chip c-bad">HUMAN OVERRIDE</span>' : "");
+    return `<div class="dec">
+      <div class="row"><span class="id">PI DECISION ${esc(d.id)}</span><span class="chip">L${d.level}</span><span class="chip c-mute">${esc(d.action)}</span>
+        ${d.confidence != null ? `<span class="chip c-mute">conf ${d.confidence}</span>` : ""}<span class="sub">${hm(d.ts)}</span></div>
+      <div class="row"><span class="sub">METHODOLOGY REVIEW</span> ${verdictChip(last)}${flags}</div>
+      <div class="txt">${esc(d.decision.slice(0, 260))}${d.decision.length > 260 ? "…" : ""}</div>
+      <details><summary>more</summary><div class="txt">${esc(d.decision)}</div><div class="sub">Rejected: ${esc(d.alternatives)}</div></details>
+    </div>`;
+  }).join("") || '<div class="sub">No decisions yet.</div>';
+
+  $("timeline").innerHTML = (st.timeline || []).map(e => {
+    const who = e.agent || e.actor || "";
+    const cls = who === "human" ? "c-info" : who === "engineer" ? "c-warn" : who === "methodology_reviewer" ? "c-ok" : "";
+    return `<div class="ev"><time>${hm(e.ts)}</time><div><span class="chip ${cls}">${esc(who)}</span> <span class="who">${esc(e.stage || e.event || "")}</span>
+      <div class="t">${esc(String(e.text || e.reason || "").slice(0, 300))}</div></div></div>`;
+  }).join("");
+
+  $("hyp").innerHTML = "<tr><th>ID</th><th>Mechanism</th><th>Status</th><th>Family</th></tr>" + reg.hypotheses.map(h =>
+    `<tr><td class="mono">${esc(h.id)}</td><td>${esc(h.mechanism)}</td><td>${statusChip(h.status)}</td><td class="sub">${esc((h.family || "").replace(/_/g, " "))}</td></tr>`).join("");
+
+  $("exp").innerHTML = "<tr><th>Experiment</th><th>Progress</th><th>Timing phase</th></tr>" + (st.experiments || []).map(x => {
+    const pct = x.planned ? Math.min(100, Math.round(100 * x.trials / x.planned)) : 100;
+    return `<tr><td class="mono">${esc(x.id)}</td><td style="min-width:140px"><div class="bar"><i style="width:${pct}%"></i></div><span class="sub">${x.trials}${x.planned ? "/" + x.planned : ""} trials</span></td>
+      <td><span class="chip ${x.phase === 3 ? "c-ok" : x.phase === 2 ? "c-warn" : "c-info"}">${x.phase ?? "–"}</span> <span class="sub">${esc(x.phase_label || "")}</span></td></tr>`;
+  }).join("");
+}
+
+async function tick() {
+  try {
+    const r = await fetch("/api/state", {cache: "no-store"});
+    render(await r.json());
+    $("updated").textContent = "live · updated " + new Date().toLocaleTimeString();
+    $("live").classList.remove("stale");
+  } catch (e) {
+    $("updated").textContent = "tracker server unreachable";
+    $("live").classList.add("stale");
+  }
+}
+tick(); setInterval(tick, 4000);
+</script>
+</body>
+</html>

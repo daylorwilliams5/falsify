@@ -7,7 +7,17 @@
   "invalidating_trials": 20,
   "corrected_immediately": 18,
   "persistence_events": [
-    { "trial": "A-005", "seed": 5, "wasted_actions": 4 },
-    { "trial": "C-005", "seed": 5, "wasted_actions": 4 }
-  ]
+    {
+      "trial": "A-005",
+      "seed": 5,
+      "wasted_actions": 4
+    },
+    {
+      "trial": "C-005",
+      "seed": 5,
+      "wasted_actions": 4
+    }
+  ],
+  "plain_headline": "Prior investment alone didn’t make agents more stubborn.",
+  "plain_reason": "Agents corrected too easily to measure the effect."
 }

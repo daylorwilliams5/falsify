@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { LabSnapshot } from '../data/types';
+import type { LabSnapshot, LabView } from '../data/types';
+import { BudgetStrip, LabStatus } from '../components/lab/LabStrip';
+import { OverrideControl } from '../components/lab/HumanControl';
 import { DetailPage } from './DetailPage';
 import { Panel } from '../components/Panel';
 import { HypothesisRow } from '../components/HypothesisRow';
@@ -51,7 +53,7 @@ export function LiteraturePage({ lab, base }: { lab: LabSnapshot; base: string }
   );
 }
 
-export function AgentsPage({ lab, base }: { lab: LabSnapshot; base: string }) {
+export function AgentsPage({ lab, base, view }: { lab: LabSnapshot; base: string; view: LabView }) {
   const { activity, state, timeline } = lab;
   // Trace clock: the running span keeps growing so the waterfall feels live.
   const [tick, setTick] = useState(0);
@@ -61,6 +63,15 @@ export function AgentsPage({ lab, base }: { lab: LabSnapshot; base: string }) {
 
   return (
     <DetailPage base={base} kicker="Agents" title="Who is doing what" lede={`Omnigent ${state.omnigent.version} · ${state.omnigent.workers} workers · ${state.model}`}>
+      <section className="lab-sec-top">
+        <div className="label">Lab status</div>
+        <LabStatus roles={view.state.roles} />
+      </section>
+      <section className="lab-sec-top">
+        <div className="label">Research budget</div>
+        <BudgetStrip b={view.budget} mandate={view.mandate} active={view.state.active_experiment} />
+      </section>
+      <OverrideControl />
       <Panel title="Scientific loop" className="loop-panel">
         <ResearchLoop stages={activity.loop} loopIndex={state.loop_index} gated={state.awaiting_human} />
       </Panel>

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Validate the Omnigent lab spec with Omnigent's own parser + validator (the checks the server applies).
+cd "$(dirname "$0")/.." && exec "$HOME/.local/share/uv/tools/omnigent/bin/python" -c '
+import pathlib, sys
+from omnigent.spec.parser import parse
+from omnigent.spec.validator import validate
+r = validate(parse(pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "lab")))
+print("lab spec VALID" if r.valid else "lab spec INVALID:")
+for e in r.errors: print(" -", e)
+sys.exit(0 if r.valid else 1)' "$@"

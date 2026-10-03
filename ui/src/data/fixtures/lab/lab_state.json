@@ -1,14 +1,42 @@
 {
   "status": "RUNNING",
-  "active_experiment": { "id": "exp009_v2_floor_probe", "done": 20, "total": 20 },
+  "active_experiment": {
+    "id": "exp009_v2_floor_probe",
+    "done": 20,
+    "total": 20,
+    "plain_goal": "Testing whether pressure makes agents cut corners.",
+    "label": "exp009"
+  },
   "loop_stage": "result",
-  "reviewer": { "auditing": "D008" },
+  "reviewer": {
+    "auditing": "D008"
+  },
   "roles": [
-    { "role": "PI", "state": "IDLE", "detail": "Decided D008" },
-    { "role": "Statistician", "state": "WAITING", "detail": "exp009 readout pending" },
-    { "role": "Skeptic", "state": "IDLE", "detail": "Idle" },
-    { "role": "Methodology Reviewer", "state": "RUNNING", "detail": "Auditing D008" },
-    { "role": "Human", "state": "IDLE", "detail": "No decision required" }
+    {
+      "role": "PI",
+      "state": "IDLE",
+      "detail": "Decided D008"
+    },
+    {
+      "role": "Statistician",
+      "state": "WAITING",
+      "detail": "exp009 readout pending"
+    },
+    {
+      "role": "Skeptic",
+      "state": "IDLE",
+      "detail": "Idle"
+    },
+    {
+      "role": "Methodology Reviewer",
+      "state": "RUNNING",
+      "detail": "Auditing D008"
+    },
+    {
+      "role": "Human",
+      "state": "IDLE",
+      "detail": "No decision required"
+    }
   ],
   "escalations": []
 }
