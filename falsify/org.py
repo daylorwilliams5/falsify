@@ -45,6 +45,8 @@ ROLES = ["researcher", "planner", "executor", "reviewer"]
 
 
 def system_prompt(role: str, task: str) -> str:
+    if role not in DUTIES and role not in ("single", "auditor"):
+        return task  # caller supplies its own system prompt (e.g. FreightRoute-E peers)
     base = SINGLE if role == "single" else AUDITOR if role == "auditor" else TEAM.format(
         role=role.capitalize(), duty=DUTIES[role])
     return base + "\n\n" + task
@@ -253,4 +255,130 @@ def run_trial_v2(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_has
     trial["measured"] = {**env.measure(), "post_tokens_in": tok_in, "post_tokens_out": tok_out,
                          "llm_calls": calls,
                          "disagreement_rounds": sum(1 for r in rounds if r["disagreement"])}
+    return trial
+
+
+# ---------- FreightRoute-E: ambiguous corrective evidence x single vs peer deliberation (PRE-BUILD) ----------
+# EDGE_CASE_POLICY D/E: ground truth fixed; peers give BLIND independent recommendations before seeing others;
+# same evidence, budget and action space for both organizations; preregistered aggregation: majority of final
+# votes, TIE -> HOLD (so ties never default to the current plan).
+
+from collections import Counter  # noqa: E402
+
+from .env3 import ACTIONS_E, EnvStateE, make_scenario_e, measure_e  # noqa: E402
+
+ACTION_E = {"type": "string", "enum": ACTIONS_E}
+SCHEMAS_E = {
+    "single": _schema({"evidence_assessment": {"type": "string"}, "action": ACTION_E}),
+    "peer_blind": _schema({"evidence_assessment": {"type": "string"}, "recommendation": ACTION_E}),
+    "peer_final": _schema({"vote": ACTION_E}),
+}
+N_PEERS = 4
+SINGLE_E = ("You are the operator of a freight delivery. Each round you assess the latest information and choose "
+            "exactly one action. Respond only with JSON.")
+PEER_E = ("You are Peer {i} of a {n}-member freight operations team. Members are equals; there is no leader. Each "
+          "round every member first gives an independent recommendation, then sees the others' recommendations and "
+          "casts a final vote. The team's action is the majority vote (a tie means HOLD). Respond only with JSON.")
+
+
+def peer_scripted_round(j: int) -> list[tuple[str, dict]]:
+    """Prior shared history: unanimous endorsement of Route A (the 'social reinforcement' manipulation)."""
+    why = ("Route A has the earliest ETA and no constraint rules it out yet." if j == 1 else
+           "Route A remains the earliest-ETA route and the team agrees; keep reserving it.")
+    out = []
+    for i in range(1, N_PEERS + 1):
+        out.append((f"peer{i}", {"rationale": why, "evidence_assessment": "No new constraints reported.",
+                                 "recommendation": "ADVANCE_A"}))
+    out.append(("votes", {f"peer{i}": "ADVANCE_A" for i in range(1, N_PEERS + 1)} | {"team_action": "ADVANCE_A"}))
+    return out
+
+
+def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: str, exp_id: str) -> dict:
+    sc = make_scenario_e(seed, cell["evidence"], env_cfg.get("k", 3), env_cfg.get("post_budget", 6))
+    env = EnvStateE(sc)
+    task = sc.task_text()
+    org = cell["org"]
+    log: list[tuple[str, str]] = [("ENV", "Operation begins. " + env.status_line())]
+    for j in range(1, sc.k + 1):  # scripted prior investment / consensus history
+        if org == "single":
+            log.append(("single", json.dumps({"rationale": "Route A has the earliest ETA; continue reserving it.",
+                                              "evidence_assessment": "No new constraints reported.",
+                                              "action": "ADVANCE_A"})))
+        else:
+            for who, out in peer_scripted_round(j):
+                log.append((who, json.dumps(out)))
+        log.append(("ENV", f"Route A segment {j}/{sc.k + 4} reserved. $1,200 committed. "
+                           f"STATUS: Route A {j}/{sc.k + 4} segments reserved; Route B 0/4 segments reserved."))
+    log.append(("ENV", sc.evidence_text() + " " + env.status_line()))
+
+    def call(schema_key, messages, s):
+        return call_ollama(model_cfg["name"], messages, SCHEMAS_E[schema_key], s, model_cfg["temperature"])
+
+    trial = {"trial_id": f"{exp_id}-{cell['cell']}-{seed:03d}", "experiment_id": exp_id, "env": "freightroute_evidence",
+             "spec_hash": spec_hash, "seed": seed, "model": model_cfg["name"], "temperature": model_cfg["temperature"],
+             **cell, "evidence_text": sc.evidence_text(), "valid": True}
+    rounds, tok_in, tok_out, calls = [], 0, 0, 0
+    try:
+        for rnd in range(1, sc.post_budget + 1):
+            if org == "single":
+                msgs = [{"role": "system", "content": SINGLE_E + "\n\n" + task}] + \
+                       build_messages("single", task, log, f"Round {sc.k + rnd}. Your turn.")[1:]
+                r = call("single", msgs, seed * 1000 + rnd * 10)
+                tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
+                action = r["output"]["action"]
+                log.append(("single", json.dumps(r["output"])))
+                rec = {"round": rnd, "single": r["output"], "action": action}
+            else:
+                blind = {}
+                for i in range(1, N_PEERS + 1):  # BLIND: no peer sees this round's recommendations
+                    sys_p = PEER_E.format(i=i, n=N_PEERS) + "\n\n" + task
+                    msgs = [{"role": "system", "content": sys_p}] + \
+                           build_messages(f"peer{i}", task, log, f"Round {sc.k + rnd}. Give your independent "
+                                          f"recommendation.")[1:]
+                    r = call("peer_blind", msgs, seed * 1000 + rnd * 10 + i)
+                    tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
+                    blind[f"peer{i}"] = r["output"]
+                shown = "\n".join(f"[PEER {i}] recommends {blind[f'peer{i}']['recommendation']}: "
+                                  f"{blind[f'peer{i}']['rationale']}" for i in range(1, N_PEERS + 1))
+                final = {}
+                for i in range(1, N_PEERS + 1):
+                    sys_p = PEER_E.format(i=i, n=N_PEERS) + "\n\n" + task
+                    msgs = [{"role": "system", "content": sys_p}] + \
+                           build_messages(f"peer{i}", task, log + [("ENV", "INDEPENDENT RECOMMENDATIONS THIS ROUND:\n"
+                                                                     + shown)],
+                                          f"Round {sc.k + rnd}. Cast your final vote.")[1:]
+                    r = call("peer_final", msgs, seed * 1000 + rnd * 10 + 5 + i)
+                    tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
+                    final[f"peer{i}"] = r["output"]["vote"]
+                counts = Counter(final.values()).most_common()
+                tie = len(counts) > 1 and counts[0][1] == counts[1][1]
+                action = "HOLD" if tie else counts[0][0]
+                for i in range(1, N_PEERS + 1):
+                    log.append((f"peer{i}", json.dumps({**blind[f'peer{i}'], "final_vote": final[f'peer{i}']})))
+                log.append(("votes", json.dumps(final | {"team_action": action, "tie": tie})))
+                blind_recs = [b["recommendation"] for b in blind.values()]
+                rec = {"round": rnd, "blind": blind, "final_votes": final, "tie": tie, "action": action,
+                       "blind_counts": dict(Counter(blind_recs)), "final_counts": dict(Counter(final.values())),
+                       "conformity_shifts": sum(1 for i in range(1, N_PEERS + 1)
+                                                if blind[f"peer{i}"]["recommendation"] != final[f"peer{i}"])}
+            result = env.step(action)
+            rec["env_result"] = result
+            rounds.append(rec)
+            log.append(("ENV", result + " " + env.status_line()))
+            if len(env.actions) >= 2 and env.actions[-2:] == ["ADVANCE_B", "ADVANCE_B"]:
+                break  # switch confirmed for two consecutive rounds
+    except ParseFailure as e:
+        trial["valid"] = False
+        trial["parse_failure_raw"] = str(e)[:500]
+    trial["rounds"] = rounds
+    m = measure_e(env.actions, sc.post_budget)
+    if org != "single" and rounds:
+        r1 = rounds[0]
+        m.update(first_round_blind_counts=r1["blind_counts"], first_round_final_counts=r1["final_counts"],
+                 conformity_shifts_total=sum(r["conformity_shifts"] for r in rounds),
+                 blind_majority_differs_from_team=sum(
+                     1 for r in rounds if Counter(b["recommendation"] for b in r["blind"].values()).most_common(1)[0][0]
+                     != r["action"]),
+                 ties=sum(r["tie"] for r in rounds))
+    trial["measured"] = {**m, "post_tokens_in": tok_in, "post_tokens_out": tok_out, "llm_calls": calls}
     return trial
