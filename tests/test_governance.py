@@ -180,3 +180,67 @@ def test_unrecognized_or_changed_env_and_model_params_are_level2(lab):
 def test_frozen_specs_stay_level1(lab):
     assert cli.required_level("specs/exp009_v2_floor_probe.json")[0] == 1
     assert cli.required_level("specs/exp001_pilot.json")[0] == 1
+
+
+# ---- research pods ----
+@pytest.fixture
+def pods(lab, monkeypatch):
+    root, _ = lab
+    monkeypatch.setattr(cli, "PODS", root / "pods")
+    brief = root / "brief.json"; brief.write_text(json.dumps({"brief": "analyze exp009"}))
+    cli.main(["pod", "init", "analysis", "loop3", "--lead", "statistician",
+              "--members", "primary_analyst,independent_analyst,robustness_auditor", "--inputs", str(brief)])
+    return root
+
+
+def out(root, member, **extra):
+    f = root / f"{member}.json"
+    f.write_text(json.dumps({"member": member, "position": "p", "evidence_refs": ["r"], **extra}))
+    return str(f)
+
+
+def synthesis(root, **over):
+    s = {"conclusion": "c", "confidence": 0.6, "agreements": [], "disagreements": [], "evidence_refs": ["r"],
+         "unresolved_questions": [], "recommendation": "r",
+         "subagent_provenance": ["primary_analyst", "independent_analyst", "robustness_auditor"],
+         "experiment_id": "exp009_v2_floor_probe", "analysts_agree": True, "material_disagreements": []}
+    s.update(over)
+    f = root / "syn.json"; f.write_text(json.dumps(s)); return str(f)
+
+
+def test_pod_lifecycle_writes_required_files(pods):
+    root = pods
+    for m in ("primary_analyst", "independent_analyst", "robustness_auditor"):
+        cli.main(["pod", "output", "analysis", "loop3", m, out(root, m)])
+    cli.main(["pod", "submit", "analysis", "loop3", synthesis(root)])
+    d = root / "pods/analysis/loop3"
+    assert {p.name for p in d.iterdir()} >= {"status.json", "inputs.json", "subagent_outputs", "synthesis.json"}
+    st = json.loads((d / "status.json").read_text())
+    assert st["state"] == "COMPLETE" and st["summary"]["researchers"] == 4
+    assert all(v == "COMPLETE" for v in st["members"].values())
+
+
+def test_pod_rejects_incomplete_synthesis_and_bad_outputs(pods):
+    root = pods
+    with pytest.raises(cli.AuthorityError, match="missing"):
+        bad = root / "bad.json"; bad.write_text(json.dumps({"member": "independent_analyst"}))
+        cli.main(["pod", "output", "analysis", "loop3", "independent_analyst", str(bad)])
+    with pytest.raises(cli.AuthorityError, match="missing fields"):
+        s = json.loads(open(synthesis(root)).read()); s.pop("disagreements")
+        f = root / "s2.json"; f.write_text(json.dumps(s))
+        cli.main(["pod", "submit", "analysis", "loop3", str(f)])
+    cli.main(["pod", "output", "analysis", "loop3", "independent_analyst", out(root, "independent_analyst")])
+    with pytest.raises(cli.AuthorityError, match="provenance"):
+        cli.main(["pod", "submit", "analysis", "loop3", synthesis(root, subagent_provenance=["primary_analyst"])])
+    with pytest.raises(cli.AuthorityError, match="analysts_agree=true"):
+        cli.main(["pod", "submit", "analysis", "loop3", synthesis(root, material_disagreements=["P1 mismatch"])])
+
+
+def test_analyst_disagreement_blocks_strong_conclusions(pods):
+    root = pods
+    cli.main(["pod", "submit", "analysis", "loop3",
+              synthesis(root, analysts_agree=False, material_disagreements=["process_violations N_lo 1.2 vs 0.8"])])
+    did = decide(1, action="conclude")
+    with pytest.raises(cli.AuthorityError, match="materially disagree"):
+        cli.main(["conclude", "P1", "supported", "--evidence", "exp009_v2_floor_probe", "--note", "n", "--decision", did])
+    cli.main(["conclude", "P1", "inconclusive", "--evidence", "exp009_v2_floor_probe", "--note", "n", "--decision", did])
