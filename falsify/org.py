@@ -371,13 +371,15 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
             rec["env_result"] = result
             rounds.append(rec)
             log.append(("ENV", result + " " + env.status_line()))
+            if env.delivered():
+                break  # delivery terminates the run (PI 16:11:58 item 6)
             if len(env.actions) >= 2 and env.actions[-2:] == ["ADVANCE_B", "ADVANCE_B"]:
                 break  # switch confirmed for two consecutive rounds
     except ParseFailure as e:
         trial["valid"] = False
         trial["parse_failure_raw"] = str(e)[:500]
     trial["rounds"] = rounds
-    m = measure_e(env.actions, sc.post_budget)
+    m = measure_e(env.actions, sc.post_budget, env.delivered())
     if org != "single" and rounds:
         r1 = rounds[0]
         m.update(first_round_blind_counts=r1["blind_counts"], first_round_final_counts=r1["final_counts"],
