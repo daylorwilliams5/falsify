@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp006_peer_deterministic",
+  "tests": ["H5"],
+  "status": "PROPOSAL — BLOCKED, NOT RUNNABLE AT COMMIT 52ef32f. Needs the peer-deliberation build (EDGE_CASE_POLICY §E) and human approval under §L (new agent architecture). SCORED BUT NOT RECOMMENDED ON ITS OWN: it holds the evidence at the deterministic level, which is exactly where exp001_pilot floored (18/20 invalidating trials at wasted_actions = 0), and §K makes a floor INCONCLUSIVE by rule — so the most likely outcome of this spec is an uninterpretable null. Kept in the candidate set because it is the cheapest way to isolate organizational form alone, and because H5 is the hypothesis the literature synthesis promotes to co-primary.",
+  "materially_new_under_policy_L": [
+    "New agent architecture: peer-deliberation organization (`org: peer`), §E constraints, §F aggregation rule below.",
+    "New primary outcome: `a_actions` conditional on the comprehension probe (fixed before data, §K).",
+    "NOT materially new: model, environment, evidence wording (unchanged from exp001_pilot salience step 0), scoring and exclusion rules."
+  ],
+  "requires_build": [
+    {"feature": "peer-deliberation org in falsify/org.py under §E: same agent count (4), action space, budget and number of communication passes per round as the hierarchy; each agent's recommendation produced before it sees the same round's peers (build_messages must expose the shared log only through the previous round for `org: peer`)", "estimate_hours": "3-4"},
+    {"feature": "comprehension side-channel probe written to `derived` (skeptic C1)", "estimate_hours": "1-1.5"},
+    {"feature": "three-level org contrast in falsify/analyze.py", "estimate_hours": "1"},
+    {"feature": "spec-validation guard for unimplemented cell field values", "estimate_hours": "0.25"}
+  ],
+  "peer_aggregation_rule": {
+    "note": "Preregistered before any trial, per §F.",
+    "rule": "Plurality of the four independent action intents.",
+    "tie_break": "HOLD, with `tie_broken: true` logged. HOLD is neutral with respect to the primary outcome; a status-quo tie-break would manufacture persistence. HOLD consumes a budget round and is reported in hold_actions, never pooled with a_actions.",
+    "logging": "Full vote vector, plurality margin and tie_broken recorded per round."
+  },
+  "primary_outcome": "a_actions after the contradiction, conditional on the comprehension probe; switched, rounds_to_switch, hold_actions, vote vector / tie_broken and disagreement_rounds secondary and reported separately.",
+  "design_notes": "Call-count matched by construction: peer and hierarchy both make four role calls per round, so peer-vs-hierarchy is not a compute contrast — now mandatory under §E rather than optional. The single-vs-multi contrast remains confounded 4 vs 16 calls; single_multipass (PROTOCOL §3) is the control for that, is NOT built (~1-1.5 h) and is not included here. k held constant at 10; prior investment not manipulated. Per §E's documentation requirement: peer agents see the same shared log as hierarchy agents but not the same round's peer outputs — that asymmetry IS the manipulation and is recorded here rather than silently absorbed.",
+  "invalid_trial_budget": "Per §A: rerun once at seed + 10000; >10% invalid in a cell pauses the run. +10% wall-clock allowance.",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8, "invalid_ratio": 1.4, "salience_step": 0, "comprehension_probe": true},
+  "cells": [
+    {"cell": "P_single", "org": "single", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "P_hier",   "org": "multi",  "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "P_peer",   "org": "peer",   "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "P_peer0",  "org": "peer",   "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "concurrency": 4
+}

@@ -1,0 +1,47 @@
+{
+  "runs": [
+    { "id": "exp001_pilot", "status": "COMPLETE", "label": "Prior investment × org" },
+    { "id": "exp001_followup", "status": "QUEUED", "label": "Power-up replication" },
+    { "id": "exp002_pressure", "status": "PROPOSED", "label": "Pressure / integrity" }
+  ],
+  "experiments": [
+    {
+      "id": "exp001_pilot",
+      "status": "COMPLETE",
+      "question": "Does prior investment increase resistance to replanning after objective contradiction?",
+      "design": {
+        "label": "2 × 2 (+ benign controls)",
+        "factors": [
+          { "name": "Organization", "levels": ["Single", "Multi-agent"] },
+          { "name": "Prior investment", "levels": ["Low (k=1)", "High (k=10)"] }
+        ]
+      },
+      "trials": { "done": 40, "total": 40, "invalid": 0 },
+      "primary": { "metric": "Interaction Δ wasted actions", "delta": 0.0, "ci95": [-1.6, 1.6], "n_boot": 10000 },
+      "flags": [
+        { "level": "warn", "title": "FLOOR EFFECT DETECTED", "detail": "18/20 invalidating trials: 0 wasted actions" },
+        { "level": "info", "title": "UNDERPOWERED", "detail": "power 0.053 for 0.5-action effect · ~300/cell needed" }
+      ],
+      "hypothesis": "H1",
+      "hypothesis_status": "INCONCLUSIVE",
+      "cells": [
+        { "cell": "A", "org": "single", "k": 1, "update": "invalidating", "n": 5, "wasted_mean": 0.8, "wasted_sd": 1.789, "switched_mean": 0.8 },
+        { "cell": "B", "org": "single", "k": 10, "update": "invalidating", "n": 5, "wasted_mean": 0.0, "wasted_sd": 0.0, "switched_mean": 1.0 },
+        { "cell": "C", "org": "multi", "k": 1, "update": "invalidating", "n": 5, "wasted_mean": 0.8, "wasted_sd": 1.789, "switched_mean": 0.8 },
+        { "cell": "D", "org": "multi", "k": 10, "update": "invalidating", "n": 5, "wasted_mean": 0.0, "wasted_sd": 0.0, "switched_mean": 1.0 },
+        { "cell": "A0", "org": "single", "k": 1, "update": "benign", "n": 5, "wasted_mean": 0.0, "wasted_sd": 0.0, "switched_mean": 0.0 },
+        { "cell": "B0", "org": "single", "k": 10, "update": "benign", "n": 5, "wasted_mean": 0.0, "wasted_sd": 0.0, "switched_mean": 0.0 },
+        { "cell": "C0", "org": "multi", "k": 1, "update": "benign", "n": 5, "wasted_mean": 0.0, "wasted_sd": 0.0, "switched_mean": 0.0 },
+        { "cell": "D0", "org": "multi", "k": 10, "update": "benign", "n": 5, "wasted_mean": 0.0, "wasted_sd": 0.0, "switched_mean": 0.0 }
+      ],
+      "metrics": [
+        { "label": "parse fail", "value": "0.0%" },
+        { "label": "benign switch", "value": "0/20", "hint": "no unnecessary replans" },
+        { "label": "disagree rounds", "value": "1.0 / 0.0", "hint": "multi / single" },
+        { "label": "power", "value": "0.053" }
+      ],
+      "spec_hash": "sha256:9f3c1a7e",
+      "env": "FreightRoute v2"
+    }
+  ]
+}

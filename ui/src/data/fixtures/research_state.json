@@ -1,0 +1,117 @@
+{
+  "program": "Corrigibility in AI Organizations",
+  "question": "What makes multi-agent AI organizations resistant to correction after their shared plan has been invalidated?",
+  "refined_from": "Does prior investment increase resistance to replanning after objective contradiction?",
+  "current_experiment": "exp001_pilot",
+  "loop_index": 1,
+  "started_at": "2026-10-03T09:12:00",
+  "elapsed_seconds_at_snapshot": 8327,
+  "model": "claude-opus-5-5",
+  "omnigent": {
+    "status": "ONLINE",
+    "version": "0.9.2",
+    "workers": 6
+  },
+  "awaiting_human": true,
+  "evidence": [
+    {
+      "id": "ev1",
+      "kind": "MEASURED",
+      "text": "18/20 invalidating trials switched immediately — 0 wasted actions",
+      "source": "results/exp001_pilot.json",
+      "hypothesis": "H1"
+    },
+    {
+      "id": "ev2",
+      "kind": "MEASURED",
+      "text": "Wasted-action values observed: only {0, 4}; both persistence events on seed 5",
+      "source": "results/exp001_pilot.json",
+      "hypothesis": "H1"
+    },
+    {
+      "id": "ev3",
+      "kind": "DERIVED",
+      "text": "Interaction Δ = 0.0, 95% CI [−1.6, 1.6] (10k bootstrap)",
+      "source": "results/exp001_pilot_stats.json",
+      "hypothesis": "H1"
+    },
+    {
+      "id": "ev4",
+      "kind": "DERIVED",
+      "text": "Power 0.053 for a 0.5-action effect at n=5/cell; ~300/cell required",
+      "source": "statistician",
+      "hypothesis": "H1"
+    },
+    {
+      "id": "ev5",
+      "kind": "INFERRED",
+      "text": "Objective, unambiguous contradiction may suppress escalation entirely",
+      "source": "critiques/exp001_pilot_skeptic.md",
+      "hypothesis": "H2"
+    },
+    {
+      "id": "ev6",
+      "kind": "HYPOTHESIS",
+      "text": "Ambiguous evidence enables group persistence after invalidation",
+      "source": "critiques/lit_escalation_conditions.md",
+      "hypothesis": "H2"
+    }
+  ],
+  "next_decision": {
+    "status": "PROPOSED",
+    "proposed_by": "Experiment Designer",
+    "selected": "A",
+    "reason": "The current floor effect limits inference. Prior work differs most directly on evidence ambiguity.",
+    "rationale_path": "critiques/loop1_design.md",
+    "options": [
+      {
+        "id": "A",
+        "label": "Option A",
+        "title": "Evidence Ambiguity Follow-up",
+        "spec": "specs/exp005_evidence_x_org.json",
+        "tests": "Does multi-agent escalation emerge when contradictory evidence becomes uncertain?",
+        "info_gain": "HIGH",
+        "build": "~30 min",
+        "cost": "LOW",
+        "hypotheses": [
+          "H2",
+          "H1"
+        ],
+        "design": "2 × 3 · org × evidence clarity (objective / noisy / ambiguous)",
+        "trials": 120,
+        "falsified_if": "Persistence under ambiguous evidence does not exceed the objective condition (CI upper < 0.5 wasted actions).",
+        "short": "Evidence ambiguity",
+        "one_line": "Does escalation appear when the contradicting evidence is uncertain?"
+      },
+      {
+        "id": "B",
+        "label": "Option B",
+        "title": "Pressure / Integrity Study",
+        "spec": "specs/exp003_v2_pressure.json",
+        "tests": "Does operational pressure cause agents to sacrifice process integrity?",
+        "info_gain": "MEDIUM",
+        "build": "READY",
+        "cost": "LOW",
+        "hypotheses": [
+          "P1",
+          "P2"
+        ],
+        "design": "2 × 2 · pressure × auditor",
+        "trials": 80,
+        "falsified_if": "Integrity violations do not rise under score-target pressure.",
+        "short": "Pressure / integrity",
+        "one_line": "Does operational pressure erode process integrity?"
+      }
+    ]
+  },
+  "question_short": "What makes multi-agent AI systems resistant to correction?",
+  "latest_result": {
+    "experiment": "exp001_pilot",
+    "label": "exp001",
+    "headline": "Prior investment did not produce a detectable effect.",
+    "finding": "18 of 20 trials corrected immediately.",
+    "verdict": "Inconclusive",
+    "reason": "floor effect"
+  },
+  "current_phase": "critique"
+}

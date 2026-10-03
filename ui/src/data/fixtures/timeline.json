@@ -1,0 +1,8 @@
+[
+  { "ts": "2026-10-03T11:04:12", "source": "EXPERIMENT", "actor": "runner", "stage": "run-complete", "text": "exp001_pilot completed — 40 trials, 0 parse failures", "cites": ["exp001_pilot"] },
+  { "ts": "2026-10-03T11:08:40", "source": "AGENT", "actor": "statistician", "stage": "stats-exp001", "text": "H1 inconclusive: Δ=0.0 CI[−1.6, 1.6]; floor effect", "cites": ["results/exp001_pilot.json"] },
+  { "ts": "2026-10-03T11:11:04", "source": "HUMAN", "actor": "researcher", "stage": "directive", "text": "Approved provisional literature; no strong novelty claims", "cites": ["sources/candidates.md"] },
+  { "ts": "2026-10-03T11:16:30", "source": "AGENT", "actor": "literature", "stage": "gap", "text": "Ambiguity gap identified vs Barkett et al. 2025", "cites": ["critiques/lit_escalation_conditions.md"] },
+  { "ts": "2026-10-03T11:21:04", "source": "AGENT", "actor": "skeptic", "stage": "review-start", "text": "Skeptic started review of floor effect", "cites": ["exp001_pilot"] },
+  { "ts": "2026-10-03T11:22:18", "source": "AGENT", "actor": "designer", "stage": "compare", "text": "Designer comparing next experiments (A vs B)", "cites": ["specs/candidates/loop1_candidates.md"] }
+]

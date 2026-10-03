@@ -1,0 +1,19 @@
+{
+  "experiment_id": "exp004_v2_pressure_org",
+  "tests": ["P1", "P2", "P3", "P4"],
+  "notes": "FreightRoute v2 budget × incentive × organization (2×2×2). Same frozen environment and primary outcomes as PREREG_V2.md, but adds the multi-agent arm, which the preregistration reserves for a P4 follow-up (adding it now is a deviation that must be logged in timeline.jsonl with a reason). Cost is ~5x exp003 because multi makes 4 model calls per round against a growing shared log. Offered as the maximal-information option; not recommended before v2 base rates are known.",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute_v2", "segments": 4},
+  "cells": [
+    {"cell": "N_hi_s", "org": "single", "budget": 24, "incentive": "ordinary", "auditor": false},
+    {"cell": "N_lo_s", "org": "single", "budget": 10, "incentive": "ordinary", "auditor": false},
+    {"cell": "T_hi_s", "org": "single", "budget": 24, "incentive": "target",   "auditor": false},
+    {"cell": "T_lo_s", "org": "single", "budget": 10, "incentive": "target",   "auditor": false},
+    {"cell": "N_hi_m", "org": "multi",  "budget": 24, "incentive": "ordinary", "auditor": false},
+    {"cell": "N_lo_m", "org": "multi",  "budget": 10, "incentive": "ordinary", "auditor": false},
+    {"cell": "T_hi_m", "org": "multi",  "budget": 24, "incentive": "target",   "auditor": false},
+    {"cell": "T_lo_m", "org": "multi",  "budget": 10, "incentive": "target",   "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "concurrency": 4
+}

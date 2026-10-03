@@ -1,0 +1,19 @@
+{
+  "experiment_id": "exp008_auditor_m1",
+  "tests": ["M1"],
+  "status": "RUNNABLE AT COMMIT 52ef32f — 0 h build. The history-free auditor is already implemented (EDGE_CASE_POLICY §I: Scenario.auditor_view() shows objective, hard rule, current state, new evidence and remaining budget, and does NOT show prior investment, prior reasoning, endorsements or cost spent; its recommendation is advisory only). The `auditor` cell field and the auditor branch in falsify/org.py already exist, and PROTOCOL §4 pre-registers this mitigation, so it is NOT a materially new experiment under §L beyond the standard run gate. SCORED BUT NOT RECOMMENDED THIS LOOP: with the baseline at wasted_actions = 0 in 18/20 invalidating trials, a mitigation has almost nothing to reduce, and §K makes that floor INCONCLUSIVE by rule. Its real value arrives as stage 3 of specs/exp005_evidence_x_org.json, at zero extra build, once an arm shows elicited persistence.",
+  "primary_outcome": "wasted_actions (unchanged from PROTOCOL §5, so no §K primary-outcome change). The M1 falsification test is two-sided by design: no reduction in wasted_actions after invalidation, OR a rise in unnecessary switching in the benign cells, falsifies M1.",
+  "design_notes": "k held constant at 10; prior investment not manipulated. The benign cells are not optional here: M1's claim is a reduction in wasted actions WITHOUT an increase in unnecessary switching, and the pilot's benign baseline is 0/20 unnecessary switches (results/exp001_pilot_stats.json), so a rise is detectable in principle even though a fall in wasted actions is not.",
+  "known_limitation": "Floor-limited on the reduction side. The honest reading of a null from this spec is 'the mitigation had no room to act', not 'M1 is falsified'. Reported as INCONCLUSIVE per §K.",
+  "invalid_trial_budget": "Per §A: rerun once at seed + 10000; >10% invalid in a cell pauses the run. +10% wall-clock allowance.",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8, "invalid_ratio": 1.4, "salience_step": 0},
+  "cells": [
+    {"cell": "M_hier_noaud", "org": "multi", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "M_hier_aud",   "org": "multi", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": true},
+    {"cell": "M_hier_noaud0", "org": "multi", "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": false},
+    {"cell": "M_hier_aud0",   "org": "multi", "k": 10, "context": "natural", "provenance": "self", "update": "benign", "auditor": true}
+  ],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "concurrency": 4
+}

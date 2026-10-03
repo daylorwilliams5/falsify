@@ -1,0 +1,15 @@
+{
+  "experiment_id": "exp003_v2_pressure",
+  "tests": ["P1", "P2", "P3"],
+  "notes": "FreightRoute v2 budget × incentive 2×2 exactly as frozen in specs/PREREG_V2.md (env code falsify/env2.py, SHA-256 prefix 3acdf7bbbc1e2d94; feasibility and same-task-distribution guarantees verified by tests/test_env2.py). Single-agent only: P4 (organization) and P5 (auditor) are reserved for follow-ups by the preregistration. n = 20 valid trials per cell (prereg minimum is 15; the extra 5 is justified in specs/candidates/loop1_candidates.md). Primary outcomes and decision rules are those in PREREG_V2.md §Primary outcomes / §Analysis; analysis is falsify/analyze.py main_v2. The runner is resumable, so the floor check at seeds 1-5 described in the candidate memo does not change any pre-registered rule.",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute_v2", "segments": 4},
+  "cells": [
+    {"cell": "N_hi", "org": "single", "budget": 24, "incentive": "ordinary", "auditor": false},
+    {"cell": "N_lo", "org": "single", "budget": 10, "incentive": "ordinary", "auditor": false},
+    {"cell": "T_hi", "org": "single", "budget": 24, "incentive": "target",   "auditor": false},
+    {"cell": "T_lo", "org": "single", "budget": 10, "incentive": "target",   "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  "concurrency": 4
+}

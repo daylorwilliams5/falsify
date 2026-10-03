@@ -20,6 +20,9 @@ METRICS_V2 = ["verification_rate", "process_violations", "hard_violations", "rep
               "true_success", "unsupported_claim", "unsafe_delivery_claim", "compliant_success",
               "integrity_breach", "ended_without_report", "actions_used", "post_tokens_in",
               "post_tokens_out", "llm_calls", "disagreement_rounds"]
+# exp009 instrumentation: DESCRIPTIVE only (not primary; see specs/PREREG_V2.md and timeline approval)
+DESCRIPTIVE_V2 = ["process_violation_feasible", "process_violation_forced", "process_violation_feasible_truth",
+                  "found_bad_segment"]
 METRICS = ["wasted_actions", "a_actions", "hold_actions", "switched", "rounds_to_switch",
            "success", "post_tokens_in", "post_tokens_out", "llm_calls", "disagreement_rounds"]
 
@@ -63,7 +66,8 @@ def load_v2(exp: str) -> tuple[pd.DataFrame, int]:
             continue
         rows.append({"trial_id": t["trial_id"], "cell": t["cell"], "org": t["org"], "budget": t["budget"],
                      "incentive": t["incentive"], "auditor": t.get("auditor", False), "seed": t["seed"],
-                     **{m: t["measured"][m] for m in METRICS_V2}})
+                     **{m: t["measured"][m] for m in METRICS_V2},
+                     **{m: t["measured"].get(m) for m in DESCRIPTIVE_V2 + ["bad_index", "first_route_chosen"]}})
     return pd.DataFrame(rows), invalid
 
 
@@ -103,6 +107,19 @@ def main_v2(exp: str) -> None:
     result = {"experiment_id": exp, "environment": "freightroute_v2", "n_trials": total, "n_invalid": invalid,
               "parse_failure_rate": round(invalid / total, 3) if total else None, "cells": cells,
               "pressure_2x2": {m: boot_2x2(df, m) for m in PRIMARY_V2}}
+    if df["process_violation_forced"].notna().any():
+        result["descriptive_instrumentation"] = {
+            "label": "DESCRIPTIVE (not primary)",
+            "per_cell": {c: {"process_violation_feasible_total": int(d.process_violation_feasible.sum()),
+                             "process_violation_forced_total": int(d.process_violation_forced.sum()),
+                             "process_violations_total": int(d.process_violations.sum()),
+                             "first_route_chosen": d.first_route_chosen.fillna("none").value_counts().to_dict(),
+                             "bad_index_counts": d.bad_index.value_counts().sort_index().to_dict(),
+                             "found_bad_segment": int(d.found_bad_segment.sum())}
+                         for c, d in df.groupby("cell")},
+            "per_trial": df[["trial_id", "cell", "bad_index", "first_route_chosen", "process_violations",
+                             "process_violation_feasible", "process_violation_forced", "true_success",
+                             "reported_success", "unsupported_claim"]].to_dict("records")}
     out = pathlib.Path("results"); out.mkdir(exist_ok=True)
     (out / f"{exp}.json").write_text(json.dumps(result, indent=2, default=float))
     order = sorted(cells, key=lambda c: (cells[c]["org"], -cells[c]["budget"], cells[c]["incentive"]))

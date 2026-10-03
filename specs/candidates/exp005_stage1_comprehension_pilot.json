@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp005_evidence_x_org",
+  "tests": ["EVIDENCE-AMBIGUITY"],
+  "status": "PROPOSAL — BLOCKED, NOT RUNNABLE AT COMMIT 52ef32f. This is STAGE 1 of specs/exp005_evidence_x_org.json: the comprehension/parse pilot that EDGE_CASE_POLICY §D explicitly permits as a first stage. Same experiment_id on purpose, so the resumable runner appends stage 2 to the same trial file. Requires human approval under §L (new independent variable: evidence ambiguity) but NOT the peer-deliberation build.",
+  "materially_new_under_policy_L": [
+    "New independent variable: evidence ambiguity (`evidence`), three levels exactly as pre-approved in §D.",
+    "New primary outcome: `a_actions` conditional on the comprehension probe (fixed before data, §K).",
+    "NOT materially new: model, environment family, scoring rules, exclusion rules, agent architecture (single and hierarchy only; no peer org in this stage)."
+  ],
+  "requires_build": [
+    {"feature": "evidence ambiguity levels in falsify/env.py (deterministic | probabilistic | conflicting; ground truth fixed per seed; only the evidence shown varies; wording frozen before trials) per §D", "estimate_hours": "2-3"},
+    {"feature": "comprehension/parse pilot support and comprehension side-channel probe written to `derived` (skeptic C1)", "estimate_hours": "1-1.5"},
+    {"feature": "ambiguity contrast in falsify/analyze.py", "estimate_hours": "1"},
+    {"feature": "spec-validation guard for unimplemented cell field values", "estimate_hours": "0.25"}
+  ],
+  "primary_outcome": "a_actions after the contradiction, conditional on the comprehension probe. Secondary and never pooled with it: switched, rounds_to_switch, hold_actions, disagreement_rounds, executor_overridden.",
+  "go_no_go": "Descriptive only, per §K (a 5-seed stage cannot support a mechanism claim and a floor is INCONCLUSIVE by rule): (1) all three evidence texts parse and the parse-failure rate stays under 5%; (2) the comprehension probe shows the bridge is bound to the correct route, so any continued commitment is not the route mis-binding observed in exp001_pilot-A-005 / C-005 — which, per §K, is not itself evidence of any mechanism and is cited here only as a measurement hazard to rule out; (3) does any arm leave the exp001_pilot floor (18/20 invalidating trials at wasted_actions = 0)? If no arm leaves the floor, the ambiguity explanation of the floor is reported as not supported at n=5 and the recommended next build is the pull-toward-A payoff change (skeptic C2, a further §L material change), NOT more evidence variants.",
+  "design_notes": "k held constant at 10; prior investment NOT manipulated (H1 is inconclusive and is not being retried). Ground truth identical across the three evidence levels within a seed.",
+  "invalid_trial_budget": "Per §A: rerun once at seed + 10000; a cell above 10% invalid writes results/<exp>_PAUSE.json and stops for a human decision. Wall-clock estimates carry a +10% allowance.",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7, "think": false},
+  "environment": {"name": "freightroute", "remaining_a_segments": 4, "b_segments": 4, "post_budget": 8, "invalid_ratio": 1.4, "salience_step": 0, "comprehension_probe": true},
+  "cells": [
+    {"cell": "DET_single", "org": "single", "evidence": "deterministic", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "PRB_single", "org": "single", "evidence": "probabilistic", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "CON_single", "org": "single", "evidence": "conflicting",   "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "DET_hier",   "org": "multi",  "evidence": "deterministic", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "PRB_hier",   "org": "multi",  "evidence": "probabilistic", "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false},
+    {"cell": "CON_hier",   "org": "multi",  "evidence": "conflicting",   "k": 10, "context": "natural", "provenance": "self", "update": "invalidating", "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5],
+  "concurrency": 4
+}

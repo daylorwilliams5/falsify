@@ -1,0 +1,252 @@
+{
+  "agents": [
+    {
+      "id": "literature",
+      "name": "Literature Agent",
+      "role": "reads & synthesizes prior work",
+      "state": "COMPLETE",
+      "task": "Gap analysis on escalation conditions",
+      "artifact": "literature_gap_001.md",
+      "updated": "11:16",
+      "tokens": 48210
+    },
+    {
+      "id": "scientist",
+      "name": "Behavioral Scientist",
+      "role": "forms competing hypotheses",
+      "state": "COMPLETE",
+      "task": "Registered H1–H5",
+      "artifact": "hypotheses.json",
+      "updated": "10:41",
+      "tokens": 21877
+    },
+    {
+      "id": "statistician",
+      "name": "Statistician",
+      "role": "pre-registered analysis",
+      "state": "COMPLETE",
+      "task": "H1 interaction bootstrap",
+      "artifact": "exp001_analysis.json",
+      "updated": "11:08",
+      "tokens": 9340
+    },
+    {
+      "id": "skeptic",
+      "name": "Skeptic",
+      "role": "attacks conclusions",
+      "state": "RUNNING",
+      "task": "Analyze floor effect",
+      "artifact": "exp001_pilot_skeptic.md",
+      "updated": "11:21",
+      "tokens": 15502
+    },
+    {
+      "id": "designer",
+      "name": "Experiment Designer",
+      "role": "chooses next experiment",
+      "state": "RUNNING",
+      "task": "Choose next experiment",
+      "artifact": "loop1_candidates.md",
+      "updated": "11:22",
+      "tokens": 30115
+    },
+    {
+      "id": "auditor",
+      "name": "Auditor",
+      "role": "history-free integrity check",
+      "state": "IDLE",
+      "task": "Awaiting next run",
+      "updated": "—"
+    }
+  ],
+  "loop": [
+    {
+      "id": "lit",
+      "label": "Literature",
+      "agent": "literature",
+      "state": "COMPLETE",
+      "task": "Gap analysis",
+      "artifact": "Identified evidence ambiguity as candidate mechanism"
+    },
+    {
+      "id": "sci",
+      "label": "Scientist",
+      "agent": "scientist",
+      "state": "COMPLETE",
+      "task": "Competing hypotheses",
+      "artifact": "5 mechanisms registered (H1–H5)"
+    },
+    {
+      "id": "des",
+      "label": "Experiment Designer",
+      "agent": "designer",
+      "state": "RUNNING",
+      "task": "Ambiguity follow-up vs pressure study",
+      "artifact": "loop1_candidates.md · 6 specs"
+    },
+    {
+      "id": "run",
+      "label": "Runner",
+      "agent": "runner",
+      "state": "COMPLETE",
+      "task": "exp001_pilot · FreightRoute v2",
+      "artifact": "40/40 trials · 0 parse failures"
+    },
+    {
+      "id": "stat",
+      "label": "Statistician",
+      "agent": "statistician",
+      "state": "COMPLETE",
+      "task": "Pre-registered H1 test",
+      "artifact": "H1 inconclusive; floor effect detected"
+    },
+    {
+      "id": "skep",
+      "label": "Skeptic",
+      "agent": "skeptic",
+      "state": "RUNNING",
+      "task": "Testing alternative explanations",
+      "artifact": "3 rival accounts under review"
+    },
+    {
+      "id": "next",
+      "label": "Next Experiment",
+      "agent": "director",
+      "state": "QUEUED",
+      "task": "Awaiting human approval",
+      "artifact": "exp005_evidence_x_org proposed"
+    }
+  ],
+  "trace": {
+    "root": "skeptic.review(exp001_pilot)",
+    "agent": "Skeptic",
+    "started": "11:21:04",
+    "spans": [
+      {
+        "id": "s0",
+        "depth": 0,
+        "kind": "agent",
+        "name": "skeptic.review",
+        "detail": "exp001_pilot",
+        "start": 0,
+        "duration": null,
+        "state": "RUNNING"
+      },
+      {
+        "id": "s1",
+        "depth": 1,
+        "kind": "read",
+        "name": "read_artifact",
+        "detail": "results/exp001_pilot.json",
+        "start": 0.4,
+        "duration": 0.2,
+        "state": "COMPLETE"
+      },
+      {
+        "id": "s2",
+        "depth": 1,
+        "kind": "read",
+        "name": "read_artifact",
+        "detail": "results/exp001_pilot_stats.json",
+        "start": 0.7,
+        "duration": 0.2,
+        "state": "COMPLETE"
+      },
+      {
+        "id": "s3",
+        "depth": 1,
+        "kind": "llm",
+        "name": "enumerate_rivals",
+        "detail": "3 alternative explanations",
+        "start": 1.1,
+        "duration": 21.6,
+        "state": "COMPLETE"
+      },
+      {
+        "id": "s4",
+        "depth": 2,
+        "kind": "tool",
+        "name": "check_seed_dependence",
+        "detail": "both events → seed 5",
+        "start": 23.0,
+        "duration": 4.2,
+        "state": "COMPLETE"
+      },
+      {
+        "id": "s5",
+        "depth": 2,
+        "kind": "tool",
+        "name": "check_ceiling_of_contradiction",
+        "detail": "objective signal ⇒ trivial switch",
+        "start": 27.6,
+        "duration": 11.8,
+        "state": "COMPLETE"
+      },
+      {
+        "id": "s6",
+        "depth": 2,
+        "kind": "llm",
+        "name": "assess_task_salience",
+        "detail": "is the A route too obviously dead?",
+        "start": 39.8,
+        "duration": null,
+        "state": "RUNNING"
+      },
+      {
+        "id": "s7",
+        "depth": 1,
+        "kind": "write",
+        "name": "write_critique",
+        "detail": "critiques/exp001_pilot_skeptic.md",
+        "start": 0,
+        "duration": 0,
+        "state": "QUEUED"
+      }
+    ]
+  },
+  "phases": [
+    {
+      "id": "literature",
+      "label": "Literature",
+      "state": "COMPLETE"
+    },
+    {
+      "id": "hypothesis",
+      "label": "Hypothesis",
+      "state": "COMPLETE"
+    },
+    {
+      "id": "experiment",
+      "label": "Experiment",
+      "state": "COMPLETE"
+    },
+    {
+      "id": "result",
+      "label": "Result",
+      "state": "COMPLETE"
+    },
+    {
+      "id": "critique",
+      "label": "Critique",
+      "state": "RUNNING",
+      "note": "Skeptic is testing alternative explanations for the floor effect"
+    },
+    {
+      "id": "next",
+      "label": "Next experiment",
+      "state": "QUEUED"
+    }
+  ],
+  "focus": [
+    {
+      "agent": "Skeptic",
+      "verb": "analyzing",
+      "state": "RUNNING"
+    },
+    {
+      "agent": "Designer",
+      "verb": "deciding",
+      "state": "RUNNING"
+    }
+  ]
+}
