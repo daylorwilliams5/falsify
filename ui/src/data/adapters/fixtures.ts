@@ -6,10 +6,11 @@ import type {
 
 import mandate from '../fixtures/lab/mandate.json';
 import budget from '../fixtures/lab/results/budget.json';
-import exp001 from '../fixtures/lab/results/exp001_pilot.json';
+import exp009 from '../fixtures/lab/results/exp009_v2_floor_probe.json';
+import timelineRaw from '../fixtures/lab/timeline.jsonl?raw';
 import labState from '../fixtures/lab/lab_state.json';
 import escalationExample from '../fixtures/lab/escalation_example.json';
-import { normalizeDecision } from './normalize';
+import { normalizeDecision, parseTimeline } from './normalize';
 import programs from '../fixtures/programs.json';
 import plans from '../fixtures/plans.json';
 import researchState from '../fixtures/corrigibility/research_state.json';
@@ -48,8 +49,9 @@ export const fixtureSource: LabDataSource = {
     if (q.get('escalation')) state.escalations = [escalationExample as Escalation];
     return {
       mandate: mandate as Mandate,
-      finding: exp001 as Finding,
+      finding: exp009 as Finding,
       decisions,
+      events: parseTimeline(timelineRaw),
       budget: budget as Budget,
       state,
     };

@@ -1,26 +1,30 @@
 {
+  "as_of": "2026-10-03T13:00:51",
   "status": "RUNNING",
-  "active_experiment": {
-    "id": "exp009_v2_floor_probe",
-    "done": 20,
-    "total": 20,
-    "plain_goal": "Testing whether pressure makes agents cut corners.",
-    "label": "exp009"
+  "loop": 3,
+  "loop_stage": "design",
+  "latest_finding": "exp009_v2_floor_probe",
+  "next": {
+    "plain_goal": "Rebuilding the test so it can tell a chosen shortcut from a forced one.",
+    "stage_label": "Loop 3 · design pod working",
+    "rule_intro": "Rule set before the rebuild starts:",
+    "if_works": "Run a 20-trial pilot",
+    "if_fails": "Drop this test and pivot"
   },
-  "loop_stage": "result",
   "reviewer": {
-    "auditing": "D008"
+    "auditing": null,
+    "active": true
   },
   "roles": [
     {
       "role": "PI",
       "state": "IDLE",
-      "detail": "Decided D008"
+      "detail": "Opened Loop 3"
     },
     {
-      "role": "Statistician",
-      "state": "WAITING",
-      "detail": "exp009 readout pending"
+      "role": "Design pod",
+      "state": "RUNNING",
+      "detail": "Designing FreightRoute v2.1"
     },
     {
       "role": "Skeptic",
@@ -29,8 +33,8 @@
     },
     {
       "role": "Methodology Reviewer",
-      "state": "RUNNING",
-      "detail": "Auditing D008"
+      "state": "WAITING",
+      "detail": "Waiting for the design"
     },
     {
       "role": "Human",
@@ -38,5 +42,58 @@
       "detail": "No decision required"
     }
   ],
-  "escalations": []
+  "process": [
+    {
+      "id": "read",
+      "caption": "43 sources reviewed. Closest prior work: Barkett et al., 2025."
+    },
+    {
+      "id": "hypothesis",
+      "caption": "12 hypotheses registered. None ruled out yet."
+    },
+    {
+      "id": "experiment",
+      "caption": "2 experiments, 60 trials. Now rebuilding the test environment."
+    },
+    {
+      "id": "challenge",
+      "caption": "The independent reviewer failed 2 decisions. The PI corrected both."
+    },
+    {
+      "id": "next",
+      "caption": "If the rebuilt test fails, the lab drops it and pivots."
+    }
+  ],
+  "escalations": [],
+  "loops": [
+    {
+      "n": 1,
+      "label": "Loop 1",
+      "sub": "Director-led",
+      "start": "2026-10-03T11:05:43",
+      "end": "2026-10-03T12:04:55"
+    },
+    {
+      "n": 2,
+      "label": "Loop 2",
+      "sub": "PI + independent review",
+      "start": "2026-10-03T12:04:55",
+      "end": "2026-10-03T12:36:41",
+      "ended": "Frozen by the human"
+    },
+    {
+      "n": 3,
+      "label": "Loop 3",
+      "sub": "Pods",
+      "start": "2026-10-03T12:37:39",
+      "end": null
+    }
+  ],
+  "runs": [
+    {
+      "id": "exp009",
+      "start": "2026-10-03T12:06:09",
+      "end": "2026-10-03T12:21:34"
+    }
+  ]
 }

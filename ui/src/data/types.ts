@@ -274,6 +274,9 @@ export interface PIDecision {
   code_hashes?: Record<string, string>;
 }
 
+export type TrialOutcome = 'measured' | 'stuck' | 'breach';
+
+// results/<exp>.json, reduced to what the Overview shows
 export interface Finding {
   experiment_id: string;
   label: string;
@@ -282,9 +285,9 @@ export interface Finding {
   status: HypothesisStatus;
   status_reason: string;
   plain_reason: string;
-  invalidating_trials: number;
-  corrected_immediately: number;
-  persistence_events: { trial: string; seed: number; wasted_actions: number }[];
+  figure: { value: number; total: number; unit: string };
+  trials: { trial: string; cell: string; condition: string; outcome: TrialOutcome; detail: string }[];
+  decision?: string;
 }
 
 // results/budget.json — written by `falsify budget`
@@ -305,12 +308,31 @@ export interface RoleStatus { role: string; state: 'RUNNING' | 'WAITING' | 'IDLE
 export interface Escalation { id: string; decision: string; title: string; why: string; detail: string }
 
 export interface LabState {
+  as_of: string;
   status: 'RUNNING' | 'PAUSED';
-  active_experiment: { id: string; label: string; plain_goal: string; done: number; total: number };
+  loop: number;
   loop_stage: string;
-  reviewer: { auditing: string | null };
+  latest_finding: string;
+  next: { plain_goal: string; stage_label: string; rule_intro: string; if_works: string; if_fails: string };
+  reviewer: { auditing: string | null; active: boolean };
   roles: RoleStatus[];
+  process: { id: string; caption: string }[];
+  loops: { n: number; label: string; sub: string; start: string; end: string | null; ended?: string }[];
+  runs: { id: string; start: string; end: string }[];
   escalations: Escalation[];
+}
+
+// timeline.jsonl — one event per line. Most lines use agent/stage/text;
+// a few older ones use actor/event/reason.
+export interface LabEvent {
+  i: number;
+  ts: string;
+  actor: string;
+  stage: string;
+  text: string;
+  cites: string[];
+  decision_id?: string;
+  verdict?: Verdict;
 }
 
 /** Everything the Overview needs: the latest of each object, nothing more. */
@@ -318,6 +340,7 @@ export interface LabView {
   mandate: Mandate;
   finding: Finding;
   decisions: PIDecision[]; // oldest first
+  events: LabEvent[]; // oldest first
   budget: Budget;
   state: LabState;
 }

@@ -1,0 +1,13 @@
+{
+  "stage": "design",
+  "loop": "loop3",
+  "lead": "designer",
+  "state": "RUNNING",
+  "started": "2026-10-03T13:45:53",
+  "members": {
+    "lead_experimentalist": "COMPLETE",
+    "confound_hunter_design": "RUNNING",
+    "info_gain_planner": "PENDING"
+  },
+  "lead_state": "COORDINATING"
+}

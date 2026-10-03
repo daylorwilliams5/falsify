@@ -69,7 +69,7 @@ export function AgentsPage({ lab, base, view }: { lab: LabSnapshot; base: string
       </section>
       <section className="lab-sec-top">
         <div className="label">Research budget</div>
-        <BudgetStrip b={view.budget} mandate={view.mandate} active={view.state.active_experiment} />
+        <BudgetStrip b={view.budget} mandate={view.mandate} />
       </section>
       <OverrideControl />
       <Panel title="Scientific loop" className="loop-panel">

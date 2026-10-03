@@ -1,4 +1,4 @@
-import type { PIDecision, Review, Verdict } from './types';
+import type { LabEvent, PIDecision, Review, Verdict } from './types';
 
 // Derivations from raw artifacts. No text truncation: if a record lacks the
 // structured field, the UI shows less rather than an invented summary.
@@ -55,7 +55,7 @@ export const OUTCOME_LABEL: Record<Outcome, string> = {
   ACCEPTED: 'Autonomously accepted',
   CORRECTED: 'Corrected after review',
   ESCALATED: 'Escalated to human',
-  IN_REVIEW: 'In review',
+  IN_REVIEW: 'Not yet reviewed',
   OPEN: 'Awaiting correction',
 };
 
@@ -95,3 +95,53 @@ export const PLAIN_STATUS: Record<string, string> = {
   INCONCLUSIVE: 'Not enough evidence yet',
   NEEDS_REPLICATION: 'Needs to be repeated',
 };
+
+// ---------- timeline ----------
+export const LANES = [
+  { id: 'human', label: 'Human', actors: ['human'] },
+  { id: 'lead', label: 'Lab lead', actors: ['PI', 'director', 'falsify'] },
+  { id: 'reviewer', label: 'Independent reviewer', actors: ['methodology_reviewer'] },
+  { id: 'specialists', label: 'Specialist agents', actors: ['literature', 'scientist', 'designer', 'skeptic', 'statistician', 'auditor'] },
+  { id: 'experiments', label: 'Experiments', actors: ['runner', 'statistician-tool'] },
+  { id: 'engineering', label: 'Engineering', actors: ['engineer'] },
+] as const;
+export type LaneId = (typeof LANES)[number]['id'];
+
+export const laneOf = (actor: string): LaneId =>
+  (LANES.find((l) => (l.actors as readonly string[]).includes(actor))?.id ?? 'specialists');
+
+export type EventKind = 'decision' | 'review-fail' | 'review' | 'directive' | 'run' | 'fix' | 'note';
+
+export function eventKind(e: LabEvent): EventKind {
+  if (e.stage === 'pi_decision') return 'decision';
+  if (e.stage === 'methodology_review') return e.verdict === 'FAIL' || e.verdict === 'BLOCK' ? 'review-fail' : 'review';
+  if (e.actor === 'human') return 'directive';
+  if (e.stage.startsWith('experiment') || e.actor === 'runner' || e.actor === 'statistician-tool') return 'run';
+  if (e.stage.includes('fix') || e.stage === 'correction') return 'fix';
+  return 'note';
+}
+
+const firstSentence = (t: string) => t.split(/(?<=[.!?])\s/)[0];
+
+/** A readable line for an event: decision/review summaries when they exist, else the first sentence. */
+export function eventHeadline(e: LabEvent, decisions: PIDecision[]): string {
+  const d = e.decision_id ? decisions.find((x) => x.id === e.decision_id) : undefined;
+  if (e.stage === 'pi_decision' && d?.summary) return d.summary;
+  if (e.stage === 'methodology_review' && e.decision_id) {
+    const r = d?.reviews.find((x) => x.ts.slice(0, 19) === e.ts.slice(0, 19));
+    const hl = r?.highlights?.[0];
+    return `${e.decision_id} reviewed: ${e.verdict ? verdictLabel(e.verdict) : ''}${hl ? `. ${hl}` : ''}`;
+  }
+  return firstSentence(e.text);
+}
+
+/** Events tied to `id`: the decision, its reviews, what it responds to and what responds to it. */
+export function chainOf(id: string, decisions: PIDecision[]): Set<string> {
+  const ids = new Set([id]);
+  const d = decisions.find((x) => x.id === id);
+  d?.responds_to?.forEach((x) => ids.add(x));
+  decisions.filter((x) => x.responds_to?.includes(id)).forEach((x) => ids.add(x.id));
+  return ids;
+}
+
+export const hhmmss = (iso: string) => iso.slice(11, 19);

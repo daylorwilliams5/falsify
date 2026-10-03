@@ -11,7 +11,7 @@ export const PLAIN_PHASES = [
 
 export const PLAIN_STAGE: Record<string, string> = {
   literature: 'read', hypothesis: 'hypothesis', experiment: 'experiment', result: 'experiment',
-  critique: 'challenge', review: 'challenge', decision: 'next', next: 'next',
+  critique: 'challenge', review: 'challenge', decision: 'next', next: 'next', design: 'experiment',
 };
 
 export const LAB_PHASES = [

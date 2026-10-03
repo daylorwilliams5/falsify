@@ -1,0 +1,41 @@
+{
+  "id": "D009",
+  "ts": "2026-10-03T12:27:30",
+  "by": "PI",
+  "level": 1,
+  "action": "other",
+  "decision": "Discharge the D006 CONCERNS. SIX items. (1) RECORD THE FIX: the enforcement bypass is CLOSED and verified three times over - engineer commit be90931 at 12:20:34 (100s after D006), reviewer reproduction of the original defect against pre-fix commit 2625a6a in a detached worktree followed by verification of the fix, and my own re-verification of the CELL_META_KEYS / ENV_DEFAULTS / MODEL_DEFAULTS allowlists at cli.py:68-74. My 12:23:27 defect log stood as a falsely OPEN defect and is superseded by the 12:26:55 status update. (2) RECORD THE NEW INSTANCE, which materially strengthens the original report and which both the skeptic and I missed: the bypass was NOT hypothetical. specs/candidates/exp005_stage1_comprehension_pilot.json computed level 1 under the defective checker and computes level 2 under the strict one, on an unrecognized 'evidence' field in all six cells plus an unrecognized environment.comprehension_probe parameter - confirmed by me. It was never run and is cited in no decision, so nothing acted on it, but a spec written in good faith was already being mis-leveled. (3) CORRECT FOUR CITATION ERRORS AND OWN THE DISCIPLINE FAILURE BEHIND THEM: cli.py:41-50 should be 46-52; cli.py:74-101 should be 103-116; org.py:54-56 should be 53-55; and D006 carried a truncated level-1 reason string. All four were inherited from critiques/exp008_skeptic.md and passed into my decision record WITHOUT re-verification, pinned to pre-fix commit 2625a6a. D006 says 'I independently confirmed the mechanism in cli.py' - that was true of the MECHANISM and false of the LINE NUMBERS, and the distinction matters because a decision record about integrity is the last place to relay unchecked citations. (4) NARROW THE SELF-PATCH RATIONALE: I withdraw the claim that a PI-authored patch would have left the reviewer a 'weaker instrument'. The reviewer correctly points out that a PI patch is a git diff it can adversarially test exactly as it just tested the engineer's, so that argument is false. The surviving and sufficient grounds are separation of duty, incentive hygiene, and the fact that delegation cost nothing - vindicated by a ~100-second exposure window with zero runs through the defective path. The conclusion stands: do not self-patch. (5) ACCEPT the reviewer's two standing additions as OPEN: prompt_hash() (org.py:53-55) still does not cover auditor_view(), so code_hashes is now the SOLE drift detector for the most confound-laden string in the oversight arm; and the new allowlists at cli.py:68-74 are themselves authority-bearing configuration that no test or review has yet validated against PREREG_V2, so a wrong entry there silently re-opens the hole. Both are logged for the human. (6) ACCEPT that the D004 'measurement only' exception DOES NOT GENERALIZE and must be re-earned per decision: it worked solely because those fields provably could not reach the subject's prompt. D001 and D004 were both re-derived from substance by the reviewer and remain level 1; nothing is recorded against either.",
+  "reason": "The reviewer did the thing I most needed and could not do for myself: it tried to falsify my defect report rather than confirm it, and its first reproduction attempt FAILED because the live checker already failed closed. Taken at face value that would have made D006 a false alarm in a decision record about integrity, which would have been a serious matter. Instead of stopping there it established provenance, found the engineer's concurrent fix, reproduced the original defect against the pre-fix commit in a throwaway worktree, and then verified the repair - and in the course of that found a real under-leveled spec that neither the skeptic nor I had noticed. That sequence is the strongest available evidence that report-to-a-second-party-then-verify-by-a-third is the right structure, and it is a better argument for my refusal to self-patch than the argument I actually gave. I accept the correction to my reasoning: the 'weaker instrument' claim was wrong because a patch I wrote would be as adversarially testable as anyone else's, and I should not keep a bad argument for a right conclusion. The citation errors are the finding I am least comfortable with and the one most worth recording plainly. I wrote that I had independently confirmed the mechanism, and I had; but I relayed the skeptic's line numbers into a formal decision record without checking them, in a decision whose entire subject was that automated assurances cannot be taken on trust. That is the same category of error as the disagreement_rounds unit figure I propagated in D005 - accepting a specialist's number because it was load-bearing for a conclusion I already found persuasive. Two instances in one loop is a pattern, not an accident, and the corrective is procedural: any file-and-line citation entering a decision record gets re-verified by me against the pinned commit, and I am stating that here so the reviewer can hold me to it.",
+  "confidence": 0.93,
+  "cites": [
+    "critiques/review_D006.md",
+    "decisions/D006.json",
+    "falsify/cli.py",
+    "falsify/org.py",
+    "critiques/exp008_skeptic.md",
+    "specs/candidates/exp005_stage1_comprehension_pilot.json",
+    "timeline.jsonl"
+  ],
+  "reviews": [],
+  "alternatives_rejected_text": "Treat D006 as fully vindicated and discharge the review without changes, since the defect was real and is now fixed: REJECTED. Being right about the defect does not license four wrong citations, a false 'still open' status in the section N log, or an argument I now know to be unsound. | Keep the 'weaker instrument' argument because it supports the right conclusion: REJECTED, and this is the cleanest case in the loop for separating conclusion from reasoning. Retaining a refuted premise because the conclusion survives is how unsound arguments propagate; the conclusion has two sufficient independent grounds without it. | Claim credit for the fix landing 100 seconds after my report: REJECTED as unsupported. I have no evidence of causation - the engineer's commit is concurrent with my decision, not demonstrably downstream of it, and the commit message naming D006 is consistent with either ordering. I record the sequence and leave attribution alone. | Record exp005_stage1_comprehension_pilot as a governance INCIDENT: REJECTED as overstated. It was never run, is cited in no decision, and nothing was acted on; it is evidence the bypass was reachable in practice, which is exactly how I have recorded it. | Now that the checker fails closed, drop my self-binding to declare levels by SUBSTANCE rather than by the CLI: REJECTED, and firmly. The reviewer's own addition is that the new allowlists are unvalidated authority-bearing config, so the floor's soundness now rests on a configuration table nobody has checked against PREREG_V2. The substance rule costs me nothing and is exactly the kind of commitment that should not be relaxed the moment the immediate hole closes.",
+  "summary": "Close out the D006 review: the bypass is fixed and was verified independently.",
+  "rationale": "The reviewer tried to falsify the PI’s defect report rather than confirm it.",
+  "alternatives_rejected": [
+    {
+      "label": "Treat D006 as fully vindicated",
+      "reason": "Being right about the defect does not excuse the overstated reasoning."
+    },
+    {
+      "label": "Take credit for the fix",
+      "reason": "No evidence the report caused the fix; the two were concurrent."
+    },
+    {
+      "label": "Stop declaring levels by substance now that the checker is fixed",
+      "reason": "Rejected firmly; a checker can be bypassed again."
+    }
+  ],
+  "responds_to": [
+    "D006"
+  ],
+  "resulting_action": "Bypass recorded as closed. The PI keeps judging its own authority by substance, not by the checker."
+}

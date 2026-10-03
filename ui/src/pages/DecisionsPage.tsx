@@ -38,7 +38,7 @@ export function DecisionsPage({ decisions, focus }: { decisions: PIDecision[]; f
         ))}
         <button className={`tally-cell tally-minor ${filter === 'IN_REVIEW' ? 'is-on' : ''}`} onClick={() => setFilter(filter === 'IN_REVIEW' ? null : 'IN_REVIEW')}>
           <span className="tally-num num">{inReview}</span>
-          <span className="tally-label">In review</span>
+          <span className="tally-label">Not yet reviewed</span>
         </button>
       </div>
 
