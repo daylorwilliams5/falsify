@@ -165,9 +165,24 @@ to §F's provenance claim.
   in 40/40, `hold_actions` 0.0 in all eight cells, `rounds_played` 4 / `rounds_unused` 4 in 40/40
   (`results/exp001_pilot.json`). A HOLD tie-break can never be observed in a design where HOLD is
   never chosen by anyone.
-- The one deviant trial (`C-005`, ADVANCE_A ×4 under an invalidating update) is **unanimous A across all
-  four roles** — it is the route-attribution error documented in §1.1 of the skeptic critique, not dissent.
-  A vote would have reproduced it exactly. This is the single most important qualitative point in the file.
+- The one deviant **multi-agent** trial (`C-005`, ADVANCE_A ×4 under an invalidating update) is unanimous
+  A across all four adjudicable role route-intentions — the route-attribution error documented in §1.1 of
+  the skeptic critique, not dissent — so a plurality rule would have reproduced the recorded action
+  **in that trial**.
+
+  > **De-emphasis recorded under `decisions/D008.json` item 1 and `critiques/review_D008.md` §3, applied by
+  > the statistician as that review directs.** This sentence previously read "A vote would have reproduced
+  > it exactly. This is the single most important qualitative point in the file." Both clauses are
+  > withdrawn. (i) The generalization to voting/error-correlation is a **mechanism claim from n=1** and is
+  > barred by §K — the same rule the lab applied to the loop-1 seed-5 trials; the PI retracted the
+  > corresponding claim in D008 item 1. (ii) The emphasis-ranking ("single most important") is itself the
+  > kind of ranking-above-the-measured-result that D008 retracted. (iii) **C-005 is one of the 20 trials
+  > already counted in the 20/20 identical-sequence result and in the 0/80; it adds no independent
+  > evidential weight and is cited only to illustrate what the zero contains** (`review_D008.md` FIX 1).
+  > (iv) Per D008 item 2, `A-005` *also* went ADVANCE_A ×4 (`per_trial.A` = [0,0,0,0,4]), so C-005 is the
+  > single invalidating **multi-agent** persisting trial, not the single persisting trial.
+  > (v) Two of C-005's four route-intentions are text adjudications (`intention_basis:
+  > explicit_named_route`), not logged fields — the instrument defect of §3 above.
 
 ---
 

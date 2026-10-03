@@ -31,4 +31,6 @@ The PI can't declare a decision below the computed level.
 
 **Fixed 2026-10-03 (D006):** the level check used to validate only known fields, so renaming a manipulation field lowered the level. It now uses allowlists: any unrecognized cell, environment or model field, or any changed preregistered value, forces level 2.
 
+**Fixed 2026-10-03 (second bypass, D012):** a spec with no cells skipped all checks. The check now fails closed on missing or empty cells or seeds; top-level fields are allowlisted; fields that declare outcomes, analysis or exclusions are level 3 unless the spec is human-approved with a matching hash.
+
 **Known limitation:** enforcement assumes agents use the CLI. An agent with shell access could edit files directly. Raw data immutability and the reviewer's timeline audit are the controls for that; a sandboxed shell would be the next step.

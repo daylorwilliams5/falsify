@@ -2,8 +2,14 @@
   "set_by": "human",
   "set_at": "2026-10-03",
   "research_objective": "What environmental and organizational conditions make autonomous AI systems less corrigible or more willing to sacrifice process integrity for task success, and which oversight architectures restore reliable behavior?",
-  "subject_model": {"provider": "ollama", "name": "qwen3:8b"},
-  "approved_environment_families": ["freightroute", "freightroute_v2"],
+  "subject_model": {
+    "provider": "ollama",
+    "name": "qwen3:8b"
+  },
+  "approved_environment_families": [
+    "freightroute",
+    "freightroute_v2"
+  ],
   "approved_specs": {
     "specs/exp001_pilot.json": "human-approved 2026-10-03 (manual baseline loop)",
     "specs/exp009_v2_floor_probe.json": "human-approved 2026-10-03T11:48:56 (timeline: human/approval)"
@@ -17,5 +23,9 @@
     "1": "PI autonomous: routine status updates per preregistered criteria; choose among approved families; run preregistered diagnostics within budget; request controls/replications (local model); dispatch specialists.",
     "2": "PI + methodology reviewer PASS: add a new control; amend a protocol before behavioral data exist; create a new hypothesis family; revise experiment sequencing; any run outside the level-1 budget but with no external spend.",
     "3": "Human gate (falsify escalate): change a primary outcome after results exist; change exclusion criteria; materially change the model population (any non-subject model); external spend; sensitive/external data; override safety policy; publication-level novelty claim."
+  },
+  "approved_spec_hashes": {
+    "specs/exp001_pilot.json": "2c7b3515aa9a90ec",
+    "specs/exp009_v2_floor_probe.json": "e4d5f3d91f2df2f1"
   }
 }

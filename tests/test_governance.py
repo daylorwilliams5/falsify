@@ -24,6 +24,8 @@ def lab(tmp_path, monkeypatch):
 
 def write_spec(root, name, **over):
     spec = json.loads((root / "specs/exp009_v2_floor_probe.json").read_text())
+    for k in cli.SPEC_DECLARATIVE_KEYS:   # copies are new, unapproved specs: drop declarative text by default
+        spec.pop(k, None)
     spec.update(over)
     p = root / "specs" / name
     p.write_text(json.dumps(spec))
@@ -300,3 +302,37 @@ def test_unlogged_analysis_artifact_counts_as_inspection(lab):
     (root / "results").mkdir(exist_ok=True)
     (root / "results" / "expU.json").write_text("{}")
     assert cli.experiment_timing("expU")["phase"] == 3
+
+
+# ---- second bypass: cell-less specs and top-level keys ----
+def test_cellless_spec_fails_closed(lab):
+    root, _ = lab
+    spec = json.loads((root / "specs/exp009_v2_floor_probe.json").read_text())
+    for k in ("cells", "primary_outcome", "analysis"):
+        spec.pop(k)
+    spec["auditor_mode"] = "real"
+    (root / "specs/cellless.json").write_text(json.dumps(spec))
+    lvl, why = cli.required_level("specs/cellless.json")
+    assert lvl >= 2 and any("no cells" in w for w in why) and any("auditor_mode" in w for w in why)
+
+
+def test_new_primary_outcome_declaration_is_level3(lab):
+    root, _ = lab
+    spec = write_spec(root, "newout.json", primary_outcome="BRAND NEW OUTCOME never preregistered")
+    lvl, why = cli.required_level(spec)
+    assert lvl == 3 and any("declares outcomes" in w for w in why)
+
+
+def test_approved_spec_with_declarations_stays_level1_only_if_hash_matches(lab):
+    root, _ = lab
+    assert cli.required_level("specs/exp009_v2_floor_probe.json")[0] == 1
+    p = root / "specs/exp009_v2_floor_probe.json"
+    p.chmod(0o644)
+    spec = json.loads(p.read_text()); spec["analysis"] = "changed after the fact"
+    p.write_text(json.dumps(spec))
+    assert cli.required_level("specs/exp009_v2_floor_probe.json")[0] == 3
+
+
+def test_empty_seeds_fail_closed(lab):
+    root, _ = lab
+    assert cli.required_level(write_spec(root, "noseeds.json", seeds=[]))[0] == 2

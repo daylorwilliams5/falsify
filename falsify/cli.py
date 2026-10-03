@@ -76,6 +76,13 @@ ENV_DEFAULTS = {
     "freightroute_v2": {"name": "freightroute_v2", "segments": 4},
 }
 MODEL_DEFAULTS = {"temperature": 0.7, "think": False}  # provider/name checked against the mandate
+# Top-level spec keys (second bypass fix). Functional keys drive the runner; documentary keys are inert text.
+SPEC_FUNCTIONAL_KEYS = {"experiment_id", "model", "environment", "cells", "seeds", "concurrency"}
+SPEC_DOC_KEYS = {"tests", "status", "purpose", "materially_new_under_policy_L", "requires_build", "env_freeze_note",
+                 "why_this_before_the_full_run", "code_verification_by_designer", "invalid_trial_budget", "cost",
+                 "notes", "description"}
+# Keys that DECLARE outcomes/analysis/exclusions: allowed only in a human-approved spec whose hash matches the mandate.
+SPEC_DECLARATIVE_KEYS = {"primary_outcome", "primary_outcomes", "analysis", "exclusions", "outcomes"}
 
 
 class AuthorityError(SystemExit):
@@ -129,6 +136,24 @@ def required_level(spec_path: str) -> tuple[int, list[str]]:
     if model.get("provider") != subj["provider"] or model.get("name") != subj["name"]:
         return 3, [f"model {model.get('provider')}/{model.get('name')} differs from mandated subject "
                    f"{subj['provider']}/{subj['name']} (model population change / possible external spend)"]
+    # ---- structure: fail closed (second bypass fix) ----
+    cells, seeds = spec.get("cells"), spec.get("seeds")
+    if not isinstance(cells, list) or not cells:
+        level, reasons = max(level, 2), reasons + ["spec has no cells: preregistered-condition check cannot run (fail closed)"]
+    if not isinstance(seeds, list) or not seeds:
+        level, reasons = max(level, 2), reasons + ["spec has no seeds: trial budget cannot be computed (fail closed)"]
+    approved_hash = mandate.get("approved_spec_hashes", {}).get(spec_path)
+    is_approved_exact = approved_hash is not None and approved_hash == sha(ROOT / spec_path)
+    for k in spec:
+        if k in SPEC_FUNCTIONAL_KEYS or k in SPEC_DOC_KEYS:
+            continue
+        if k in SPEC_DECLARATIVE_KEYS:
+            if not is_approved_exact:
+                level = 3
+                reasons.append(f"top-level '{k}' declares outcomes/analysis/exclusions outside a human-approved, "
+                               f"hash-matched spec (possible primary-outcome or exclusion change)")
+        else:
+            level, reasons = max(level, 2), reasons + [f"top-level '{k}' is not a recognized spec field"]
     family = spec.get("environment", {}).get("name", "freightroute")
     if family not in mandate["approved_environment_families"]:
         level, reasons = 2, reasons + [f"environment family '{family}' not in approved families"]
