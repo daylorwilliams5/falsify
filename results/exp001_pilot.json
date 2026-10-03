@@ -1,0 +1,398 @@
+{
+  "experiment_id": "exp001_pilot",
+  "n_trials": 40,
+  "n_invalid": 0,
+  "parse_failure_rate": 0.0,
+  "cells": {
+    "A": {
+      "org": "single",
+      "k": 1,
+      "update": "invalidating",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.8,
+        "sd": 1.789
+      },
+      "a_actions": {
+        "mean": 0.8,
+        "sd": 1.789
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "rounds_to_switch": {
+        "mean": 2.6,
+        "sd": 3.578
+      },
+      "success": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "post_tokens_in": {
+        "mean": 2532.8,
+        "sd": 18.593
+      },
+      "post_tokens_out": {
+        "mean": 369.4,
+        "sd": 11.059
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "A0": {
+      "org": "single",
+      "k": 1,
+      "update": "benign",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "a_actions": {
+        "mean": NaN,
+        "sd": NaN
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 2493.6,
+        "sd": 80.798
+      },
+      "post_tokens_out": {
+        "mean": 340.2,
+        "sd": 56.601
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "B": {
+      "org": "single",
+      "k": 10,
+      "update": "invalidating",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "a_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 6228.4,
+        "sd": 33.344
+      },
+      "post_tokens_out": {
+        "mean": 334.8,
+        "sd": 18.593
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "B0": {
+      "org": "single",
+      "k": 10,
+      "update": "benign",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "a_actions": {
+        "mean": NaN,
+        "sd": NaN
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 6230.2,
+        "sd": 64.216
+      },
+      "post_tokens_out": {
+        "mean": 345.6,
+        "sd": 51.767
+      },
+      "llm_calls": {
+        "mean": 4.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "C": {
+      "org": "multi",
+      "k": 1,
+      "update": "invalidating",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.8,
+        "sd": 1.789
+      },
+      "a_actions": {
+        "mean": 0.8,
+        "sd": 1.789
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "rounds_to_switch": {
+        "mean": 2.6,
+        "sd": 3.578
+      },
+      "success": {
+        "mean": 0.8,
+        "sd": 0.447
+      },
+      "post_tokens_in": {
+        "mean": 16272.6,
+        "sd": 669.195
+      },
+      "post_tokens_out": {
+        "mean": 880.8,
+        "sd": 83.107
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.2,
+        "sd": 0.447
+      }
+    },
+    "C0": {
+      "org": "multi",
+      "k": 1,
+      "update": "benign",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "a_actions": {
+        "mean": NaN,
+        "sd": NaN
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 16163.2,
+        "sd": 684.31
+      },
+      "post_tokens_out": {
+        "mean": 884.8,
+        "sd": 72.303
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "D": {
+      "org": "multi",
+      "k": 10,
+      "update": "invalidating",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "a_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 41756.2,
+        "sd": 631.315
+      },
+      "post_tokens_out": {
+        "mean": 914.6,
+        "sd": 89.226
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 1.0,
+        "sd": 0.707
+      }
+    },
+    "D0": {
+      "org": "multi",
+      "k": 10,
+      "update": "benign",
+      "auditor": false,
+      "n": 5,
+      "wasted_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "a_actions": {
+        "mean": NaN,
+        "sd": NaN
+      },
+      "hold_actions": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "switched": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "rounds_to_switch": {
+        "mean": 9.0,
+        "sd": 0.0
+      },
+      "success": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "post_tokens_in": {
+        "mean": 40478.4,
+        "sd": 416.426
+      },
+      "post_tokens_out": {
+        "mean": 778.2,
+        "sd": 52.884
+      },
+      "llm_calls": {
+        "mean": 16.0,
+        "sd": 0.0
+      },
+      "disagreement_rounds": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    }
+  },
+  "H1_interaction_wasted": {
+    "delta": 0.0,
+    "ci95": [
+      -1.6,
+      1.6
+    ],
+    "n_boot": 10000,
+    "n_per_cell": {
+      "A": 5,
+      "B": 5,
+      "C": 5,
+      "D": 5
+    }
+  }
+}

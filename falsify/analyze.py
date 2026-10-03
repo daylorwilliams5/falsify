@@ -131,7 +131,7 @@ def main(exp: str) -> None:
                          **{m: {"mean": row[(m, "mean")], "sd": row[(m, "std")]} for m in METRICS}}
     result = {"experiment_id": exp, "n_trials": total, "n_invalid": invalid,
               "parse_failure_rate": round(invalid / total, 3) if total else None, "cells": summary}
-    inv = df[df.update == "invalidating"]
+    inv = df[df["update"] == "invalidating"]
     if set("ABCD") <= set(inv.cell):
         result["H1_interaction_wasted"] = boot_interaction(inv, {c: c for c in "ABCD"})
     out = pathlib.Path("results"); out.mkdir(exist_ok=True)

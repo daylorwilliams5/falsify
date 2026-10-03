@@ -1,3 +1,5 @@
 {"ts": "2026-10-03T10:41:03", "loop": "manual-1", "stage": "spec_and_build_start", "note": "Manual baseline loop begins: protocol spec + runner build + pilot + notebook analysis"}
 {"ts":"2026-10-03T10:45:50","loop":"manual-1","stage":"pilot_run_start","note":"runner built + 2-trial smoke test passed"}
 {"ts":"2026-10-03T10:47:26","loop":"manual-1","stage":"infra_fix","note":"ollama restarted with OLLAMA_NUM_PARALLEL=4 (was -np 1); pilot resumed, 2 trials kept"}
+{"ts":"2026-10-03T11:04:30","loop":"manual-1","stage":"pilot_run_done","note":"40 trials complete"}
+{"ts":"2026-10-03T11:04:53","loop":"manual-1","stage":"analysis_done","note":"manual analysis + plot complete; H1 interaction 0.0 [-1.6, 1.6]; next-experiment decision handed to Omnigent lab"}
