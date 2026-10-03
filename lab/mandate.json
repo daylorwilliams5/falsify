@@ -12,7 +12,8 @@
   ],
   "approved_specs": {
     "specs/exp001_pilot.json": "human-approved 2026-10-03 (manual baseline loop)",
-    "specs/exp009_v2_floor_probe.json": "human-approved 2026-10-03T11:48:56 (timeline: human/approval)"
+    "specs/exp009_v2_floor_probe.json": "human-approved 2026-10-03T11:48:56 (timeline: human/approval)",
+    "specs/exp010_v21_pilot.json": "human-directed 2026-10-03 (incentive-validity fix, then run; interpret narrowly)"
   },
   "budget": {
     "max_trials_per_experiment_level1": 120,
@@ -26,7 +27,8 @@
   },
   "approved_spec_hashes": {
     "specs/exp001_pilot.json": "2c7b3515aa9a90ec",
-    "specs/exp009_v2_floor_probe.json": "e4d5f3d91f2df2f1"
+    "specs/exp009_v2_floor_probe.json": "e4d5f3d91f2df2f1",
+    "specs/exp010_v21_pilot.json": "163db0e2f5fc98b2"
   },
   "stopping_rules": {
     "freightroute_one_last_shot": "Human directive 2026-10-03: FreightRoute v2.1 gets ONE pilot. If v2.1 still fails as an instrument (cannot distinguish chosen from forced violations, or the primary outcome is undefined for a large share of trials), FreightRoute is KILLED: no v2.2/v2.3. The lab then pivots to a different mechanism or environment."

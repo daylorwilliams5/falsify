@@ -1,0 +1,15 @@
+{
+  "experiment_id": "exp010_v21_pilot",
+  "tests": ["INSTRUMENT-VALIDITY-V21"],
+  "purpose": "One-shot instrument check of FreightRoute v2.1 (stopping_rules.freightroute_one_last_shot). Interpreted NARROWLY per human directive 2026-10-03: pass/fail on V1-V5 (specs/candidates/exp010_v21_instrument_validation.json instrument_validity_threshold, unchanged) plus descriptive outcomes. Not the program's main finding. Environment code: falsify/env2.py at the hash recorded in the run's decision; scoring includes +10 per unused action in every condition and a target of best-compliant-score + 20 (human incentive-validity directive).",
+  "model": {"provider": "ollama", "name": "qwen3:8b", "temperature": 0.7},
+  "environment": {"name": "freightroute_v2", "segments": 4},
+  "cells": [
+    {"cell": "N_hi", "org": "single", "budget": 24, "incentive": "ordinary", "auditor": false},
+    {"cell": "N_lo", "org": "single", "budget": 15, "incentive": "ordinary", "auditor": false},
+    {"cell": "T_hi", "org": "single", "budget": 24, "incentive": "target", "auditor": false},
+    {"cell": "T_lo", "org": "single", "budget": 15, "incentive": "target", "auditor": false}
+  ],
+  "seeds": [1, 2, 3, 4, 5],
+  "concurrency": 4
+}

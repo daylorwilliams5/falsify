@@ -1066,3 +1066,54 @@ a.chip:hover { border-color: var(--fg-3); color: var(--fg); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
 }
+
+/* ---------- public one-page demo (#/) ---------- */
+.pub { max-width: 760px; margin: 0 auto; padding: 96px 16px 120px; }
+.pub-brand { font-weight: 600; letter-spacing: 0.34em; font-size: 15px; }
+.pub-tag { color: var(--fg-3); font-size: 16px; margin: 10px 0 0; }
+.pub-hero h1 { font-size: 40px; font-weight: 500; line-height: 1.15; letter-spacing: -0.025em; margin: 48px 0 0; text-wrap: balance; }
+.pub-live { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; padding: 10px 16px; border: 1px solid var(--line-2); border-radius: 999px; font-size: 14px; color: var(--fg-2); transition: border-color .15s, color .15s; }
+.pub-live:hover { color: var(--fg); border-color: var(--fg-4); }
+.pub-sec { margin-top: 112px; }
+.pub-label { font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); }
+.pub-lead { font-size: 26px; font-weight: 500; line-height: 1.25; letter-spacing: -0.015em; margin: 16px 0 0; text-wrap: balance; }
+.pub-dl { display: grid; gap: 10px; margin: 24px 0 0; }
+.pub-dl div { display: grid; grid-template-columns: 160px 1fr; gap: 16px; }
+.pub-dl dt { color: var(--fg-3); font-size: 14px; }
+.pub-dl dd { margin: 0; color: var(--fg-2); font-size: 15px; }
+.pub-progress { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; margin-top: 32px; font-size: 14px; color: var(--fg-2); }
+.pub-bar { display: block; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.pub-bar i { display: block; height: 100%; background: var(--accent); transition: width .6s ease; }
+.pub-muted { color: var(--fg-3); font-size: 14px; margin: 10px 0 0; }
+.pub-learned { display: flex; flex-direction: column; gap: 20px; }
+.pub-card { position: relative; padding: 32px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-2); }
+.pub-card-id { color: var(--fg-4); font-size: 12px; margin-bottom: 10px; }
+.pub-headline { font-size: 26px; font-weight: 500; line-height: 1.22; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.pub-body { font-size: 16px; color: var(--fg-2); margin: 14px 0 0; line-height: 1.55; }
+.pub-figure { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; margin: 28px 0 8px; }
+.pub-num { font-size: 40px; letter-spacing: -0.03em; }
+.pub-unit { font-size: 16px; color: var(--fg-2); }
+.pub-status { display: flex; gap: 12px; align-items: baseline; font-size: 15px; margin: 24px 0 0; }
+.pub-status span { font-size: 13px; color: var(--fg-3); }
+.pub-steps { margin: 20px 0 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 12px; }
+.pub-steps li { counter-increment: s; display: flex; gap: 16px; font-size: 17px; color: var(--fg-2); }
+.pub-steps li::before { content: counter(s); font-family: var(--mono); color: var(--fg-4); width: 18px; }
+.pub-decision { margin-top: 36px; padding-left: 20px; border-left: 2px solid var(--accent); }
+.pub-decision p { font-size: 19px; line-height: 1.45; margin: 6px 0 0; }
+.pub-trust { margin: 20px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.pub-trust li { font-size: 17px; color: var(--fg-2); }
+.pub-cta { display: inline-block; margin-top: 40px; padding: 14px 22px; border: 1px solid var(--line-2); border-radius: 8px; font-size: 15px; transition: border-color .15s; }
+.pub-cta:hover { border-color: var(--accent); }
+.pub-cta span { color: var(--accent); display: inline-block; transition: transform .15s; }
+.pub-cta:hover span { transform: translateX(4px); }
+.pub-foot { margin-top: 120px; padding-top: 32px; border-top: 1px solid var(--line); }
+.pub-loop { font-family: var(--mono); font-size: 13px; color: var(--fg-3); margin: 12px 0 0; white-space: pre-wrap; }
+@media (max-width: 640px) {
+  .pub { padding-top: 56px; }
+  .pub-hero h1 { font-size: 30px; }
+  .pub-lead, .pub-headline { font-size: 21px; }
+  .pub-dl div { grid-template-columns: 1fr; gap: 2px; }
+  .pub-progress { grid-template-columns: 1fr auto; }
+  .pub-progress .pub-bar { grid-column: 1 / -1; grid-row: 2; }
+  .pub-card { padding: 24px 20px; }
+}

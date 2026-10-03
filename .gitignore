@@ -5,3 +5,4 @@ data/scratch/
 ui/node_modules/
 ui/tsconfig.tsbuildinfo
 ui/dist/
+.venv

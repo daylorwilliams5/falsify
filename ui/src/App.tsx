@@ -4,9 +4,11 @@ import { TopNav } from './components/TopNav';
 import { LabOverview } from './LabOverview';
 import { DecisionsPage } from './pages/DecisionsPage';
 import { TimelinePage } from './pages/TimelinePage';
+import { PublicPage } from './pages/PublicPage';
 import { AgentsPage, ExperimentPage, HypothesesPage, LiteraturePage } from './pages/Pages';
 
-// Routes:  #/              lab overview
+// Routes:  #/              public one-page demo (no nav)
+//          #/overview      lab overview
 //          #/research | experiments[/<id>] | decisions[/<D###>] | literature | lab | timeline[/<D###>]
 // Multi-program views (pages/Home, NewQuestion, ProgramPage) are kept but unrouted for now.
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
     return <div className="boot">Loading…</div>;
   }
 
+  if (section === '') return <PublicPage lab={lab} />;
+
   const base = '#/';
   const page = (() => {
     switch (section) {
@@ -27,7 +31,7 @@ export default function App() {
       case 'lab': return <AgentsPage lab={snapshot} base={base} view={lab} />;
       case 'decisions': return <DecisionsPage key={a ?? ''} decisions={lab.decisions} focus={a} />;
       case 'timeline': return <TimelinePage key={a ?? ''} lab={lab} focus={a} />;
-      default: return <LabOverview lab={lab} />;
+      default: return <LabOverview lab={lab} />; // #/overview
     }
   })();
 

@@ -1,5 +1,5 @@
 const LINKS = [
-  ['', 'Overview'],
+  ['overview', 'Overview'],
   ['research', 'Research'],
   ['experiments', 'Experiments'],
   ['decisions', 'Decisions'],

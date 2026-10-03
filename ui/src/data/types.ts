@@ -320,6 +320,30 @@ export interface LabState {
   loops: { n: number; label: string; sub: string; start: string; end: string | null; ended?: string }[];
   runs: { id: string; start: string; end: string }[];
   escalations: Escalation[];
+  public: PublicState;
+}
+
+// The one-page public demo (#/). Edit lab_state.json to drop in the final result.
+export interface PublicState {
+  testing: {
+    id: string;
+    question: string;
+    manipulation: string;
+    behavior: string;
+    trials_done: number;
+    trials_total: number;
+    status: string;
+  };
+  lessons: {
+    id: string;
+    headline: string;
+    body: string;
+    figure: { value: number; total: number; unit: string };
+    status: 'Replicated' | 'Preliminary' | 'Not enough evidence';
+  }[];
+  steps: string[];
+  decision: string;
+  trust: string[];
 }
 
 // timeline.jsonl — one event per line. Most lines use agent/stage/text;

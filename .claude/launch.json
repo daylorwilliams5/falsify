@@ -22,6 +22,21 @@
         "5210"
       ],
       "port": 5210
+    },
+    {
+      "name": "falsify-ui-alt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "ui",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5198",
+        "--strictPort"
+      ],
+      "port": 5198
     }
   ]
 }

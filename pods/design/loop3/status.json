@@ -6,8 +6,9 @@
   "started": "2026-10-03T13:45:53",
   "members": {
     "lead_experimentalist": "COMPLETE",
-    "confound_hunter_design": "RUNNING",
+    "confound_hunter_design": "FAILED_INFRA_x2_PENDING_RETRY",
     "info_gain_planner": "PENDING"
   },
-  "lead_state": "COORDINATING"
+  "lead_state": "COORDINATING",
+  "notes": "Q1/Q2 answered by lead enumeration (lead_enumeration_results.json) after 2nd CH infra failure. synthesis.json=PARTIAL. Dispatch budget exhausted this turn by a failed sys_session_send (parent session inbox error); CH retry + info_gain_planner must be dispatched on the next turn."
 }

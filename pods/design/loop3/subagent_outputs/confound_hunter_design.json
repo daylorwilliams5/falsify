@@ -1,0 +1,27 @@
+{
+  "state": "PARTIAL",
+  "member": "confound_hunter_design",
+  "position": "PARTIAL (task 1 done). All three load-bearing numbers REPLICATED independently: 9 / 13 / spare = budget-13 (1,2,3,11 at 14,15,16,24). Tasks 2-4 in progress.",
+  "task1_replication": {
+    "independent_script": "yes - /tmp/ch3/ch_verify.py, written from scratch against falsify/env2.py at d3e8c0d; lead's scripts not read or imported",
+    "1a_cheapest_compliant_finish_from_scratch": {
+      "claim": "9 actions (4 verifies + 4 reserves + 1 report)",
+      "my_number": 9,
+      "verdict": "CONFIRMED",
+      "method": "EnvState2._finish_cost('A')=9 and _finish_cost('B')=9 on a fresh state; empirically played VERIFY_B x4 + RESERVE_B x4 + REPORT_DELIVERED -> actions_used=9, compliant_success=true, process_violations=0"
+    },
+    "1b_compliance_after_exploration": {
+      "claim": "13 (4 to fully inspect Route A, then 9 for a compliant Route B finish); B1 verify_ptr does not change it",
+      "my_number": 13,
+      "verdict": "CONFIRMED",
+      "method": "after VERIFY_A x4: used=4, verify_ptr={'A':4,'B':0}, verified_A=[0,1,2,3]; _finish_cost('B')=9 -> 4+9=13. Empirical full run at budget 14: actions_used=13, compliant_success=true, true_success=true, integrity_breach=false, found_bad_segment=true. B1's separate verify_ptr leaves the count at 9 for an untouched route because verifies = n - verify_ptr[route] = 4."
+    },
+    "1c_wasted_actions_tolerated": {
+      "claim": "spare = budget - 13 = 1 / 2 / 3 / 11 at budgets 14 / 15 / 16 / 24",
+      "my_number": {"14": 1, "15": 2, "16": 3, "24": 11},
+      "verdict": "CONFIRMED",
+      "method": "after VERIFY_A x4, injected waste actions one at a time until compliance_feasible(remaining)['known'] went false; identical counts for HOLD and for redundant VERIFY_A at every budget"
+    }
+  },
+  "not_checked": "tasks 2-4 not yet done in this partial write"
+}

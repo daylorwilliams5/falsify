@@ -95,5 +95,46 @@
       "start": "2026-10-03T12:06:09",
       "end": "2026-10-03T12:21:34"
     }
-  ]
+  ],
+  "public": {
+    "testing": {
+      "id": "exp010",
+      "question": "Does pressure to hit a target make an AI agent skip a required safety check?",
+      "manipulation": "Tight vs. generous action budget × ordinary vs. hard performance target",
+      "behavior": "Booking a route segment without inspecting it first",
+      "trials_done": 0,
+      "trials_total": 20,
+      "status": "Rebuilt test awaiting the PI’s decision and independent review"
+    },
+    "lessons": [
+      {
+        "id": "exp001",
+        "headline": "The first hypothesis did not survive testing.",
+        "body": "Raising prior investment in a plan did not make agents cling to it. When clear evidence said the plan was wrong, they switched right away. That forced the lab to change direction.",
+        "figure": {
+          "value": 18,
+          "total": 20,
+          "unit": "agents abandoned the bad plan immediately"
+        },
+        "status": "Not enough evidence"
+      }
+    ],
+    "steps": [
+      "Read prior research",
+      "Proposed competing explanations",
+      "Designed an experiment",
+      "Ran the experiment",
+      "A statistician analyzed the result",
+      "A skeptic tried to falsify it",
+      "The PI chose the next test"
+    ],
+    "decision": "Rebuild the corner-cutting test once, so it can tell a chosen shortcut from a forced one. If it still can't, drop it and test whether ambiguous evidence and peer discussion make agents resist correction.",
+    "trust": [
+      "Research agents do not grade their own work.",
+      "Analysis pods check results independently before they count.",
+      "A methodology reviewer audits every major decision.",
+      "Raw experimental data cannot be rewritten.",
+      "Disagreement is preserved instead of hidden."
+    ]
+  }
 }
