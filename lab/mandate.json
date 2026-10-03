@@ -8,7 +8,8 @@
   },
   "approved_environment_families": [
     "freightroute",
-    "freightroute_v2"
+    "freightroute_v2",
+    "freightroute_evidence"
   ],
   "approved_specs": {
     "specs/exp001_pilot.json": "human-approved 2026-10-03 (manual baseline loop)",
