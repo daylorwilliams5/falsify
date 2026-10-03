@@ -32,6 +32,7 @@ Hackathon project for **Hack-Nation 7th Global AI Hackathon, Challenge 3 (Databr
 
 ## Where Loop 3 is right now
 - **Loop 3** (first pod-based loop) is finishing: the adversarial pod synthesis, then the PI's **keep-or-kill decision for FreightRoute.** The human directive is to pivot unless a non-obvious signal survives; it didn't (it was a comparison failure).
+- **Mandate exception recorded** (lab/mandate.json approved_exceptions): Haiku 4.5 approved for the ambiguity × peer family only, $20 cap.
 - **Next experiment, READY and merged:** `specs/candidates/exp011_ambiguity_x_peer_haiku_pilot.json`.
   - **Question:** does social reinforcement make agents less corrigible under ambiguous evidence?
   - **Design:** single vs 4 peers (blind → see others → vote, tie = HOLD) × clear / probabilistic / conflicting evidence.
