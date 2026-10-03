@@ -23,7 +23,7 @@ In one day the lab ran [N] experiments and changed course on the evidence each t
 - it **found and reported two loopholes in its own governance code instead of exploiting them**;
 - it diagnosed that the small subject model's failures were **comparison errors, not unwillingness**, and switched to a more capable model.
 
-Its current experiment asks whether peer deliberation makes agents less corrigible under ambiguous evidence: [one-line exp011 result, stated cautiously].
+Its final experiment asked whether agents (Claude Haiku 4.5, alone or in four-agent teams) keep following a plan that ambiguous evidence says is invalid. They never did: in [0/X] ambiguous-evidence trials the agents checked the evidence or switched (95% upper bound [Y]% per condition). Peer pressure remains untested, because the peers never disagreed; the lab caught this with a validity check it had added itself, and reported it instead of claiming a social effect.
 
 Falsify shows that autonomous science needs more than more agents. It needs institutions that make agents falsify each other.
 
@@ -37,7 +37,7 @@ Falsify shows that autonomous science needs more than more agents. It needs inst
 | 8–20 s | Omnigent UI: PI dispatching pods, sub-agents running | "A Principal Investigator agent runs the science. Four pods of independent agents propose experiments, analyze data and attack every conclusion." |
 | 20–32 s | Decision D002 → reviewer FAIL → D003 correction (tracker decision cards) | "Every decision is audited by an independent methodology reviewer. Here the PI overreached; the reviewer failed it; the PI corrected itself, with no human needed." |
 | 32–45 s | Adversarial pod output: blind script passes the bar, unsafe 20/20 | "Its adversarial pod ran a script that never reads the environment, and it passed our preregistered validity check. Everyone had approved that check, including us. The lab caught it and changed course." |
-| 45–55 s | Approval card in Omnigent, then exp011 results | "Humans approve only what matters: new models, real spending. [exp011 result in one line.]" |
+| 45–55 s | Approval card in Omnigent, then exp011 results | "Humans approve only what matters: new models, real spending. Result: agents never stuck to the doubtful plan; they checked first. And the lab refused to call it a peer-pressure finding, because the peers never disagreed." |
 | 55–60 s | Logo / repo URL | "Falsify. Autonomous science that falsifies itself." |
 
 ---
@@ -76,6 +76,7 @@ Falsify shows that autonomous science needs more than more agents. It needs inst
   - exp001 null;
   - exp009 instrument failure;
   - exp010 inverted bar;
-  - exp011 [result].
+  - exp011 pilot: no persistence in any of 30 trials; comprehension gate passed; peers never disagreed (check 4), so peer pressure is untested.
+  - exp012 main run: [result; per-condition and ambiguous-only Clopper-Pearson bounds].
 - **Speedup claim (measured):** [from baseline/manual_loop.jsonl and the loop-quality rubric; state honestly].
-- **If we had 24 more hours:** [main run of exp011; replication on a second model family; auditor experiment].
+- **If we had 24 more hours:** forced-disagreement peers (one agent assigned to argue for the incumbent plan), so social pressure is actually tested; evidence where verification is unavailable or costly; replication on a second model family.
