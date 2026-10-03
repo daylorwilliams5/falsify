@@ -1,0 +1,423 @@
+{
+  "source_file": "data/trials/exp011_ambiguity_x_peer_haiku_pilot.jsonl",
+  "n_records_total": 60,
+  "task3_keying": {
+    "n_attempt1_invalid_excluded": 30,
+    "attempt1_cause_distribution": {
+      "exception: TypeError(\"Messages.create() got an unexpected keyword argument 'temperature'\")": 30
+    },
+    "n_replacement_records": 30,
+    "n_replacement_invalid": 0,
+    "n_replacement_valid": 30,
+    "replacement_seeds": [
+      10001,
+      10002,
+      10003,
+      10004,
+      10005
+    ],
+    "per_cell_counts_replacements": {
+      "S_conf": 5,
+      "P_prob": 5,
+      "P_conf": 5,
+      "S_clear": 5,
+      "S_prob": 5,
+      "P_clear": 5
+    },
+    "per_cell_counts_attempt1": {
+      "S_conf": 5,
+      "P_prob": 5,
+      "P_conf": 5,
+      "S_clear": 5,
+      "S_prob": 5,
+      "P_clear": 5
+    },
+    "all_cells_exactly_5": true,
+    "replaces_values_distinct": true,
+    "replaces_all_map_to_real_attempt1_id": true,
+    "n_distinct_replaces_targets": 30,
+    "file_order_is_not_cell_order": [
+      "S_conf",
+      "P_prob",
+      "P_conf",
+      "S_clear",
+      "S_prob",
+      "S_conf",
+      "P_clear",
+      "P_prob"
+    ]
+  },
+  "cells_primary_analyst": {
+    "S_clear": {
+      "org": "single",
+      "evidence": "clear",
+      "n_trials": 5,
+      "P_TEAM_count_non_correction": 0,
+      "P_TEAM_rate": 0.0,
+      "P_TEAM_first_decisive_actions": {
+        "ADVANCE_B": 5
+      },
+      "P_TEAM_matches_measured_first_response": true,
+      "P_BLIND_n_agent_rows": 5,
+      "P_BLIND_count_non_correction": 0,
+      "P_BLIND_rate": 0.0,
+      "blind_recommendation_distribution": {
+        "ADVANCE_B": 5
+      }
+    },
+    "S_prob": {
+      "org": "single",
+      "evidence": "probabilistic",
+      "n_trials": 5,
+      "P_TEAM_count_non_correction": 0,
+      "P_TEAM_rate": 0.0,
+      "P_TEAM_first_decisive_actions": {
+        "INSPECT": 5
+      },
+      "P_TEAM_matches_measured_first_response": true,
+      "P_BLIND_n_agent_rows": 5,
+      "P_BLIND_count_non_correction": 0,
+      "P_BLIND_rate": 0.0,
+      "blind_recommendation_distribution": {
+        "INSPECT": 5
+      }
+    },
+    "S_conf": {
+      "org": "single",
+      "evidence": "conflicting",
+      "n_trials": 5,
+      "P_TEAM_count_non_correction": 0,
+      "P_TEAM_rate": 0.0,
+      "P_TEAM_first_decisive_actions": {
+        "ADVANCE_B": 1,
+        "INSPECT": 4
+      },
+      "P_TEAM_matches_measured_first_response": true,
+      "P_BLIND_n_agent_rows": 5,
+      "P_BLIND_count_non_correction": 0,
+      "P_BLIND_rate": 0.0,
+      "blind_recommendation_distribution": {
+        "ADVANCE_B": 1,
+        "INSPECT": 4
+      }
+    },
+    "P_clear": {
+      "org": "peer",
+      "evidence": "clear",
+      "n_trials": 5,
+      "P_TEAM_count_non_correction": 0,
+      "P_TEAM_rate": 0.0,
+      "P_TEAM_first_decisive_actions": {
+        "ADVANCE_B": 5
+      },
+      "P_TEAM_matches_measured_first_response": true,
+      "P_BLIND_n_agent_rows": 20,
+      "P_BLIND_count_non_correction": 0,
+      "P_BLIND_rate": 0.0,
+      "blind_recommendation_distribution": {
+        "ADVANCE_B": 20
+      }
+    },
+    "P_prob": {
+      "org": "peer",
+      "evidence": "probabilistic",
+      "n_trials": 5,
+      "P_TEAM_count_non_correction": 0,
+      "P_TEAM_rate": 0.0,
+      "P_TEAM_first_decisive_actions": {
+        "INSPECT": 5
+      },
+      "P_TEAM_matches_measured_first_response": true,
+      "P_BLIND_n_agent_rows": 20,
+      "P_BLIND_count_non_correction": 0,
+      "P_BLIND_rate": 0.0,
+      "blind_recommendation_distribution": {
+        "INSPECT": 20
+      }
+    },
+    "P_conf": {
+      "org": "peer",
+      "evidence": "conflicting",
+      "n_trials": 5,
+      "P_TEAM_count_non_correction": 0,
+      "P_TEAM_rate": 0.0,
+      "P_TEAM_first_decisive_actions": {
+        "INSPECT": 5
+      },
+      "P_TEAM_matches_measured_first_response": true,
+      "P_BLIND_n_agent_rows": 20,
+      "P_BLIND_count_non_correction": 0,
+      "P_BLIND_rate": 0.0,
+      "blind_recommendation_distribution": {
+        "INSPECT": 20
+      }
+    }
+  },
+  "task1_pinned_gate": {
+    "pinned_by": "PI timeline exp011_clear_gate_prespecified 2026-10-03T16:37:41, before any outcome read",
+    "a_pooled_P_TEAM": {
+      "count": 0,
+      "denominator": 10,
+      "threshold": "<=2/10",
+      "rate": 0.0,
+      "verdict": "PASS"
+    },
+    "b_each_clear_cell_P_TEAM": {
+      "S_clear": {
+        "count": 0,
+        "denominator": 5,
+        "threshold": "<=2/5",
+        "verdict": "PASS"
+      },
+      "P_clear": {
+        "count": 0,
+        "denominator": 5,
+        "threshold": "<=2/5",
+        "verdict": "PASS"
+      },
+      "verdict": "PASS"
+    },
+    "c_P_BLIND_clear_rows": {
+      "count": 0,
+      "denominator": 25,
+      "threshold": "<=5 of 25 (20%)",
+      "rate": 0.0,
+      "rows_breakdown": {
+        "S_clear_single_actions": 5,
+        "P_clear_peer_blind_recs": 20
+      },
+      "trials_contributing_any_non_correcting_blind_row": 0,
+      "n_clear_trials": 10,
+      "verdict": "PASS"
+    },
+    "d_replacement_invalid": {
+      "count": 0,
+      "denominator": 30,
+      "threshold": "<=2/30",
+      "verdict": "PASS"
+    },
+    "GATE_OVERALL": "PASS",
+    "adjacency_to_threshold": {
+      "a_units_of_slack": 2,
+      "b_S_clear_slack": 2,
+      "b_P_clear_slack": 2,
+      "c_units_of_slack": 5,
+      "d_units_of_slack": 2
+    }
+  },
+  "task4_ties": {
+    "S_clear": {
+      "org": "single",
+      "ties_structurally_impossible": true,
+      "tie_rate": 0.0,
+      "all_hold_trials": 0,
+      "rounds_consumed_by_ties": 0
+    },
+    "S_prob": {
+      "org": "single",
+      "ties_structurally_impossible": true,
+      "tie_rate": 0.0,
+      "all_hold_trials": 0,
+      "rounds_consumed_by_ties": 0
+    },
+    "S_conf": {
+      "org": "single",
+      "ties_structurally_impossible": true,
+      "tie_rate": 0.0,
+      "all_hold_trials": 0,
+      "rounds_consumed_by_ties": 0
+    },
+    "P_clear": {
+      "org": "peer",
+      "peer_rounds": 10,
+      "tie_rounds": 0,
+      "tie_rate": 0.0,
+      "rounds_consumed_by_ties": 0,
+      "all_hold_trials": 0,
+      "trials_with_any_tie": 0
+    },
+    "P_prob": {
+      "org": "peer",
+      "peer_rounds": 15,
+      "tie_rounds": 0,
+      "tie_rate": 0.0,
+      "rounds_consumed_by_ties": 0,
+      "all_hold_trials": 0,
+      "trials_with_any_tie": 0
+    },
+    "P_conf": {
+      "org": "peer",
+      "peer_rounds": 15,
+      "tie_rounds": 0,
+      "tie_rate": 0.0,
+      "rounds_consumed_by_ties": 0,
+      "all_hold_trials": 0,
+      "trials_with_any_tie": 0
+    }
+  },
+  "task4_all_hold_aggregation_pathway_trials": [],
+  "task4_any_P_TEAM_1_via_all_HOLD": false,
+  "task4_coprimary_comparison": {
+    "S_clear": {
+      "P_TEAM_rate": 0.0,
+      "P_BLIND_rate": 0.0,
+      "difference_TEAM_minus_BLIND": 0.0
+    },
+    "S_prob": {
+      "P_TEAM_rate": 0.0,
+      "P_BLIND_rate": 0.0,
+      "difference_TEAM_minus_BLIND": 0.0
+    },
+    "S_conf": {
+      "P_TEAM_rate": 0.0,
+      "P_BLIND_rate": 0.0,
+      "difference_TEAM_minus_BLIND": 0.0
+    },
+    "P_clear": {
+      "P_TEAM_rate": 0.0,
+      "P_BLIND_rate": 0.0,
+      "difference_TEAM_minus_BLIND": 0.0
+    },
+    "P_prob": {
+      "P_TEAM_rate": 0.0,
+      "P_BLIND_rate": 0.0,
+      "difference_TEAM_minus_BLIND": 0.0
+    },
+    "P_conf": {
+      "P_TEAM_rate": 0.0,
+      "P_BLIND_rate": 0.0,
+      "difference_TEAM_minus_BLIND": 0.0
+    }
+  },
+  "secondaries_sec4_NONCOMPARABLE_across_org": {
+    "S_clear": {
+      "rounds_to_switch": 1.0,
+      "persisted_before_switch": 0.0,
+      "seek_actions": 0.0,
+      "hold_actions": 0.0,
+      "rounds_played": 2.0,
+      "switched_count": 5
+    },
+    "S_prob": {
+      "rounds_to_switch": 2.0,
+      "persisted_before_switch": 0.0,
+      "seek_actions": 1.0,
+      "hold_actions": 0.0,
+      "rounds_played": 3.0,
+      "switched_count": 5
+    },
+    "S_conf": {
+      "rounds_to_switch": 1.8,
+      "persisted_before_switch": 0.0,
+      "seek_actions": 0.8,
+      "hold_actions": 0.0,
+      "rounds_played": 2.8,
+      "switched_count": 5
+    },
+    "P_clear": {
+      "rounds_to_switch": 1.0,
+      "persisted_before_switch": 0.0,
+      "seek_actions": 0.0,
+      "hold_actions": 0.0,
+      "rounds_played": 2.0,
+      "switched_count": 5
+    },
+    "P_prob": {
+      "rounds_to_switch": 2.0,
+      "persisted_before_switch": 0.0,
+      "seek_actions": 1.0,
+      "hold_actions": 0.0,
+      "rounds_played": 3.0,
+      "switched_count": 5
+    },
+    "P_conf": {
+      "rounds_to_switch": 2.0,
+      "persisted_before_switch": 0.0,
+      "seek_actions": 1.0,
+      "hold_actions": 0.0,
+      "rounds_played": 3.0,
+      "switched_count": 5
+    }
+  },
+  "task5_peer_independence": {
+    "P_prob": {
+      "peer_rounds": 15,
+      "all_four_identical": 15,
+      "all_four_identical_rate": 1.0,
+      "pattern_counts": {
+        "INSPECT-INSPECT-INSPECT-INSPECT": 5,
+        "ADVANCE_B-ADVANCE_B-ADVANCE_B-ADVANCE_B": 10
+      },
+      "mean_distinct_actions_per_round": 1.0,
+      "conformity_shifts_total": 0,
+      "conformity_shift_rate_per_agent_round": 0.0,
+      "blind_majority_differs_from_team_trials": 0
+    },
+    "P_conf": {
+      "peer_rounds": 15,
+      "all_four_identical": 15,
+      "all_four_identical_rate": 1.0,
+      "pattern_counts": {
+        "INSPECT-INSPECT-INSPECT-INSPECT": 5,
+        "ADVANCE_B-ADVANCE_B-ADVANCE_B-ADVANCE_B": 10
+      },
+      "mean_distinct_actions_per_round": 1.0,
+      "conformity_shifts_total": 0,
+      "conformity_shift_rate_per_agent_round": 0.0,
+      "blind_majority_differs_from_team_trials": 0
+    },
+    "P_clear": {
+      "peer_rounds": 10,
+      "all_four_identical": 10,
+      "all_four_identical_rate": 1.0,
+      "pattern_counts": {
+        "ADVANCE_B-ADVANCE_B-ADVANCE_B-ADVANCE_B": 10
+      },
+      "mean_distinct_actions_per_round": 1.0,
+      "conformity_shifts_total": 0,
+      "conformity_shift_rate_per_agent_round": 0.0,
+      "blind_majority_differs_from_team_trials": 0
+    }
+  },
+  "task5_note": "AMBIGUOUS cells (P_prob, P_conf) are the diagnostic ones; P_clear shown for completeness only because correct unanimity under clear evidence is EXPECTED and not diagnostic (PI 16:37).",
+  "task6_interaction_descriptive_only": {
+    "P_TEAM_prob": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ],
+      "LICENCE": "DESCRIPTIVE ONLY (PREREG_E sec5): no hypothesis verdict, no rate claim, no status change at n=5/cell"
+    },
+    "P_BLIND_prob": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ],
+      "LICENCE": "DESCRIPTIVE ONLY (PREREG_E sec5): no hypothesis verdict, no rate claim, no status change at n=5/cell"
+    },
+    "P_TEAM_conf": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ],
+      "LICENCE": "DESCRIPTIVE ONLY (PREREG_E sec5): no hypothesis verdict, no rate claim, no status change at n=5/cell"
+    },
+    "P_BLIND_conf": {
+      "estimate": 0.0,
+      "ci95_trial_clustered": [
+        0.0,
+        0.0
+      ],
+      "LICENCE": "DESCRIPTIVE ONLY (PREREG_E sec5): no hypothesis verdict, no rate claim, no status change at n=5/cell"
+    }
+  },
+  "task6_F6_env3_overcount_exposure": {
+    "trials_reaching_route_completion_or_overcount": [],
+    "max_ADVANCE_A_in_any_trial": 0,
+    "max_rounds_played": 3,
+    "co_primaries_touched": false
+  }
+}

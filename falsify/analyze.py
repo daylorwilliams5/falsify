@@ -201,6 +201,10 @@ def _cluster_boot(groups: dict, stat, n=10000, seed=0) -> list:
     return [round(float(np.percentile(draws, q)), 3) for q in (2.5, 97.5)]
 
 
+def _is_true(v):
+    return v is True or str(v) == "True"
+
+
 def main_e(exp: str) -> None:
     """FreightRoute-E preregistered pilot analysis (specs/PREREG_E.md): co-primaries P-TEAM and P-BLIND,
     trial-clustered bootstrap for the (peer - single) x (ambiguous - clear) interaction, validity checks 1/3/4/5.
@@ -256,7 +260,10 @@ def main_e(exp: str) -> None:
         "n_trials": len(rows), "n_invalid": len(rows) - len(valid),
         "check1_comprehension_gate_CLEAR_cells": {k: {"P_TEAM": v["P_TEAM_non_correction_team"],
                                                       "P_BLIND": v["P_BLIND_non_correction_blind"]} for k, v in clear.items()},
-        "check3_invalid_trials": len(rows) - len(valid),
+        # check 3 measures SUBJECT parse failures; harness exceptions (e.g. the attempt-1 SDK TypeError, which never
+        # reached the API) are invalid-with-cause, reported separately and not charged to check 3 (PI 16:29, 16:47)
+        "check3_invalid_trials": sum(1 for r in rows if not _is_true(r.get("valid")) and not str(r.get("invalid_reason", "")).startswith("exception:")),
+        "invalid_harness_exceptions": sum(1 for r in rows if not _is_true(r.get("valid")) and str(r.get("invalid_reason", "")).startswith("exception:")),
         "cells": cells, "interaction_peer_x_ambiguity": inter,
         "limitations": ["P-BLIND single-agent units are EXECUTIVE actions; peer blind units are ADVISORY bids (PI 16:11:58)",
                         "rounds_to_switch / persisted_before_switch not comparable across organization (sec 4)"],

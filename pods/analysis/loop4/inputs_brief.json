@@ -1,0 +1,24 @@
+{
+  "loop": "loop4",
+  "experiment_id": "exp011_ambiguity_x_peer_haiku_pilot",
+  "brief": "Evaluate the PI's PINNED CLEAR comprehension gate (timeline PI/exp011_clear_gate_prespecified 16:37, four clauses a-d, IMMOVABLE) on the 30 replacement records. Independently recompute P-TEAM and P-BLIND from raw JSONL without importing falsify.analyze and compare to bin/falsify analyze. Key by `cell` and `replaces`, not file position (concurrency 4). Report tie rates, all-HOLD trials, all-HOLD aggregation pathway for P-TEAM. Peer independence in AMBIGUOUS cells only. Descriptive only per PREREG_E sec5: no hypothesis verdict, no rate claim, no status change at n=5/cell. Output decides whether the main run (~15/cell) launches tonight before a 21:00 freeze.",
+  "inputs": [
+    "data/trials/exp011_ambiguity_x_peer_haiku_pilot.jsonl (immutable, 60 records: 30 attempt-1 invalid SDK TypeError + 30 valid replacements)",
+    "specs/PREREG_E.md (hash 703a5c2a47e5dc38, adopted)",
+    "specs/exp011_ambiguity_x_peer_haiku_pilot.json (spec_hash e1d56deceeb515cd)",
+    "falsify/env3.py (b74581189a4e9a1c)",
+    "falsify/org.py (da629882b7aaa851)",
+    "falsify/analyze.py (CURRENT 175ca3fb7a0e5bf4; PI logged a187426effddc1fe at 16:29; delta is commit b544775 dispatch fix in main(), main_e byte-identical)",
+    "decisions/D016.json",
+    "timeline.jsonl PI/exp011_resume_commitments 16:29, PI/exp011_clear_gate_prespecified 16:37"
+  ],
+  "pinned_gate_clauses": {
+    "a": "P-TEAM non_correction_team <= 2/10 pooled over S_clear + P_clear",
+    "b": "P-TEAM <= 2/5 in EACH of S_clear and P_clear separately",
+    "c": "P-BLIND non_correction_blind <= 5 of 25 clear-cell blind rows (5 single actions + 20 peer blind recs), clustered by trial",
+    "d": "<=2 of 30 REPLACEMENT records invalid"
+  },
+  "members": ["primary_analyst", "independent_analyst", "robustness_auditor"],
+  "lead": "statistician",
+  "time_box_minutes": 20
+}

@@ -14,7 +14,8 @@
       "P_BLIND": 0.0
     }
   },
-  "check3_invalid_trials": 30,
+  "check3_invalid_trials": 0,
+  "invalid_harness_exceptions": 30,
   "cells": {
     "peer_clear": {
       "org": "peer",
