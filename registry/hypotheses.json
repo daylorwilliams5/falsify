@@ -6,12 +6,22 @@
       "mechanism": "prior computational investment",
       "claim": "More completed steps on the invalidated plan increase wasted actions more in multi-agent organizations than in single agents.",
       "falsified_if": "Interaction CI lies below 0.5 wasted actions and main effects are small.",
-      "status": "untested",
+      "status": "inconclusive",
       "tested_by": [
-        "exp001"
+        "exp001",
+        "exp001_pilot"
       ],
       "family": "corrigibility_after_invalidation",
-      "notes": "loop1 (scientist_loop1.md): proposed status INCONCLUSIVE, per human ruling and EDGE_CASE_POLICY \u00a7K. results/exp001_pilot_stats.json h1_verdict_section6: delta 0.0, CI95 [-1.6, 1.6]; 18/20 invalidating trials at wasted_actions=0; distinct values {0,4}. critiques/exp001_pilot_skeptic.md \u00a71.1/T1/T3: the 2 non-zero trials (both seed 5) are route-attribution failures, no trial referenced the prior investment, and the measure cannot separate persistence from a reference-binding failure. Classify as ATTEMPTED BUT NOT VALIDLY TESTED (floor + measurement-validity failure), not as a null. falsified_if is incoherent against a {0,4}-quantized outcome (a single persisting trial moves a cell mean 0.8); rewording proposed in scientist_loop1.md \u00a74. Do not force a sunk-cost effect."
+      "notes": "loop1 (scientist_loop1.md): proposed status INCONCLUSIVE, per human ruling and EDGE_CASE_POLICY \u00a7K. results/exp001_pilot_stats.json h1_verdict_section6: delta 0.0, CI95 [-1.6, 1.6]; 18/20 invalidating trials at wasted_actions=0; distinct values {0,4}. critiques/exp001_pilot_skeptic.md \u00a71.1/T1/T3: the 2 non-zero trials (both seed 5) are route-attribution failures, no trial referenced the prior investment, and the measure cannot separate persistence from a reference-binding failure. Classify as ATTEMPTED BUT NOT VALIDLY TESTED (floor + measurement-validity failure), not as a null. falsified_if is incoherent against a {0,4}-quantized outcome (a single persisting trial moves a cell mean 0.8); rewording proposed in scientist_loop1.md \u00a74. Do not force a sunk-cost effect.",
+      "history": [
+        {
+          "ts": "2026-10-03T11:52:15",
+          "from": "untested",
+          "to": "inconclusive",
+          "evidence": "exp001_pilot",
+          "note": "exp001_pilot n=40, 0 parse failures: interaction Delta=0.0 CI [-1.6,1.6]; 18/20 invalidating trials at zero; wasted_actions takes only {0,4}; both non-zero events on seed 5. Per EDGE_CASE_POLICY K a floor is INCONCLUSIVE, not falsified. Compounding the floor, the result is not a valid test: critiques/exp001_pilot_skeptic.md shows the two non-zero trials are route-attribution failures (arithmetic correct, '5.7 > 4.0', route binding wrong), and 0/40 post-contradiction outputs reference the prior investment. Note the investment main effect is -0.8 CI [-2.0,0.0], sign OPPOSITE to H1. H2-H6/M1 deliberately left 'untested' rather than 'inconclusive': their IV did not vary (0 conflicts in 80 multi rounds) or their antecedent is absent, so they were never tested at all."
+        }
+      ]
     },
     {
       "id": "H2",

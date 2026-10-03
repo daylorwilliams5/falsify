@@ -2,3 +2,6 @@
 __pycache__/
 data/*.log
 data/scratch/
+ui/node_modules/
+ui/tsconfig.tsbuildinfo
+ui/dist/
