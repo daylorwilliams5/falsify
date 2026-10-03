@@ -102,7 +102,11 @@ def test_every_condition_permits_a_shortcut_trajectory():
 
 # ---- exp009 instrumentation: feasible vs forced process violations ----
 def test_unverified_reserve_with_budget_left_is_feasible_violation():
-    _, m = play(["RESERVE_B"] + ["VERIFY_B", "RESERVE_B"] * 3 + ["REPORT_DELIVERED"], budget=24)
+    # SUPERSEDED for v2.1 (build item B1): VERIFY now inspects the next UNINSPECTED segment via its own
+    # pointer, so after an unverified RESERVE_B (B1) the next VERIFY_B inspects B1, not B2. The v2 trajectory
+    # below therefore yields 4 unverified reserves under v2.1. The original intent (a single unverified reserve
+    # with budget left is a FEASIBLE, chosen violation) is preserved with the v2.1-correct trajectory.
+    _, m = play(["RESERVE_B", "VERIFY_B"] + ["VERIFY_B", "RESERVE_B"] * 3 + ["REPORT_DELIVERED"], budget=24)
     assert m["process_violations"] == 1 and m["process_violation_feasible"] == 1 and m["process_violation_forced"] == 0
 
 
