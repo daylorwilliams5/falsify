@@ -70,6 +70,16 @@ td.mono { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
 .alert b { color: var(--warn); }
 .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--ok); margin-right: 6px; }
 .dot.stale { background: var(--bad); }
+.plan { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
+.step { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; display: grid; gap: 3px; font-size: 12.5px; background: var(--panel); }
+.step.running { border-color: var(--info); box-shadow: inset 0 3px 0 var(--info); }
+.step.done { box-shadow: inset 0 3px 0 var(--ok); }
+.step.pending { opacity: .8; }
+.step .n { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.step .l { font-weight: 500; }
+.step .t { font-family: var(--mono); font-size: 11.5px; }
+.planhead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.big { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
 @media (max-width: 900px) { .grid2, .grid2b { grid-template-columns: minmax(0, 1fr); } .scroll { max-height: none; } }
 </style>
 </head>
@@ -82,6 +92,12 @@ td.mono { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
 
   <section class="kpis" id="kpis"></section>
   <div id="alerts"></div>
+
+  <section class="panel">
+    <div class="planhead"><h2>Loop 3 · time estimate</h2><div id="planhead"></div></div>
+    <div class="plan" id="plan"></div>
+    <div class="sub" id="plannote"></div>
+  </section>
 
   <section class="panel">
     <h2>Research loop · pods (click to expand)</h2>
@@ -123,6 +139,7 @@ function render(st) {
   const unresolved = (b.unresolved || []).length, total = reg.hypotheses.length;
   $("kpis").innerHTML = [
     ["Loop 3 · pods", loop3 || "—"],
+    [(st.plan && st.plan.projected_finish) || "—", "estimated loop finish"],
     [b.elapsed_research_minutes + " min", "elapsed research time"],
     [b.decisions.total, `PI decisions (L1 ${b.decisions.by_level["1"]} · L2 ${b.decisions.by_level["2"]} · L3 ${b.decisions.by_level["3"]})`],
     [b.trials_run, `trials · ${b.trials_invalid} invalid`],
@@ -130,6 +147,22 @@ function render(st) {
     ["$" + b.external_spend_usd.toFixed(2), "external spend"],
     [`${total - unresolved}/${total}`, "hypotheses resolved"],
   ].map(([v, l]) => `<div class="kpi"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("");
+
+  const plan = st.plan || {};
+  if (plan.stages) {
+    $("planhead").innerHTML = `<span class="sub">started ${esc(plan.started)} · est. finish </span><span class="big">${esc(plan.projected_finish || "–")}</span>` +
+      `<span class="sub"> · ~${esc(plan.remaining_min)} min left</span>`;
+    $("plan").innerHTML = plan.stages.map((x, i) => {
+      const chip = x.status === "done" ? '<span class="chip c-ok">DONE</span>' : x.status === "running" ? '<span class="chip c-info">RUNNING</span>' : '<span class="chip c-mute">PENDING</span>';
+      const time = x.status === "done" ? `${esc(x.start || "")}→${esc(x.end)} · ${x.actual_or_elapsed_min ?? "?"} min`
+        : x.status === "running" ? `${x.actual_or_elapsed_min} / ~${x.est_min} min · ends ~${esc(x.projected_end)}`
+        : `~${x.est_min} min · by ~${esc(x.projected_end)}`;
+      return `<div class="step ${x.status}" title="estimate basis: ${esc(x.basis)}"><div class="n">${i + 1} ${chip}</div><div class="l">${esc(x.label)}</div><div class="t">${time}</div></div>`;
+    }).join("");
+    $("plannote").textContent = (plan.note || "") + ". Hover a stage for its estimate basis.";
+  } else {
+    $("planhead").innerHTML = ""; $("plan").innerHTML = '<div class="sub">Loop 3 has not opened yet.</div>'; $("plannote").textContent = "";
+  }
 
   $("alerts").innerHTML = (st.pending_engineering || []).map(r =>
     `<div class="alert"><b>Engineering request pending</b> (${hm(r.ts)}): ${esc(String(r.text).slice(0, 400))}</div>`).join("");
@@ -180,10 +213,12 @@ function render(st) {
   $("hyp").innerHTML = "<tr><th>ID</th><th>Mechanism</th><th>Status</th><th>Family</th></tr>" + reg.hypotheses.map(h =>
     `<tr><td class="mono">${esc(h.id)}</td><td>${esc(h.mechanism)}</td><td>${statusChip(h.status)}</td><td class="sub">${esc((h.family || "").replace(/_/g, " "))}</td></tr>`).join("");
 
-  $("exp").innerHTML = "<tr><th>Experiment</th><th>Progress</th><th>Timing phase</th></tr>" + (st.experiments || []).map(x => {
+  $("exp").innerHTML = "<tr><th>Experiment</th><th>Progress</th><th>Time</th><th>Timing phase</th></tr>" + (st.experiments || []).map(x => {
     const pct = x.planned ? Math.min(100, Math.round(100 * x.trials / x.planned)) : 100;
+    const e = x.eta || {};
+    const time = e.finished ? `done in ${e.duration_min} min` : e.eta_min != null ? `~${e.eta_min} min left · ~${esc(e.eta_clock)}<br><span class="sub">${esc(e.basis)}</span>` : esc(e.basis || "–");
     return `<tr><td class="mono">${esc(x.id)}</td><td style="min-width:140px"><div class="bar"><i style="width:${pct}%"></i></div><span class="sub">${x.trials}${x.planned ? "/" + x.planned : ""} trials</span></td>
-      <td><span class="chip ${x.phase === 3 ? "c-ok" : x.phase === 2 ? "c-warn" : "c-info"}">${x.phase ?? "–"}</span> <span class="sub">${esc(x.phase_label || "")}</span></td></tr>`;
+      <td class="mono">${time}</td><td><span class="chip ${x.phase === 3 ? "c-ok" : x.phase === 2 ? "c-warn" : "c-info"}">${x.phase ?? "–"}</span> <span class="sub">${esc(x.phase_label || "")}</span></td></tr>`;
   }).join("");
 }
 
