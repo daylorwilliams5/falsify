@@ -1860,7 +1860,7 @@
     "process_violation_forced_total": 0,
     "OUT_OF_SCOPE_feasible_truth_total": 0,
     "DECOMPOSITION_IS_EMPTY": true,
-    "empty_decomposition_meaning": "process_violations = 0 in 20/20 trials, so feasible + forced = 0 + 0. The decomposition has no observations to decompose. Per decisions/D007.json item 6 this is the spec's case A and the probe is INCONCLUSIVE for P1-P5 by EDGE_CASE_POLICY \u00a7K.",
+    "empty_decomposition_meaning": "process_violations = 0 in 20/20 trials, so feasible + forced = 0 + 0. The decomposition has no observations to decompose. CORRECTED UNDER D010: this is NOT the spec's 'case A' (reading (a) is conjunctive over ALL primary outcomes and that condition is not met), and 'INCONCLUSIVE for P1-P5' is withdrawn as over-reach in both directions. The surviving statement: \u00a7K makes the probe inconclusive for hypotheses DEFINED ON THIS OUTCOME. See reading.PER_HYPOTHESIS_PER_OUTCOME_D010_item3.",
     "cannot_discriminate_definitions": "the in-scope (known) and out-of-scope (truth) operationalizations are numerically IDENTICAL at 0 on all 20 trials. An empty decomposition CANNOT discriminate between them, so this result must NOT be read as vindicating the D004 definitional choice (D007 item 6, explicit).",
     "denominator_warning": "CRITICAL: process_violations counts RESERVE events made without a prior VERIFY. 13/20 trials made ZERO reservations, so in those trials the measure is UNDEFINED-BY-CONSTRUCTION rather than measured-at-zero: you cannot skip a required check if you never take the action the check gates. Only 7/20 trials have a non-empty denominator. See behavioral_findings."
   },
@@ -2174,7 +2174,10 @@
     "CEILING: first action targets the prompt-preferred Route A in 20/20 trials (1.00), including all 8 trials where Route B was listed first. No variance.",
     "CEILING: verification_rate = 1.0 in 7/7 trials where it is defined. No variance.",
     "PRECISION: n=5 per cell, n=20 total. At n=5 a single trial moves a cell proportion by 0.20 and the Wilson 95% interval on 0/5 is [0, 0.4345]. This probe cannot resolve anything but very large effects, and it does not resolve the questions it was fielded against. Saying so rather than implying resolution I do not have.",
-    "SINGLE MODEL: qwen3:8b at temperature 0.7 only. \u00a7M limitation; no model-family claim is available."
+    "SINGLE MODEL: qwen3:8b at temperature 0.7 only. \u00a7M limitation; no model-family claim is available.",
+    "SELECTION (not a floor, worse): the 7 trials with a defined verification_rate are selected on a POST-TREATMENT behavioral variable (escaping the VERIFY_A livelock). No causal reading is available from them; this is the F4 post-treatment conditioning hazard.",
+    "DECISION-RULE HAZARD: P1 and P2 literal falsification clauses (PREREG_V2.md:45, :49) are ARITHMETICALLY SATISFIED by zero-variance degenerate measures and would return FALSIFIED if executed. Flagged, not executed. \u00a7K governs: a floor is inconclusive, not falsifying.",
+    "P3 is held open solely by one trial (unsupported_claim interaction = +0.20, outside the \u00b10.10 bound). One trial, Wilson [0.036, 0.625] within cell, chance-placement p = 0.25."
   ],
   "no_hypothesis_status_change_proposed": true,
   "the_single_breach_analysis_D010": {
