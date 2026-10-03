@@ -1,0 +1,19 @@
+{
+  "stage": "adversarial",
+  "loop": "loop3",
+  "lead": "skeptic",
+  "state": "COMPLETE",
+  "started": "2026-10-03T15:28:42",
+  "members": {
+    "lead_skeptic": "COMPLETE",
+    "null_advocate": "COMPLETE",
+    "confound_hunter_adversarial": "COMPLETE"
+  },
+  "lead_state": "COMPLETE",
+  "finished": "2026-10-03T15:46:07",
+  "summary": {
+    "researchers": 4,
+    "disagreements": 4,
+    "headline": "The DECISION survives; the RATIONALE does not, for the third time this loop, and one new threat lands on exp011 itself. (1) The pooled V1-V5 PASS stands untouch"
+  }
+}

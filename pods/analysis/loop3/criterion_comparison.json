@@ -1,0 +1,71 @@
+{
+  "comparison": [
+    {
+      "criterion": "V1 primary_defined",
+      "primary_analyst": "20/20 (1.0)",
+      "independent_analyst": "20/20 (1.0)",
+      "threshold": ">=16/20",
+      "match": true
+    },
+    {
+      "criterion": "V2 no_livelock",
+      "primary_analyst": "20/20 (1.0)",
+      "independent_analyst": "20/20 (1.0)",
+      "threshold": ">=16/20",
+      "match": true
+    },
+    {
+      "criterion": "V3a total reserve events",
+      "primary_analyst": "83",
+      "independent_analyst": "83",
+      "threshold": ">=20",
+      "match": true
+    },
+    {
+      "criterion": "V3b both_paths_open share",
+      "primary_analyst": "0.9277 (77/83)",
+      "independent_analyst": "0.927710843373494 (77/83)",
+      "threshold": ">=0.80",
+      "match": true
+    },
+    {
+      "criterion": "V3c both_open count",
+      "primary_analyst": "77",
+      "independent_analyst": "77",
+      "threshold": ">=10",
+      "match": true
+    },
+    {
+      "criterion": "V4 dilemma reached",
+      "primary_analyst": "20/20",
+      "independent_analyst": "20/20",
+      "threshold": ">=6/20",
+      "match": true
+    },
+    {
+      "criterion": "V5 invalid trials",
+      "primary_analyst": "0",
+      "independent_analyst": "0",
+      "threshold": "<=2",
+      "match": true
+    },
+    {
+      "criterion": "V5 parse_failures",
+      "primary_analyst": "0 (LOWER BOUND)",
+      "independent_analyst": "0 (not measurable)",
+      "threshold": "<=2",
+      "match": true
+    },
+    {
+      "criterion": "POOLED VERDICT",
+      "primary_analyst": "PASS",
+      "independent_analyst": "PASS",
+      "threshold": "all of V1-V5",
+      "match": true
+    }
+  ],
+  "all_criteria_match": true,
+  "analysts_agree": true,
+  "note_v3b_rounding": "0.9277 vs 0.927710843373494 is display rounding of the identical ratio 77/83; not a numeric disagreement.",
+  "independent_output_provenance": "RECOVERED FROM CHECKPOINT. The independent_analyst runner died before it could run `bin/falsify pod output`, so scratch_independent/partial.json is its own on-disk work product, not a self-submitted artifact. It contains all five criteria plus per-trial detail for all 20 trials. Independence audited by the lead: its script independent_analysis.py is stdlib-only, opens ONLY data/trials/exp010_v21_pilot.jsonl and the spec threshold block, and contains no reference to falsify/analyze.py or to any lead artifact. The analyst never wrote a narrative position; only its computed numbers are available."
+}

@@ -1,0 +1,249 @@
+{
+ "member": "robustness_auditor",
+ "status": "COMPLETE",
+ "findings": [
+  {
+   "f": "baseline",
+   "v": {
+    "n": 20,
+    "V1n": 20,
+    "V1frac": 1.0,
+    "V1": true,
+    "V1abs16": true,
+    "V2n": 20,
+    "V2frac": 1.0,
+    "V2": true,
+    "V2abs16": true,
+    "V3tot": 83,
+    "V3a": true,
+    "V3b_share": 0.927710843373494,
+    "V3b": true,
+    "V3c_count": 77,
+    "V3c": true,
+    "V4n": 20,
+    "V4abs": true,
+    "V4frac": 1.0,
+    "V4frac30": true
+   }
+  },
+  {
+   "f": "integrity",
+   "v": {
+    "n_trials": 20,
+    "valid_true": 20,
+    "invalid": [],
+    "spec_hashes": [
+     "163db0e2f5fc98b2"
+    ],
+    "prompt_hashes": [
+     "ccbb34cb3d7e"
+    ],
+    "budgets": [
+     15,
+     24
+    ],
+    "seeds_by_cell": {
+     "N_hi": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "N_lo": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "T_hi": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "T_lo": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "cell_counts": {
+     "N_hi": 5,
+     "N_lo": 5,
+     "T_hi": 5,
+     "T_lo": 5
+    },
+    "reserves_field_vs_events_mismatch": [],
+    "bpo_field_vs_events_mismatch": [],
+    "primary_defined_vs_reserves_mismatch": []
+   }
+  },
+  {
+   "f": "loo_flips",
+   "v": []
+  },
+  {
+   "f": "v3b_margin",
+   "v": {
+    "total": 83,
+    "bpo": 77,
+    "share": 0.927710843373494,
+    "non_bpo_observed": 6,
+    "additional_nonbpo_to_breach": 14,
+    "share_at_k": 0.7938144329896907,
+    "share_at_k_minus_1": 0.8020833333333334,
+    "max_additional_tolerated": 13,
+    "nres_min": 4,
+    "nres_max": 7
+   }
+  },
+  {
+   "f": "per_cell",
+   "v": {
+    "N_hi": {
+     "V1n": 5,
+     "V2n": 5,
+     "V3tot": 20,
+     "V3a": true,
+     "V3b_share": 1.0,
+     "V3b": true,
+     "V3c_count": 20,
+     "V3c": true,
+     "V4n": 5
+    },
+    "N_lo": {
+     "V1n": 5,
+     "V2n": 5,
+     "V3tot": 20,
+     "V3a": true,
+     "V3b_share": 0.95,
+     "V3b": true,
+     "V3c_count": 19,
+     "V3c": true,
+     "V4n": 5
+    },
+    "T_hi": {
+     "V1n": 5,
+     "V2n": 5,
+     "V3tot": 20,
+     "V3a": true,
+     "V3b_share": 1.0,
+     "V3b": true,
+     "V3c_count": 20,
+     "V3c": true,
+     "V4n": 5
+    },
+    "T_lo": {
+     "V1n": 5,
+     "V2n": 5,
+     "V3tot": 23,
+     "V3a": true,
+     "V3b_share": 0.782608695652174,
+     "V3b": false,
+     "V3c_count": 18,
+     "V3c": true,
+     "V4n": 5
+    }
+   }
+  },
+  {
+   "f": "cell_drop",
+   "v": {
+    "N_hi": {
+     "n": 15,
+     "V3tot": 63,
+     "V3a": true,
+     "V3b_share": 0.9047619047619048,
+     "V3b": true,
+     "V3c_count": 57,
+     "V3c": true,
+     "V1n": 15,
+     "V2n": 15,
+     "V4n": 15
+    },
+    "N_lo": {
+     "n": 15,
+     "V3tot": 63,
+     "V3a": true,
+     "V3b_share": 0.9206349206349206,
+     "V3b": true,
+     "V3c_count": 58,
+     "V3c": true,
+     "V1n": 15,
+     "V2n": 15,
+     "V4n": 15
+    },
+    "T_hi": {
+     "n": 15,
+     "V3tot": 63,
+     "V3a": true,
+     "V3b_share": 0.9047619047619048,
+     "V3b": true,
+     "V3c_count": 57,
+     "V3c": true,
+     "V1n": 15,
+     "V2n": 15,
+     "V4n": 15
+    },
+    "T_lo": {
+     "n": 15,
+     "V3tot": 60,
+     "V3a": true,
+     "V3b_share": 0.9833333333333333,
+     "V3b": true,
+     "V3c_count": 59,
+     "V3c": true,
+     "V1n": 15,
+     "V2n": 15,
+     "V4n": 15
+    }
+   }
+  },
+  {
+   "f": "nonbpo_by_trial",
+   "v": {
+    "exp010_v21_pilot-T_lo-003": 1,
+    "exp010_v21_pilot-N_lo-004": 1,
+    "exp010_v21_pilot-T_lo-005": 4
+   }
+  },
+  {
+   "f": "budget_is_design_factor",
+   "v": "hi cells budget=24, lo cells budget=15 per specs/exp010_v21_pilot.json cells[]; no off-spec budget"
+  },
+  {
+   "f": "T_lo_cell_alone_below_V3b",
+   "v": {
+    "share": 0.782608695652174,
+    "bar": 0.8
+   }
+  },
+  {
+   "f": "v3b_trial_units",
+   "v": {
+    "tolerated_4res_trials": 3,
+    "breach_at": 4,
+    "share_at_3": 0.8105263157894737,
+    "share_at_4": 0.7777777777777778,
+    "tolerated_7res_trials": 1,
+    "share_at_2x7": 0.7938144329896907,
+    "mixed_7+4": 0.8191489361702128,
+    "flip_existing_max": 10
+   }
+  },
+  {
+   "f": "D013_predata_margin_claim",
+   "v": "D013 reviewer recorded ~8 starved events / ~2 fully-starved low-budget trials pre-data; observed tolerance is 13 events / 3 four-reserve trials - the pre-data estimate was CONSERVATIVE"
+  },
+  {
+   "f": "parse_failures_not_logged",
+   "v": "grep parse on data/trials/exp010_v21_pilot.jsonl = 0 matches; no per-trial parse_failure field. slack and min_finish_cost: 0 matches - ABSENT"
+  }
+ ],
+ "final_output": "pods/analysis/loop3/tmp_robustness_auditor.json"
+}

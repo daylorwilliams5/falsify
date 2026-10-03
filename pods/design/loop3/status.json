@@ -2,13 +2,24 @@
   "stage": "design",
   "loop": "loop3",
   "lead": "designer",
-  "state": "RUNNING",
+  "state": "CLOSED",
   "started": "2026-10-03T13:45:53",
+  "closed": "2026-10-03T14:57",
+  "closure_authority": "decisions/D014.json (Level 1, recorded 14:57) - PI directive to close the loop3 design pod. No design-pod output can now change the instrument: the human approved specs/exp010_v21_pilot.json (spec_hash 163db0e2f5fc98b2) at 14:33, forbade any further FreightRoute redesign loop, the engineer merged v2.1 (env2.py bb29234f2119a23d, 71/71 tests), and the pilot has been RUNNING since 14:55 (pid 78875).",
   "members": {
     "lead_experimentalist": "COMPLETE",
-    "confound_hunter_design": "FAILED_INFRA_x2_PENDING_RETRY",
-    "info_gain_planner": "PENDING"
+    "confound_hunter_design": "COMPLETE_POST_CLOSURE_tasks1-4 (output arrived 15:13, AFTER pod closure 14:57 and AFTER the pilot finished 15:01; therefore it could not and did not influence the executed instrument)",
+    "info_gain_planner": "NEVER_RAN_PREEMPTED_BY_HUMAN_APPROVAL"
   },
-  "lead_state": "COORDINATING",
-  "notes": "Q1/Q2 answered by lead enumeration (lead_enumeration_results.json) after 2nd CH infra failure. synthesis.json=PARTIAL. Dispatch budget exhausted this turn by a failed sys_session_send (parent session inbox error); CH retry + info_gain_planner must be dispatched on the next turn."
+  "lead_state": "CLOSED",
+  "notes": "Closed under D014. CORRECTION: the previous members.confound_hunter_design value 'FAILED_INFRA_x2_PENDING_RETRY' was WRONG at promotion time - it was stale in two ways. (1) The count was 2; there were in fact THREE infrastructure events (13:10 host power-off, 13:51 terminal SIGTERM, 14:55:43 omnigent client exit). (2) It understated what survived: the third attempt left a real PARTIAL checkpoint at pods/design/loop3/subagent_outputs/confound_hunter_design.json (14:26) in which TASK 1 is COMPLETE and independently replicated (cheapest compliant finish 9; compliance-after-exploration 13; spare = budget-13 = 1/2/3/11 at budgets 14/15/16/24), so it was not a pure failure. 'PENDING_RETRY' is also now false: D014 forbids re-dispatch. info_gain_planner was never dispatched and is preempted, not pending. Per specs/EDGE_CASE_POLICY.md A, all three events are infrastructure failures and NOT results. The mandatory incremental-checkpoint requirement is what preserved task 1; without it the pod would have closed with Q1 single-source.",
+  "synthesis": "pods/design/loop3/synthesis.json (state CLOSED_PARTIAL)",
+  "members_agree": false,
+  "post_closure_amendment": {
+    "at": "2026-10-03T15:13",
+    "what": "confound_hunter_design's 4th dispatch SURVIVED and returned a COMPLETE output covering all four tasks (pods/design/loop3/subagent_outputs/confound_hunter_design.json). It arrived after closure and after the run finished, so it changes the RECORD, not the instrument.",
+    "why_pod_stays_CLOSED": "D014 forbids re-dispatch and further redesign; the instrument is merged, approved, executed and the results are written. Nothing here reopens the pod. The late output is recorded for the analysis pod and the final report.",
+    "members_agree_changed": "null -> FALSE. Rationale: previously null because coverage was incomplete. Now 2 of 3 members have reported and among the reporting members there is one UNRESOLVED material disagreement (the slack pressure primitive, hunter vs the lead+PI-adopted position). 'false' is the honest value; it is NOT a claim that the pod failed.",
+    "no_subagent_dispatched_after_closure": true
+  }
 }

@@ -1,0 +1,35 @@
+{
+  "loop": "loop3",
+  "pod": "analysis",
+  "lead": "statistician",
+  "experiment_id": "exp010_v21_pilot",
+  "brief": "Instrument-validation analysis of exp010_v21_pilot (20 trials, COMPLETED 15:00). Phase 2 timing: after completion, before PI outcome inspection. Four tasks: (1) independent from-scratch recompute of V1-V5 instrument_validity_threshold and the pooled PASS/FAIL verdict from raw JSONL WITHOUT importing falsify.analyze, compared against bin/falsify analyze output; any discrepancy is MATERIAL. (2) Empirical settlement of design-lead single-source claim that both_paths_open collapses onto compliance_feasible_known across all logged actions; plus slack distribution at reserve events. (3) Route B always-safe check from per-trial a_limits/b_limits and its consequence for integrity_breach reachability. (4) Incentive-structure arithmetic check (reported_score = 100 + 10*remaining, target = best compliant + 20) and descriptive joint distribution of process_violations / unsupported_claim / compliant_success / true_success by cell, testing the preregistered-at-closure bimodality prediction (0 or 4).",
+  "hard_constraints": [
+    "V1-V5 verdict is MECHANICAL: report what criteria say, no generous or strict reading.",
+    "Zero observed process violations across 20 trials is a VALID instrument outcome and does NOT trigger the kill rule (no variance requirement in the bar).",
+    "Zero/low RESERVE counts ARE a genuine FAIL path (V1, V3a, V3c) and a V1/V3 FAIL may NOT be recharacterized as a permitted true null.",
+    "first_route_chosen is a dead variable (ceiling anchoring in exp009) - do not analyse.",
+    "INSTRUMENT VALIDATION ONLY: no hypothesis verdict on P1-P5; do not read violation counts as a shortcut frequency estimate.",
+    "Do not edit data/trials/, falsify/*.py, tests/ or lab/.",
+    "Incremental PARTIAL checkpoints to pods/analysis/loop3/ after EACH finding."
+  ],
+  "inputs": [
+    "data/trials/exp010_v21_pilot.jsonl",
+    "specs/exp010_v21_pilot.json",
+    "specs/candidates/exp010_v21_instrument_validation.json",
+    "falsify/analyze.py",
+    "falsify/env2.py",
+    "tests/test_env21.py",
+    "lab/mandate.json",
+    "decisions/D011.json",
+    "decisions/D013.json",
+    "decisions/D014.json",
+    "critiques/review_D013.md",
+    "pods/design/loop3/synthesis.json",
+    "specs/PROTOCOL.md",
+    "specs/PREREG_V2.md",
+    "specs/EDGE_CASE_POLICY.md",
+    "timeline.jsonl"
+  ],
+  "authorizing_decisions": ["D013", "D014"]
+}

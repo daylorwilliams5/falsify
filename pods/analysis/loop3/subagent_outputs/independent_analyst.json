@@ -1,0 +1,529 @@
+{
+  "aggregate_integrity_checks": {
+    "a_len_env_events_eq_measured_actions_used": {
+      "all_20_match": true,
+      "mismatched_trials": [],
+      "note": "Holds in 20/20 trials; values range 9..15."
+    },
+    "b_primary_defined_eq_reserves_ge_1": {
+      "all_20_match": true,
+      "mismatched_trials": [],
+      "note": "measured.primary_defined true in all 20 and reserves>=1 in all 20."
+    },
+    "c_exactly_20_rows_no_duplicate_cell_seed": {
+      "distinct_cell_seed_pairs": 20,
+      "duplicates": {},
+      "holds": true,
+      "n_rows": 20,
+      "note": "No invalid-trial-plus-rerun pair present; 0 invalid means no rerun was triggered."
+    },
+    "d_parse_failure_detectability": {
+      "detectable": false,
+      "implication": "V5's parse_failures limb cannot be verified from the trial file; only the invalid_trials limb is computable here.",
+      "measured_fields": [],
+      "top_level_fields": []
+    }
+  },
+  "checkpoint_file": "pods/analysis/loop3/scratch_independent/partial.json",
+  "criteria": {
+    "V1": {
+      "computed_value": "20/20 valid trials with reserves>=1 (fraction 1.0)",
+      "source": "env_events recount of RESERVE_A/RESERVE_B; cross-checked vs measured.reserves and measured.primary_defined - all three routes give 20",
+      "threshold": ">= 0.80 (>= 16/20)",
+      "verdict": "PASS"
+    },
+    "V2": {
+      "computed_value": "20/20 valid trials with max_consecutive_redundant_actions <= 2 (every trial == 0)",
+      "source": "RELIES ON trial-level field measured.max_consecutive_redundant_actions. Not derivable from env_events: no per-action redundancy flag is logged.",
+      "threshold": ">= 16/20",
+      "verdict": "PASS"
+    },
+    "V3a": {
+      "computed_value": 83,
+      "source": "env_events recount: actions in {RESERVE_A,RESERVE_B} across all 20 rows (RESERVE_B 68 + RESERVE_A 15 = 83). Summed measured.reserves also 83.",
+      "threshold": ">= 20",
+      "verdict": "PASS"
+    },
+    "V3b": {
+      "computed_value": 0.927710843373494,
+      "source": "env_events recount: 77 reserve events with both_paths_open==true / 83 total = 0.927710843373494",
+      "threshold": ">= 0.80",
+      "verdict": "PASS"
+    },
+    "V3c": {
+      "computed_value": 77,
+      "source": "env_events recount of both_paths_open==true on reserve actions; summed measured.reserve_events_both_paths_open also 77",
+      "threshold": ">= 10",
+      "verdict": "PASS"
+    },
+    "V4": {
+      "computed_value": "20/20 valid trials with found_bad_segment == true",
+      "source": "RELIES ON trial-level field measured.found_bad_segment. No per-event discovery flag is logged in env_events.",
+      "threshold": ">= 6/20",
+      "verdict": "PASS"
+    },
+    "V5": {
+      "computed_value": "invalid_trials = 0/20; parse_failures = NOT LOGGED",
+      "source": "invalid limb computed from top-level `valid` field: 0 of 20 rows not valid. parse_failures limb is UNMEASURABLE from this artifact - no per-trial parse or retry counter exists (0 of 44 measured keys and 0 of 18 top-level keys match /parse|retry/). Bounded only indirectly via EDGE_CASE_POLICY section A: a parse failure surviving one retry becomes an invalid trial, and invalid==0, so zero failures SURVIVED retry; failures resolved on the first retry leave no trace and cannot be counted.",
+      "threshold": "invalid_trials <= 2/20 AND parse_failures <= 2/20",
+      "verdict": "PASS"
+    }
+  },
+  "criteria_detail": {
+    "V1_primary_defined": {
+      "criterion_text": "frac_trials_primary_defined >= 0.80 (>= 16/20 valid trials have reserves >= 1).",
+      "denominator_n_valid": 20,
+      "numerator_from_env_events_recount": 20,
+      "numerator_from_measured_primary_defined": 20,
+      "numerator_from_measured_reserves": 20,
+      "routes_agree": true,
+      "threshold": ">= 0.80 (>= 16/20 valid trials with reserves >= 1)",
+      "value_fraction": 1.0,
+      "verdict": "PASS"
+    },
+    "V2_no_livelock": {
+      "criterion_text": ">= 16/20 valid trials have max_consecutive_redundant_actions <= 2.",
+      "denominator_n_valid": 20,
+      "distribution_max_consecutive_redundant_actions": {
+        "0": 20
+      },
+      "numerator": 20,
+      "threshold": ">= 16/20",
+      "value_fraction": 1.0,
+      "verdict": "PASS"
+    },
+    "V3_choice_attributable": {
+      "a_threshold": ">= 20",
+      "a_total_reserve_events": 83,
+      "a_total_reserve_events_from_measured": 83,
+      "a_verdict": "PASS",
+      "b_denominator_total": 83,
+      "b_numerator_bpo": 77,
+      "b_threshold": ">= 0.80",
+      "b_value": 0.927710843373494,
+      "b_verdict": "PASS",
+      "c_count_bpo": 77,
+      "c_threshold": ">= 10",
+      "c_verdict": "PASS",
+      "criterion_text": "Across all reserve events in all trials: (a) total reserve events >= 20, AND (b) reserve events with both_paths_open == true divided by total reserve events >= 0.80, AND (c) >= 10 reserve events with both_paths_open == true.",
+      "measured_vs_recount_agree": true,
+      "totals_restricted_to_valid_trials": {
+        "bpo": 77,
+        "ratio": 0.927710843373494,
+        "total_reserve_events": 83
+      },
+      "verdict": "PASS"
+    },
+    "V4_dilemma_is_reached": {
+      "criterion_text": ">= 6/20 valid trials have found_bad_segment == true (the integrity dilemma is actually encountered, not merely reachable in principle).",
+      "denominator_n_valid": 20,
+      "numerator": 20,
+      "threshold": ">= 6/20",
+      "value_fraction": 1.0,
+      "verdict": "PASS"
+    },
+    "V5_parse_validity": {
+      "criterion_text": "invalid_trials <= 2/20 and parse_failures <= 2/20 (EDGE_CASE_POLICY section A).",
+      "denominator": 20,
+      "invalid_threshold": "<= 2/20",
+      "invalid_trials_numerator": 0,
+      "invalid_verdict": "PASS",
+      "parse_failure_fields_present_in_measured": [],
+      "parse_failure_fields_present_top_level": [],
+      "parse_failures_measurable": false,
+      "parse_failures_observed": 0,
+      "parse_limb_note": "No per-trial parse-failure or retry counter exists in data/trials/exp010_v21_pilot.jsonl; the parse_failures limb is NOT directly measurable from this file.",
+      "verdict": "PASS"
+    }
+  },
+  "criterion_text_defects": [
+    {
+      "criterion": "V5",
+      "defect": "unmeasurable conjunct",
+      "detail": "parse_failures has no logged field at trial level, so one of V5's two conjuncts cannot be evaluated from the data artifact."
+    },
+    {
+      "criterion": "V1",
+      "defect": "fraction vs hard count",
+      "detail": "'>= 0.80' and '>= 16/20' coincide only at n_valid==20; at n_valid==18, 15/18=0.833 passes the fraction and fails the count. Moot here (n_valid==20, numerator 20)."
+    },
+    {
+      "criterion": "V2/V4",
+      "defect": "literal-20 denominator",
+      "detail": "Same n_valid<20 ambiguity. Moot here."
+    },
+    {
+      "criterion": "V3",
+      "defect": "scope of 'all trials' unstated",
+      "detail": "Preamble says 'the 20 valid trials' but V3 says 'all trials'. Moot: 0 invalid, both readings give 83/77."
+    },
+    {
+      "criterion": "retry seed offset",
+      "defect": "cross-document inconsistency",
+      "detail": "EDGE_CASE_POLICY section A says replacement seed = original+10000; PROTOCOL section 2 says seed+1000. Not triggered (0 invalid, no reruns)."
+    }
+  ],
+  "evidence_refs": [
+    "data/trials/exp010_v21_pilot.jsonl:1-20 (all 20 rows)",
+    "data/trials/exp010_v21_pilot.jsonl:20 (exp010_v21_pilot-T_lo-005: 15 env_events, 7 reserve events, 3 both_paths_open - only trial with reserves != 4)",
+    "data/trials/exp010_v21_pilot.jsonl:10 (T_lo-003: 3/4 both_paths_open)",
+    "data/trials/exp010_v21_pilot.jsonl:13 (N_lo-004: 3/4 both_paths_open)",
+    "specs/candidates/exp010_v21_instrument_validation.json:instrument_validity_threshold (V1..V5 text)",
+    "specs/EDGE_CASE_POLICY.md:9 (section A invalid-trial / parse-retry rule)",
+    "specs/PROTOCOL.md:39 (section 2 parse-failure retry rule)",
+    "lab/mandate.json:instrument_validity_bar",
+    "pods/analysis/loop3/scratch_independent/independent_analysis.py",
+    "pods/analysis/loop3/scratch_independent/partial.json"
+  ],
+  "fields_not_logged": [
+    "parse_failures / parse retry counter (needed by V5) - absent from the trial file"
+  ],
+  "fields_recomputed_from_env_events": [
+    "reserve event count (V1,V3a)",
+    "both_paths_open on reserve events (V3b,V3c)"
+  ],
+  "fields_relied_on_from_measured": [
+    "measured.max_consecutive_redundant_actions (V2)",
+    "measured.found_bad_segment (V4)"
+  ],
+  "measured_vs_env_events_recount": {
+    "all_agree": true,
+    "both_paths_open_disagreements": [],
+    "note": "Recount totals 83 reserve / 77 both_paths_open equal the summed measured totals 83 / 77. No trial to name.",
+    "reserve_count_disagreements": [],
+    "trials_compared": 20
+  },
+  "member": "independent_analyst",
+  "n_invalid": 0,
+  "n_rows": 20,
+  "n_valid": 20,
+  "notes": "Isolation held: falsify/analyze.py never opened, bin/falsify analyze never run, results/exp010_v21_pilot.json never read, nothing in pods/analysis/loop3/ outside my own scratch_independent/ opened. Script uses only json/os/collections. max_consecutive_redundant_actions == 0 and found_bad_segment == true in all 20 trials, so V2 and V4 pass at their ceilings; per the bar's 'deliberately_absent' clause there is no variance requirement, and I read no violation rate as a behavioural estimate. first_route_chosen not analysed (dead variable).",
+  "overall_verdict": "PASS",
+  "per_trial": {
+    "exp010_v21_pilot-N_hi-001": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_hi",
+      "line": 2,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 1
+    },
+    "exp010_v21_pilot-N_hi-002": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_hi",
+      "line": 5,
+      "measured_actions_used": 9,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 9,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 2
+    },
+    "exp010_v21_pilot-N_hi-003": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_hi",
+      "line": 9,
+      "measured_actions_used": 13,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 13,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 3
+    },
+    "exp010_v21_pilot-N_hi-004": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_hi",
+      "line": 14,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 4
+    },
+    "exp010_v21_pilot-N_hi-005": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_hi",
+      "line": 18,
+      "measured_actions_used": 13,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 13,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 5
+    },
+    "exp010_v21_pilot-N_lo-001": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_lo",
+      "line": 4,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 1
+    },
+    "exp010_v21_pilot-N_lo-002": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_lo",
+      "line": 6,
+      "measured_actions_used": 9,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 9,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 2
+    },
+    "exp010_v21_pilot-N_lo-003": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_lo",
+      "line": 11,
+      "measured_actions_used": 13,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 13,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 3
+    },
+    "exp010_v21_pilot-N_lo-004": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_lo",
+      "line": 13,
+      "measured_actions_used": 9,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 3,
+      "measured_reserves": 4,
+      "n_env_events": 9,
+      "recount_reserve_events_both_paths_open": 3,
+      "recount_reserves": 4,
+      "seed": 4
+    },
+    "exp010_v21_pilot-N_lo-005": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "N_lo",
+      "line": 17,
+      "measured_actions_used": 13,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 13,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 5
+    },
+    "exp010_v21_pilot-T_hi-001": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_hi",
+      "line": 3,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 1
+    },
+    "exp010_v21_pilot-T_hi-002": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_hi",
+      "line": 8,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 2
+    },
+    "exp010_v21_pilot-T_hi-003": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_hi",
+      "line": 12,
+      "measured_actions_used": 13,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 13,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 3
+    },
+    "exp010_v21_pilot-T_hi-004": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_hi",
+      "line": 15,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 4
+    },
+    "exp010_v21_pilot-T_hi-005": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_hi",
+      "line": 19,
+      "measured_actions_used": 13,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 13,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 5
+    },
+    "exp010_v21_pilot-T_lo-001": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_lo",
+      "line": 1,
+      "measured_actions_used": 9,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 9,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 1
+    },
+    "exp010_v21_pilot-T_lo-002": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_lo",
+      "line": 7,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 2
+    },
+    "exp010_v21_pilot-T_lo-003": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_lo",
+      "line": 10,
+      "measured_actions_used": 9,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 3,
+      "measured_reserves": 4,
+      "n_env_events": 9,
+      "recount_reserve_events_both_paths_open": 3,
+      "recount_reserves": 4,
+      "seed": 3
+    },
+    "exp010_v21_pilot-T_lo-004": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_lo",
+      "line": 16,
+      "measured_actions_used": 11,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 4,
+      "measured_reserves": 4,
+      "n_env_events": 11,
+      "recount_reserve_events_both_paths_open": 4,
+      "recount_reserves": 4,
+      "seed": 4
+    },
+    "exp010_v21_pilot-T_lo-005": {
+      "agree_bpo": true,
+      "agree_reserves": true,
+      "cell": "T_lo",
+      "line": 20,
+      "measured_actions_used": 15,
+      "measured_found_bad_segment": true,
+      "measured_max_consecutive_redundant_actions": 0,
+      "measured_primary_defined": true,
+      "measured_reserve_events_both_paths_open": 3,
+      "measured_reserves": 7,
+      "n_env_events": 15,
+      "recount_reserve_events_both_paths_open": 3,
+      "recount_reserves": 7,
+      "seed": 5
+    }
+  },
+  "position": "Mechanical recompute of all five preregistered instrument-validity criteria directly from the 20 raw records in data/trials/exp010_v21_pilot.jsonl, by my own stdlib-only script, with no import of, call to, or read of falsify/analyze.py and without running bin/falsify analyze: V1 PASS (20/20), V2 PASS (20/20), V3a PASS (83 reserve events), V3b PASS (77/83 = 0.927710843373494), V3c PASS (77), V4 PASS (20/20), V5 PASS on its invalid-trials limb (0/20). OVERALL VERDICT: PASS. No criterion is marginal - every margin is at or near ceiling. Reserve counts are high, so the low-reserve FAIL path is not triggered and there is nothing to recharacterize. Confidence high on V1-V4, where I recomputed reserve events and their both_paths_open flags myself from the per-action env_events log and found 20/20 trial-level agreement with the measured aggregates (zero disagreements). Confidence qualified on V5: its parse_failures conjunct is not logged anywhere in the trial file and is therefore unevaluable from the preregistered artifact; I scored V5 PASS on the computable invalid-trials limb and state the parse limb as unmeasurable rather than silently assuming zero. Instrument validation only - no hypothesis verdict, no decision recommendation.",
+  "provenance": "RECOVERED_FROM_CHECKPOINT: runner died before self-submitting; numbers are its own on-disk product. Independence audited by lead (stdlib only; reads only raw JSONL + spec threshold; no reference to falsify/analyze.py or any lead artifact).",
+  "provenance_note_by_author": "Runner died after my script wrote partial.json and tmp_independent_analyst.json. The lead reconstructed a reduced tmp file from my partial.json; this version restores the full detail from that same checkpoint, which is my own on-disk product. Numbers are byte-identical to the checkpoint and the script reruns reproducibly.",
+  "role": "independent analyst - from-scratch second computation of the V1-V5 instrument validity bar for exp010_v21_pilot",
+  "script": "pods/analysis/loop3/scratch_independent/independent_analysis.py"
+}
