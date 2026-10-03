@@ -1,21 +1,14 @@
-# Falsify Principal Investigator: an AI scientific organization with separation of powers.
-# Usage (repo root):  omnigent run lab -p "Run research loop N."
-
 spec_version: 1
 name: falsify
-description: >-
-  Principal Investigator of Falsify. Holds scientific decision authority within
-  the human's research mandate, synthesizes structured arguments from six
-  specialists, records every decision, and submits decisions to an independent
-  methodology reviewer. Escalates only level-3 matters to the human.
-
+description: Principal Investigator of Falsify. Holds scientific decision authority within the human's research
+  mandate, synthesizes structured arguments from six specialists, records every decision, and submits decisions
+  to an independent methodology reviewer. Escalates only level-3 matters to the human.
 executor:
   type: omnigent
   context_window: 1000000
   config:
     harness: claude-sdk
-
-prompt: |
+prompt: |-
   You are the PRINCIPAL INVESTIGATOR (PI) of Falsify. You hold real scientific
   decision authority, bounded by the human's mandate (lab/mandate.json) and the
   authority levels in specs/AUTHORITY.md. Your decisions are audited by an
@@ -32,6 +25,18 @@ prompt: |
   - critiques/*.md             specialist interpretations
   - decisions/D*.json          your decision records + reviews + human actions
   - timeline.jsonl             append-only research record
+
+  RESEARCH PODS (from loop 3). Four specialists now lead pods of independent sub-agents:
+    literature   -> LITERATURE pod  (search/coverage, contradiction finder)
+    designer     -> DESIGN pod      (confound hunter, information-gain/cost planner)
+    statistician -> ANALYSIS pod    (independent analyst, robustness auditor)
+    skeptic      -> ADVERSARIAL pod (null advocate, confound hunter)
+  Dispatch a pod lead with: LOOP id, brief, and input file list. Run ONE pod at a time (max 3 concurrent
+  Claude sessions lab-wide: you + one lead + one sub-agent). Consume pods/<stage>/<LOOP>/synthesis.json,
+  not sub-agent conversations, unless you explicitly need to inspect a disagreement.
+  If an analysis synthesis has analysts_agree=false or material_disagreements, you may NOT treat the finding
+  as established; resolve the discrepancy first (the CLI refuses supported/falsified meanwhile).
+  Cite pod syntheses in decision records and state which pod disagreements you weighed and how.
 
   YOUR SPECIALISTS (dispatch with sys_session_send; end your turn; the inbox wakes you)
   statistician, skeptic, scientist, literature, designer, auditor (oversight science),
@@ -82,42 +87,62 @@ prompt: |
     Decision / Reason / Confidence / Alternatives rejected + why /
     Disagreements with specialists / Methodology review: <verdict>
 
+  REVIEW MATERIALITY AND TIMING (specs/REVIEW_POLICY.md). Level 1: PASS / PASS_WITH_NOTE proceed; CONCERNS proceed unless
+  the reviewer marked a concern MATERIAL; BLOCK/FAIL stop until corrected. Never create a decision solely to clear
+  NON_MATERIAL concerns: batch them once per loop with `bin/falsify disposition <loop> --decisions ... --note ...`.
+  Resolve MATERIAL concerns before the affected scientific action. Prioritize analysis of completed data over review
+  bookkeeping. TIMING: never write 'pre-data'; state the machine phase from `bin/falsify timing <exp>`:
+  (1) before run completion, (2) after completion before outcome inspection, (3) after outcome inspection.
+
+  ENGINEERING CHANGES. You and your agents do not edit falsify/*.py, tests/ or lab/ (the code that measures and
+  constrains you). Request a build with:
+    bin/falsify log PI engineering_request "<exact requirements + acceptance tests>" --cites <DID> <design synthesis>
+  after the authorizing decision has its required review. Then use a timer to wait for an `engineer` /
+  `build_complete` timeline entry (bin/falsify log entries are visible in timeline.jsonl). Never run an
+  experiment against code that was not built and tested by the engineer.
+
+  STOPPING RULE (lab/mandate.json stopping_rules): FreightRoute v2.1 gets exactly ONE pilot. If it still fails
+  the instrument_validity_bar, kill FreightRoute (no v2.2) and pivot. Record the kill or continue decision explicitly.
 async: true
 cancellable: true
 timers: true
-
 os_env:
   type: caller_process
   cwd: .
   sandbox:
     type: none
-
 guardrails:
   ask_timeout: 86400
   policies:
     human_gate_level3:
       type: function
-      on: [tool_call]
+      true:
+      - tool_call
       function:
         path: omnigent.policies.builtins.cel.cel_policy
         arguments:
-          # Fires only when `bin/falsify escalate` is actually invoked (start of command or after
-          # && / ;), never when the phrase appears inside quoted text such as a log message.
-          expression: >-
-            event.type == "tool_call"
-            && has(event.data.arguments)
-            && "command" in event.data.arguments
-            && string(event.data.arguments.command).matches("(^|&&|;)[^\"'&;]*(bin/falsify|falsify\\.cli|cli\\.py)\\s+escalate\\b")
-              ? {"result": "ASK", "reason": "LEVEL 3 HUMAN GATE: the PI is escalating a decision that requires human approval."}
-              : {"result": "ALLOW"}
+          expression: "event.type == \"tool_call\" && has(event.data.arguments) && \"command\" in event.data.arguments\
+            \ && string(event.data.arguments.command).matches(\"(^|&&|;)[^\\\"'&;]*(bin/falsify|falsify\\\\.cli|cli\\\
+            \\.py)\\\\s+escalate\\\\b\")\n  ? {\"result\": \"ASK\", \"reason\": \"LEVEL 3 HUMAN GATE: the PI is\
+            \ escalating a decision that requires human approval.\"}\n  : {\"result\": \"ALLOW\"}"
           reason: Level 3 human gate.
-
+    one_dispatch_per_turn:
+      type: function
+      'on':
+      - tool_call
+      function:
+        path: omnigent.policies.builtins.orchestration.spawn_bounds
+        arguments:
+          max_dispatches_per_turn: 1
+          dispatch_tools:
+          - sys_session_send
+          - sys_session_create
 tools:
   agents:
-    - literature
-    - scientist
-    - designer
-    - statistician
-    - skeptic
-    - auditor
-    - reviewer
+  - literature
+  - scientist
+  - designer
+  - statistician
+  - skeptic
+  - auditor
+  - reviewer

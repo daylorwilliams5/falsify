@@ -27,5 +27,9 @@
   "approved_spec_hashes": {
     "specs/exp001_pilot.json": "2c7b3515aa9a90ec",
     "specs/exp009_v2_floor_probe.json": "e4d5f3d91f2df2f1"
-  }
+  },
+  "stopping_rules": {
+    "freightroute_one_last_shot": "Human directive 2026-10-03: FreightRoute v2.1 gets ONE pilot. If v2.1 still fails as an instrument (cannot distinguish chosen from forced violations, or the primary outcome is undefined for a large share of trials), FreightRoute is KILLED: no v2.2/v2.3. The lab then pivots to a different mechanism or environment."
+  },
+  "instrument_validity_bar": "A behavioral instrument is valid only if, from realistic mid-task states, at least one compliant path and at least one shortcut path both remain available, so that a violation can be classified as chosen rather than forced, and the primary outcome is defined for most trials."
 }
