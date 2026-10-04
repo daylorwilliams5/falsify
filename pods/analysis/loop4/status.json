@@ -2,12 +2,18 @@
   "stage": "analysis",
   "loop": "loop4",
   "lead": "statistician",
-  "state": "RUNNING",
+  "state": "COMPLETE",
   "started": "2026-10-03T16:44:58",
   "members": {
     "primary_analyst": "COMPLETE",
     "independent_analyst": "COMPLETE",
-    "robustness_auditor": "RUNNING"
+    "robustness_auditor": "COMPLETE"
   },
-  "lead_state": "COORDINATING"
+  "lead_state": "COMPLETE",
+  "finished": "2026-10-03T17:00:47",
+  "summary": {
+    "researchers": 4,
+    "disagreements": 2,
+    "headline": "The PI's pinned CLEAR comprehension gate PASSES on all four clauses, with full slack and no adjacency: (a) P-TEAM 0/10 pooled vs <=2/10; (b) P-TEAM 0/5 in S_cle"
+  }
 }
