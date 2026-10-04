@@ -231,7 +231,7 @@ Most importantly, experimental results change what the lab does next. A failed h
 Requirements: Python 3.12+ with [`uv`](https://docs.astral.sh/uv/), [Ollama](https://ollama.com) with `qwen3:8b`, [Omnigent](https://omnigent.ai) (`uv tool install omnigent`), tmux, and Node for the UI. Claude Haiku runs need `ANTHROPIC_API_KEY` in a git-ignored `.env`. Every call is logged to `data/spend_ledger.jsonl`, and calls are refused once the ledger reaches `FALSIFY_SPEND_CAP_USD` (default $20).
 
 ```bash
-uv sync                                   # Python dependencies
+uv sync                                   # Python dependencies (or: pip install -r requirements.txt)
 ollama pull qwen3:8b
 OLLAMA_NUM_PARALLEL=4 ollama serve        # parallel slots for the runner
 uv run pytest -q tests                    # environment integrity tests
@@ -281,6 +281,12 @@ falsify/
 ├── tracker/           # internal live research tracker
 └── ui/                # public research demo
 ```
+
+---
+
+## Credits
+
+Built solo by Daylor Williams, with Claude Code as engineer and Claude agents running the Omnigent lab.
 
 ---
 
