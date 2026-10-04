@@ -7,6 +7,7 @@
   "decision": "CORRECTIVE to D002, which the methodology reviewer FAILED. I accept the FAIL and WITHDRAW, in full, the pre-committed decision rule in D002 that read 'if the re-derived action sequence is identical in 20/20 trials and the route-intention disagreement rate is 0, I will record H8/H5a as VACUOUS-not-falsified'. That clause is void and will not be executed. Replacement: the F9-C1 re-aggregation (already completed by the statistician, results/exp001_pilot_reaggregation.json + _memo.md) stands as a purely EXPLORATORY measurement with NO status consequence for any hypothesis. H5 and H3 remain 'untested'. H8 and H5a receive no status at all, because registry/hypotheses.json lists them under proposed_loop1 as 'PROPOSALS ONLY - not registered hypotheses' and an object with no status cannot undergo a status transition. No new status label is created: 'VACUOUS-not-falsified' is not in status_labels ['untested','supported','falsified','inconclusive','needs replication'] and I am not adding it. Additionally adopted from the review: the tie-break for the re-aggregation is HOLD with tie_broken and the full vote vector logged (critiques/loop1_auditor.md:281-282), which is what makes 'identical in 20/20' well-defined; and the citation for the legacy disagreement field is corrected to falsify/org.py:161, not :160. The re-aggregation's decision-relevance is preserved WITHOUT any status claim: a measured zero means I decline to spend the 3-4h aggregation-rule build, which is a resource-allocation call fully inside L1, not a verdict about a hypothesis.",
   "reason": "The reviewer's three substantive blockers are correct on the documents and I do not contest any of them. (1) H8/H5a are proposals, not registered hypotheses, so my clause presupposed an object that does not exist in the registry; actually creating it would be registering a split of registered H5, which AUTHORITY.md makes Level 2. (2) 'VACUOUS-not-falsified' is outside status_labels, and adding a label is a registry amendment, not an L1 status update. (3) Most importantly, AUTHORITY.md L1 permits a status update only 'when PREREGISTERED criteria are met', and my criteria were written inside the very decision that would consume them, which is precisely the post-hoc pattern the reviewer exists to catch; that I wrote them before seeing the numbers does not make them preregistered. The reviewer also correctly notes H8's own prediction is CONDITIONAL on a non-zero disagreement rate, so an unmet antecedent already yields 'untested' under the existing vocabulary and I never needed a new label. I note for the record that the reviewer's fourth blocker ('results/exp001_pilot_reaggregation.json does not exist and no timeline entry follows') was a race condition: the statistician wrote the file at 12:10 and the memo at 12:12, after the reviewer's filesystem check. data/trials/ is confirmed unmodified by the reviewer, so the read-only commitment held. I am not contesting the FAIL on that basis; the three authority findings are sufficient on their own and the clause is withdrawn regardless.",
   "confidence": 0.93,
+  "alternatives_rejected": "Contest the FAIL and keep the clause: refused outright. AUTHORITY.md states the reviewer's FAIL may not be ignored, and on the merits the reviewer is right about all three authority findings. | Escalate the clause to Level 2 and seek a reviewer PASS to register H5a/H8 and add a status label this loop: rejected as premature and as the wrong instinct. Registering a hypothesis split is a real L2 action that deserves its own argument from the scientist, not a rescue vehicle for a clause I should not have written; and the re-aggregation result does not require it, because declining to fund a 3-4h build needs no hypothesis verdict. | Discard the re-aggregation entirely as tainted by the bad clause: rejected, disproportionate. The measurement itself was ruled legitimate by the reviewer (route-intention redefinition NOT Level 2: disagreement_rounds is secondary per PREREG_V2.md:32, the token artifact is confirmed at org.py:161, and C7 specified the redefinition at loop1_auditor.md:289-290 BEFORE my decision). The defect was in the inference I pre-authorized, not in the data work, so the correct remedy is to strike the inference and keep the measurement labelled EXPLORATORY. | Record H5/H3 as 'inconclusive' instead: rejected, and this is the same error the lab already avoided in loop 1 - their IV never varied, so they were never tested at all and 'untested' is the honest label.",
   "cites": [
     "decisions/D002.json",
     "critiques/review_D002.md",
@@ -30,33 +31,7 @@
         "primary_outcomes_unchanged": null,
         "exploratory_labeled": null,
         "novelty_language_ok": null
-      },
-      "highlights": [
-        "Withdrawal accepted in full.",
-        "The reviewer withdrew one of its own D002 findings as a race condition.",
-        "Documentation fixes required before the re-aggregation is cited."
-      ]
+      }
     }
-  ],
-  "alternatives_rejected_text": "Contest the FAIL and keep the clause: refused outright. AUTHORITY.md states the reviewer's FAIL may not be ignored, and on the merits the reviewer is right about all three authority findings. | Escalate the clause to Level 2 and seek a reviewer PASS to register H5a/H8 and add a status label this loop: rejected as premature and as the wrong instinct. Registering a hypothesis split is a real L2 action that deserves its own argument from the scientist, not a rescue vehicle for a clause I should not have written; and the re-aggregation result does not require it, because declining to fund a 3-4h build needs no hypothesis verdict. | Discard the re-aggregation entirely as tainted by the bad clause: rejected, disproportionate. The measurement itself was ruled legitimate by the reviewer (route-intention redefinition NOT Level 2: disagreement_rounds is secondary per PREREG_V2.md:32, the token artifact is confirmed at org.py:161, and C7 specified the redefinition at loop1_auditor.md:289-290 BEFORE my decision). The defect was in the inference I pre-authorized, not in the data work, so the correct remedy is to strike the inference and keep the measurement labelled EXPLORATORY. | Record H5/H3 as 'inconclusive' instead: rejected, and this is the same error the lab already avoided in loop 1 - their IV never varied, so they were never tested at all and 'untested' is the honest label.",
-  "summary": "Withdraw the pre-committed decision rule from D002.",
-  "rationale": "The methodology reviewer showed the rule was not supported by the preregistered analysis.",
-  "alternatives_rejected": [
-    {
-      "label": "Contest the FAIL and keep the rule",
-      "reason": "A reviewer FAIL may not be ignored, and the reviewer is right on all three points."
-    },
-    {
-      "label": "Escalate to Level 2 and register H5a/H8 now",
-      "reason": "Premature; a hypothesis split deserves its own review."
-    },
-    {
-      "label": "Discard the re-aggregation as tainted",
-      "reason": "Disproportionate; the measurement itself was ruled legitimate."
-    }
-  ],
-  "responds_to": [
-    "D002"
-  ],
-  "resulting_action": "Rule voided. The re-aggregation stands as exploratory only; H3 and H5 remain untested."
+  ]
 }

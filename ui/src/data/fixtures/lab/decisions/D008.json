@@ -7,6 +7,7 @@
   "decision": "Discharge the D005 CONCERNS. FIVE items. (1) RETRACT A MECHANISM CLAIM I SHOULD NOT HAVE MADE. In D005 I wrote that exp001_pilot-C-005 being unanimous on Route A shows 'voting buys nothing where the error is shared' and called this 'a better argument against the build than the zero is'. The reviewer is right that this is a MECHANISM CLAIM generalized from n=1, ranked above the measured zero, in a case where 2 of the 4 role routes are text adjudications rather than logged fields - and EDGE_CASE_POLICY section K bars inferring mechanism from one or two unusual trials, which is the same rule the lab applied to the two seed-5 trials in loop 1. I retract the generalization. The permitted statement is narrower and EXPLORATORY: in the single invalidating MULTI-AGENT trial that persisted (C-005), all adjudicable role route-intentions were Route A, so a plurality rule would have reproduced the recorded action in that trial; this is a one-trial observation, is NOT evidence about voting or about error correlation generally, and must not be cited as such. The MEASURED ZERO (0/80 differing rounds with the adversarial sensitivity analysis) remains the primary basis for the spending decision, with error correlation retained only as a prior-driven spending consideration, not a finding. (2) FACTUAL CORRECTION: A-005 ALSO went ADVANCE_A four times (per_trial.A = [0,0,0,0,4]), so C-005 is the single invalidating MULTI-AGENT persisting trial, not the single persisting trial. I had blurred this and it matters because the two non-zero trials are the entire empirical basis of the loop-1 floor discussion. (3) WORDING: 'Close the aggregation-rule branch' is replaced by 'DECLINE TO FUND the aggregation-rule build NOW', and D002's revival condition is restated on this record: a measured non-zero route-intention disagreement rate in any future arm REVIVES H8/H5a as a fundable branch. A closed branch is indistinguishable from a retired hypothesis to a later reader even with no status field moved, which is exactly the failure mode I was trying to avoid. (4) PRECISION: '14/160' is 14 of the 160 FREE-TEXT role-rounds. (5) Section F defect (2) is scoped to section F's PROVENANCE CLAIM ABOUT THE PILOT, not to current instrumentation - org.py:160 does log executor_overridden now. All three defects plus the unit correction are now logged to timeline.jsonl for the human per section N (12:23:27).",
   "reason": "The reviewer upheld level 1, found no concealed level-2 or level-3 content, verified the registry unchanged, confirmed all six quoted statistics exact and every source-line claim verbatim, and explicitly declined to FAIL the funding framing - telling me again not to strip it, on the ground that the call is symmetrically responsive to the measurement because D002 is on record that a non-zero would revive H8. But it found, unprompted, the one place where I did overreach, and it is the most important finding of this review precisely because I did not ask about it. My C-005 sentence committed the error this lab has been disciplined about all loop: inferring a mechanism from a single unusual trial and then promoting that inference above the measured result. It is worse than the loop-1 seed-5 case in one respect, because I ranked it ABOVE the zero rather than merely alongside it, and worse in another, because two of the four role route-intentions in C-005 came from the statistician's text adjudication rather than from a logged field - the very instrument gap I had just recorded as an open defect in the same decision. Retracting it costs me nothing substantive: the measured 0/80 with the adversarial sensitivity analysis is sufficient on its own for a spending decision, and error correlation remains a legitimate PRIOR for how to spend, which is a different epistemic object from a finding about voting. The A-005 correction is a plain factual error on my part and I accept it without qualification. On the wording, I accept that 'close' was the wrong verb; the reviewer's test - whether a later reader could distinguish this from a retired hypothesis - is the right test, and my own stated goal in D003 and D007 was to keep allocation separable from verdict, so using terminal language undercut the thing I was defending.",
   "confidence": 0.92,
+  "alternatives_rejected": "Keep the C-005 mechanism sentence because it is rhetorically the most compelling thing in D005: REJECTED, and that is precisely why it had to go. Persuasiveness from n=1 is the specific hazard section K exists to control, and I would have objected to any specialist who offered it to me. | Defend it as merely illustrative rather than evidential: REJECTED as a distinction I did not actually draw in the text - I called it 'a better argument against the build than the zero is', which is an evidential ranking, not an illustration. | Retract the whole error-correlation consideration: REJECTED as over-correction. A prior about correlated errors in a single model at a single temperature is a legitimate input to a SPENDING decision and is independently supported by the literature's reading of Huang et al. 2023 and Panickssery et al. 2024 (both abstract-only, both ADJACENT); what is not permitted is presenting it as a measured finding from our data. The fix is to relabel its epistemic role, not to discard it. | Leave the A-005 omission uncorrected as immaterial: REJECTED, the two non-zero trials are the entire empirical basis for the loop-1 floor discussion, so precision about which of them is multi-agent is material to any future statement about organizational form. | Treat the three logged defects as closed because they are now logged: REJECTED, they remain OPEN; logging notifies the human, it does not repair anything, and defect (1) in particular still leaves the authority floor defeatable until an engineer fixes it.",
   "cites": [
     "critiques/review_D005.md",
     "decisions/D005.json",
@@ -30,33 +31,7 @@
         "primary_outcomes_unchanged": null,
         "exploratory_labeled": null,
         "novelty_language_ok": null
-      },
-      "highlights": [
-        "The narrowed wording is within policy; keep it.",
-        "The line between a prior and a finding leaks in one place.",
-        "The reviewer corrected two points in its own earlier review."
-      ]
+      }
     }
-  ],
-  "alternatives_rejected_text": "Keep the C-005 mechanism sentence because it is rhetorically the most compelling thing in D005: REJECTED, and that is precisely why it had to go. Persuasiveness from n=1 is the specific hazard section K exists to control, and I would have objected to any specialist who offered it to me. | Defend it as merely illustrative rather than evidential: REJECTED as a distinction I did not actually draw in the text - I called it 'a better argument against the build than the zero is', which is an evidential ranking, not an illustration. | Retract the whole error-correlation consideration: REJECTED as over-correction. A prior about correlated errors in a single model at a single temperature is a legitimate input to a SPENDING decision and is independently supported by the literature's reading of Huang et al. 2023 and Panickssery et al. 2024 (both abstract-only, both ADJACENT); what is not permitted is presenting it as a measured finding from our data. The fix is to relabel its epistemic role, not to discard it. | Leave the A-005 omission uncorrected as immaterial: REJECTED, the two non-zero trials are the entire empirical basis for the loop-1 floor discussion, so precision about which of them is multi-agent is material to any future statement about organizational form. | Treat the three logged defects as closed because they are now logged: REJECTED, they remain OPEN; logging notifies the human, it does not repair anything, and defect (1) in particular still leaves the authority floor defeatable until an engineer fixes it.",
-  "summary": "Retract a mechanism claim the PI generalized from a single trial.",
-  "rationale": "Persuasiveness from n = 1 is exactly the hazard the edge-case policy bars.",
-  "alternatives_rejected": [
-    {
-      "label": "Keep the sentence because it is compelling",
-      "reason": "That is precisely why it had to go."
-    },
-    {
-      "label": "Defend it as merely illustrative",
-      "reason": "The text ranked it above the measured result, so it was used as evidence."
-    },
-    {
-      "label": "Retract the whole error-correlation argument",
-      "reason": "Over-correction; a prior about correlated errors is a fair input to a spending decision."
-    }
-  ],
-  "responds_to": [
-    "D005"
-  ],
-  "resulting_action": "Claim narrowed to an exploratory note; three logged defects remain open for the human."
+  ]
 }

@@ -6,7 +6,7 @@ import type {
 
 import mandate from '../fixtures/lab/mandate.json';
 import budget from '../fixtures/lab/results/budget.json';
-import exp012 from '../fixtures/lab/results/exp012.json';
+import exp013t from '../fixtures/lab/results/exp013t.json';
 import timelineRaw from '../fixtures/lab/timeline.jsonl?raw';
 import labState from '../fixtures/lab/lab_state.json';
 import escalationExample from '../fixtures/lab/escalation_example.json';
@@ -49,7 +49,7 @@ export const fixtureSource: LabDataSource = {
     if (q.get('escalation')) state.escalations = [escalationExample as Escalation];
     return {
       mandate: mandate as Mandate,
-      finding: exp012 as Finding,
+      finding: exp013t as Finding,
       decisions,
       events: parseTimeline(timelineRaw),
       budget: budget as Budget,

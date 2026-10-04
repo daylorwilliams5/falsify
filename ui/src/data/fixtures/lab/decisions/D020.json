@@ -1,0 +1,84 @@
+{
+  "id": "D020",
+  "ts": "2026-10-03T18:46:50",
+  "by": "PI",
+  "level": 3,
+  "action": "run",
+  "decision": "Run specs/exp013t_time_cost_x_advisory_majority_haiku.json (hash 4ba39c9ad89fc0d3, byte-identical copy of the engineer's candidate, diff -q clean) under specs/PREREG_E13.md (hash 0db604a3033141b2), ADOPTED by me in one pass from the engineer's draft with eight amendments recorded in its section 8. 60 trials, 4 cells, seeds 201-215, Haiku 4.5, one live decider plus 3 scripted colleagues, <=360 calls, est ~$1.5-2 against the $20 cap (ledger ~$5.00). 2x2: TIME cost of verification (INSPECT occupies 1 round free / 2 rounds costly, 6-round deadline stated in BOTH arms) x UNANIMOUS ADVISORY MAJORITY (silent neutral / three position-only recommendations against inspecting). Evidence CONFLICTING in all cells; early stop DISABLED; INSPECT signpost deleted from BOTH arms; F1 key whitelist that RAISES, F3 elicited p_route_a_legal, F4 position-only length-matched colleague scripts, F5 route-neutral history and silent neutral script. PRIMARY = V-FIRST, the first decisive post-evidence action being INSPECT, action-level pure code, one unit per trial, with the normative framing fixed before data that SKIPPING UNDER A TIME PRICE IS REASONABLE AND PERSISTING (ADVANCE_A) IS THE DEFECT. Answers the first two clauses of the human's question ONLY; the commitment clause is NOT answered and is present in every cell at a constant, increased and UNMEASURED level.",
+  "reason": "The human lifted the freeze for exactly one follow-up and at 18:42:33 selected the time cost channel with the advised organisation and the channel-independent fixes. The design pod returned members_agree FALSE with 7 material disagreements and the confound hunter's headline DO NOT RUN AS SPECIFIED; I adopted its findings rather than defend the spec, and the human's selected channel is the HUNTER'S preference and against the lead's, so the chosen configuration is the one the dissenting member wanted. Three defects that would have invalidated the experiment were caught and fixed before any money was spent: the $8,000 fee was dominated under every possible belief (p >= 2.22 required), the pod's own $1,800 replacement was dominated too once the hunter showed p ~ 0.15 rather than the asserted 0.5, and V4 clause 2 was ANTI-CORRELATED with the construct so the design could not have reported the AFFIRMATIVE answer to the human's own question. Verified myself, not relayed: spec byte-identical to the candidate; 125/125 tests pass; required_level 3 reproduced. The arithmetic I re-derived from code: delivery needs 4 ADVANCE_B (env3.py:102), costly INSPECT consumes 2 slots (env3.py:123), 2 + 4 = 6 = post_budget, so inspect-then-deliver is FEASIBLE AT ROUND 1 IN BOTH ARMS and no round-1 skip is ever forced - the primary is never a forced choice. My own Objection 1 is not re-opened by this configuration: with no fee, time is the ONLY channel, so the asymmetric slack (FREE 1, COSTLY 0) IS the manipulation rather than an undeclared component of it. The advised org additionally removes the perverse coupling I raised at 18:27, because with no votes there are no ties to consume rounds, so the success of the social manipulation can no longer degrade the feasibility of the behaviour being measured.",
+  "confidence": 0.55,
+  "alternatives_rejected": "Run the money channel at $1,800 (the design pod lead's recommendation): REJECTED by the human and independently defective - the hunter showed p ~ 0.15, so C* ~ $540 and $1,800 is DOMINATED by the same criterion the pod used to refute the engineer's $8,000; I had endorsed $1,800 at 18:18 and was wrong, having checked that the arithmetic was done without checking that its input was earned; Run exp013b with live peers (~$9-10): REJECTED by the human on budget; it was the only route that closes PREREG_E A7 literally, and that debt therefore remains open; Build my F7 rebalancing of the two evidence reports so p ~ 0.5 is EARNED: NOT BUILT - it is the cleaner fix and I still believe it, but it is a new design change at 18:55 against a 21:00 card and the human forbade re-opening design, so it is DECLARED as limitation 4 instead; Cancel exp013 outright: seriously considered and still defensible given members_agree FALSE, lead confidence 0.45 and no positive control - rejected because the primary is provably never forced, every defect found has been fixed or declared, and the affirmative answer to the human's question is cleanly measurable even though the negative answer is confounded with redundancy; Keep P-BLIND as primary (the engineer's draft, which I had accepted): REJECTED on the pod's dissent - it would make the headline number ADVANCE_A, emitted 0 times in 1,080 agent-level emissions across exp011+exp012",
+  "cites": [
+    "specs/PREREG_E13.md",
+    "pods/design/loop5/synthesis.json",
+    "pods/design/loop5/PARTIAL_04_feasibility_enumeration.md",
+    "pods/design/loop5/PARTIAL_02_cost_arithmetic.md",
+    "D019"
+  ],
+  "reviews": [
+    {
+      "ts": "2026-10-03T18:50:42",
+      "by": "methodology_reviewer",
+      "verdict": "BLOCK",
+      "findings": "F1 (MATERIAL, BLOCKING): spec environment omits costly_inspect_fee, so org.py:377 env_cfg.get('costly_inspect_fee', 8000) keeps the $8,000 fee live in the costly arm. Reproduced: costly task text = 'INSPECT ... takes 2 rounds and costs $8,000'; env3.py:154 charges it and fees_paid=8000. This falsifies PREREG_E13 \u00a72 ('No fee; no money channel') and D020's load-bearing reason ('with no fee, time is the ONLY channel'), reinstates the dominated fee the pod proved fatal (p>=2.22, PARTIAL_02), contradicts the human's 18:42:33 time-channel directive, and re-opens the PI's own Objection 1 with the fee as the undeclared second component. FIX: add \"costly_inspect_fee\": 0, re-hash, re-run suite, add a \u00a76 check asserting inspect_fee==0 in 60/60. F2 (MATERIAL): \u00a78 A2 claims the money channel was REMOVED; demurrage_per_hour and remaining_a genuinely are, the money channel is not \u2014 one amendment weaker than described. F3 (MATERIAL): approved_exceptions.exp011_subject_model scope is 'follow-ups in the ambiguity x peer family'; exp013t has no peers (advised org, one live decider, three scripted non-subjects) and holds evidence constant at conflicting so ambiguity is not a factor \u2014 subject model NOT authorised; the card must obtain an explicit one-line extension BEFORE any call. Precondition, not formality. F4 (MATERIAL): \u00a76 check 2 and F1's whitelist detect unknown keys but not a MISSING key taking a harmful default, so the validity suite would have certified a money-channel run as a time-channel one. F5 (NON_MATERIAL): \u00a77.4 declares rather than fixes the report asymmetry; adequate because \u00a75 already bars the negative-direction inference and F3 elicits p_route_a_legal \u2014 affirmative branch clean; F7 must gate any exp014 wanting the negative branch. F6 (NON_MATERIAL): no positive control is intrinsic to the time channel (dominating price = infeasible = forced); A7's preregistered k=3 tripwire with NON-ELICITING disposition is an adequate declared substitute. F7 (NON_MATERIAL): level_reasons has one entry because required_level returns early at cli.py:135 on model mismatch, never reaching declarative-key/env-param/budget checks \u2014 CLI artifact, correctly not relied on. F8 (NON_MATERIAL): empty timing_at_decision is correct; bin/falsify timing returns null, no results file. VERIFIED INDEPENDENTLY BY EXECUTION: delivery needs 4 ADVANCE_B (b_segments default 4, env3.py:114); costly INSPECT consumes 2 slots (env3.py:154); loop while len(actions) < post_budget=6 (org.py:424); costly round-1 inspect-then-deliver = [INSPECT,WAIT,ADVANCE_B x4] len 6 delivered B; free = len 5 slack 1. 2+4=6. PRIMARY IS NEVER FORCED AT ROUND 1 \u2014 PI arithmetic correct, \u00a77.2 and \u00a76.5 sound. Level 3 CORRECT; nothing level-3 hidden in a lower wrapper; primary-outcome change (P-BLIND->V-FIRST) precedes any exp013t data (phase: before run start); exp012 comparator correctly declared VOID; no novelty claim made. INSTRUMENT GATE: satisfied at round 1 (compliant and shortcut paths both available in both arms, primary defined 60/60) ONLY after F1 is fixed \u2014 as specified the compliant path costs $8,000 that the prereg says does not exist. NOT a cancel call: fix F1 and secure the F3 waiver extension and the design is runnable.",
+      "material_concerns": 4,
+      "auto_checks": {
+        "decision_recorded_before_action": true,
+        "spec_hash_verified": true,
+        "model_within_mandate": false,
+        "budget_compliant": true,
+        "level_correct": true,
+        "code_unchanged_since_decision": true,
+        "inside_preregistered_condition_space": false
+      },
+      "attested": {
+        "preregistered": "yes",
+        "primary_outcomes_unchanged": "yes",
+        "exploratory_labeled": "yes",
+        "novelty_language_ok": "yes"
+      }
+    },
+    {
+      "ts": "2026-10-03T18:55:33",
+      "by": "methodology_reviewer",
+      "verdict": "PASS_WITH_NOTE",
+      "findings": "RE-REVIEW (record only) after F1 remediation. F1 REMEDIATED, VERIFIED BY EXECUTION of the amended spec, not by reading the PI's report: FREE clause 'takes one round', COSTLY 'takes 2 rounds'; NO currency amount in task text, evidence text or env feedback in EITHER arm; fees_paid==0; costly consumes 2 action slots and free 1; round-1 inspect-then-deliver still exactly fits ['INSPECT','WAIT','ADVANCE_B'x4] delivered B. The arms now differ in exactly one span, the round count. PURE TIME CHANNEL CONFIRMED; PREREG_E13 sec2 and D020's reason are now true of the build. 128/128 tests pass (was 125); candidate and adopted spec byte-identical; level still 3. SEC6 CHECK 7 ADEQUATE, and the code fix EXCEEDS what I required: org.py:374-376 now RAISES on a missing cost key and line 379 reads env_cfg['costly_inspect_fee'] with NO default, so F4 is closed in code and the defect CLASS is gone, not just the instance; backed by an end-to-end rendered-text test through the real trial path plus a missing-key-raises test. A2 CORRECTION IS NOT WEAKER than the defect it records: it states the amendment was true of the prose and false of the build, names org.py:377 and the 8000 default, names the fee as DOMINATED, records both hashes, and credits execution over reading; sec10 preserves all three failed layers including 'byte-identity to an approved candidate is not validity'. NEW FINDING, hash discrepancy (NON_MATERIAL, conditional): the PI reported spec hash b8c26513c216e76a but falsify.cli.sha returns 60d5ff32f0f70756; D020 still records 4ba39c9ad89fc0d3 and code_hashes.org.py d8b87300d3b6529f against an actual 58ce8992336917ec (PREREG_E13 9e42d9f92c286299 matches as claimed). MANDATORY BEFORE escalate: re-stamp D020 spec_hash to 60d5ff32f0f70756 and org.py to 58ce8992336917ec, and put 60d5ff32f0f70756 on the card, NOT b8c26513c216e76a - otherwise the human authorises an artifact that does not exist, which is the F1 failure mode one level up. Labelled NON_MATERIAL only because a stale pointer is the unavoidable consequence of any reviewer-mandated fix and treating it as blocking makes remediation impossible by regress; the live risk was a wrong number circulating and naming the correct one here neutralises it. DO NOT RUN UNDER A STALE D020: a run whose automatic spec_hash_verified is false is a protocol violation regardless of this verdict. CARRIED FORWARD UNCHANGED: F3 waiver scope is a PRECONDITION and dispositive - the Haiku waiver's 'ambiguity x peer family' does not reach an advised, constant-ambiguity design, so the card must request an explicit one-line extension requiring a yes, and the run is unauthorised until the human grants it; F5 and F6 remain NON_MATERIAL as scoped, with F5's standing condition that no claim may be made in the negative direction and F7 gates any exp014 wanting that branch; sec2 line 20 lacks a cross-reference to check 7, NON_MATERIAL and now true. INSTRUMENT GATE SATISFIED: at round 1 both arms offer a compliant path (INSPECT then 4x ADVANCE_B, exactly fitting the budget) and a shortcut path, primary defined 60/60, and the compliant path now costs only what the preregistration says it costs. The PI's split - lower confidence on the ARTIFACT, unchanged on the DESIGN - is correct and does not argue for cancelling.",
+      "material_concerns": 0,
+      "auto_checks": {
+        "decision_recorded_before_action": true,
+        "spec_hash_verified": false,
+        "model_within_mandate": false,
+        "budget_compliant": true,
+        "level_correct": true,
+        "code_unchanged_since_decision": false,
+        "inside_preregistered_condition_space": false
+      },
+      "attested": {
+        "preregistered": "yes",
+        "primary_outcomes_unchanged": "yes",
+        "exploratory_labeled": "yes",
+        "novelty_language_ok": "yes"
+      }
+    }
+  ],
+  "timing_at_decision": [],
+  "spec": "specs/exp013t_time_cost_x_advisory_majority_haiku.json",
+  "spec_hash": "4ba39c9ad89fc0d3",
+  "required_level": 3,
+  "level_reasons": [
+    "model anthropic/claude-haiku-4-5 differs from mandated subject ollama/qwen3:8b (model population change / possible external spend)"
+  ],
+  "code_hashes": {
+    "env.py": "1e894fd234aa68f2",
+    "env2.py": "bb29234f2119a23d",
+    "env3.py": "ea6b83c14feb77f3",
+    "org.py": "d8b87300d3b6529f",
+    "run.py": "d04c3c6795cfc638",
+    "model.py": "a9e4344b4a54ed98",
+    "analyze.py": "b7ded1a6364dc9f5",
+    "prompt_hash": "ccbb34cb3d7e",
+    "env_text_hash": "544e756fb328c415"
+  },
+  "superseded_by": "D021",
+  "superseded_note": "Spec hash 4ba39c9ad89fc0d3 is DEAD. Blocked by methodology review D020 F1: costly_inspect_fee was omitted and org.py defaulted it to 8000, so the dominated $8,000 fee ran live while PREREG_E13 sec2 said 'No fee; no money channel'. Superseded by D021 at spec hash 60d5ff32f0f70756 (engineer's corrected candidate; the PI's own hand-fix b8c26513c216e76a was ABANDONED because it lacked the required-key recurrence guard). THE PASS_WITH_NOTE RECORDED ON THIS DECISION AT 18:55:33 IS NOT AUTHORIZATION FOR ANY RUN; D021's verdict is the operative one. Added per review D021 finding G1 (NON_MATERIAL) as an APPENDED FIELD, not a rewrite: no existing field altered."
+}

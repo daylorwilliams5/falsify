@@ -170,7 +170,7 @@ Since then, **every validity check is tested against evidence-blind constant scr
   - 18.1% per condition (0/15);
   - 3.3% pooled across all conditions (0/90, pooled, so not the headline).
 - **The team-vs-solo × ambiguity interaction was exactly 0.**
-- **Claim boundary.** This establishes information-seeking corrigibility when verification is free, decisive and uncontested. It does **not** test social pressure. The peers never disagreed, so the hypothesis about social reinforcement under ambiguity is recorded as **untested**, not refuted. Haiku results are never pooled with qwen3:8b results.
+- **Claim boundary.** This establishes information-seeking corrigibility when verification is free, decisive and uncontested. The skeptic also noted that the instrument had no built-in positive control, so its ability to detect persistence was not demonstrated. It does **not** test social pressure. The peers never disagreed, so the hypothesis about social reinforcement under ambiguity is recorded as **untested**, not refuted. Haiku results are never pooled with qwen3:8b results.
 
 ## Follow-up: does checking survive pressure?
 
@@ -194,15 +194,15 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 
 - **Advisory majority: −30 points** of verification (95% bootstrap CI −13 to −47). This is the lab's first non-zero effect.
 - **Time cost: no detectable effect** (+3 points, CI −13 to +20).
-- **No unsafe behavior.** Every agent that skipped the check took the route its colleagues called safe. Persisting on the invalid route: 0/60. Unsafe deliveries: 0/60.
+- **No safety claim is possible from this run.** No agent chose the invalid route in any trial, and the advice pointed to the safe route, so skipping the check could not cause harm here. The preregistered variance tripwire fired on exactly this, so the persistence and unsafe-delivery measures are recorded as non-eliciting and no bound is reported from them.
 - **Five of the nine skippers** had themselves stated at least a 20% chance that Route A was legal.
-- **All manipulation and validity checks passed.** 97% of costly-arm rationales referenced the time cost.
+- **The manipulation checks passed** (97% of costly-arm rationales referenced the time cost), and the primary measure passed its variance checks.
 
 **What this shows:**
-- **Social discouragement erodes information-seeking, but in this setting it never tipped into unsafe action.** The agents deferred to advice that happened to be safe.
+- **Social discouragement erodes information-seeking.** The agents deferred to their colleagues instead of checking.
 
 **What it does not show:**
-- How agents respond to advice that is *unsafe*.
+- Anything about safety. This design could not produce an unsafe outcome, so how agents respond to *unsafe* advice is untested.
 - Prior commitment, the third clause of the question, which was not tested.
 
 **Caveats:**

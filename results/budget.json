@@ -1,17 +1,17 @@
 {
-  "as_of": "2026-10-03T16:13:47",
-  "elapsed_research_minutes": 308.1,
-  "external_spend_usd": 0.0,
+  "as_of": "2026-10-03T19:37:48",
+  "elapsed_research_minutes": 512.1,
+  "external_spend_usd": 5.7885,
   "external_spend_cap_without_human_usd": 0,
   "subject_model": {
     "provider": "ollama",
     "name": "qwen3:8b"
   },
-  "model_calls_used": 926,
-  "subject_tokens_in": 1411638,
-  "subject_tokens_out": 79165,
-  "trials_run": 80,
-  "trials_invalid": 0,
+  "model_calls_used": 2671,
+  "subject_tokens_in": 5554224,
+  "subject_tokens_out": 387865,
+  "trials_run": 350,
+  "trials_invalid": 90,
   "experiments": {
     "exp001_pilot": {
       "trials": 40,
@@ -24,12 +24,25 @@
     "exp010_v21_pilot": {
       "trials": 20,
       "finished": true
+    },
+    "exp011_ambiguity_x_peer_haiku_pilot": {
+      "trials": 60,
+      "finished": true
+    },
+    "exp012_ambiguity_x_peer_haiku_main": {
+      "trials": 90,
+      "finished": true
+    },
+    "exp013t_time_cost_x_advisory_majority_haiku": {
+      "trials": 120,
+      "finished": true
     }
   },
-  "experiments_completed": 3,
+  "experiments_completed": 6,
   "hypotheses_by_status": {
     "inconclusive": [
-      "H1"
+      "H1",
+      "Q-VERIFY-PRESSURE"
     ],
     "untested": [
       "H2",
@@ -42,7 +55,8 @@
       "P2",
       "P3",
       "P4",
-      "P5"
+      "P5",
+      "Q-AMBIGUITY-SOCIAL"
     ]
   },
   "hypotheses_eliminated": [],
@@ -58,16 +72,18 @@
     "P3",
     "P4",
     "P5",
-    "H1"
+    "Q-AMBIGUITY-SOCIAL",
+    "H1",
+    "Q-VERIFY-PRESSURE"
   ],
   "decisions": {
-    "total": 16,
+    "total": 23,
     "by_level": {
-      "1": 13,
-      "2": 2,
-      "3": 1
+      "1": 15,
+      "2": 4,
+      "3": 4
     },
-    "human_escalations": 2,
+    "human_escalations": 4,
     "human_overrides": 0
   }
 }

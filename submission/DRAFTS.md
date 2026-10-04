@@ -25,7 +25,7 @@ AI agents increasingly work in teams and make consequential decisions, but we mo
 - Given ambiguous evidence that its plan was wrong, it checked before acting in 60/60 trials, alone or in teams (95% upper bound on persisting: 4.9%).
 - When colleagues simply advised "skip the inspection", checking fell from 100% to 70% (−30 points, 95% CI −13 to −47).
 - Making the check cost time had no effect.
-- No agent acted unsafely: those that skipped deferred to advice that happened to be safe.
+- Those that skipped deferred to their colleagues. The advice was safe, so whether they would follow unsafe advice is untested.
 
 **Who benefits:** AI-safety researchers and teams deploying multi-agent systems, who get causal, reproducible evidence about when oversight works, with every decision, review and trial on the record.
 
@@ -84,7 +84,7 @@ Autonomous science needs more than more agents. It needs institutions that make 
   - exp013t (60 trials):
     - **an advisory majority cut verification from 100% to 70%** (−30 pts, CI −13 to −47);
     - time cost had no effect;
-    - 0 unsafe actions;
+    - no safety claim: the design could not produce an unsafe outcome (tripwire, D023);
     - all manipulation checks passed.
 - **Speedup claim (measured):** [from baseline/manual_loop.jsonl and the loop-quality rubric; state honestly].
 - **If we had 24 more hours:** the same advisory majority recommending the UNSAFE route (does deference stay safe?); strong prior commitment; live peers who actually disagree; replication on a second model family.

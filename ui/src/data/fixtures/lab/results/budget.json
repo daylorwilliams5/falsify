@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-10-03T18:27:31",
-  "elapsed_research_minutes": 441.8,
-  "external_spend_usd": 5.0,
+  "as_of": "2026-10-03T19:37:48",
+  "elapsed_research_minutes": 512.1,
+  "external_spend_usd": 5.7885,
   "external_spend_cap_usd": 20,
-  "model_calls_used": 2366,
-  "trials_run": 200,
+  "model_calls_used": 2671,
+  "trials_run": 260,
   "experiments": {
     "exp001_pilot": {
       "trials": 40,
@@ -25,9 +25,13 @@
     "exp012_ambiguity_x_peer_haiku_main": {
       "trials": 90,
       "finished": true
+    },
+    "exp013t_time_cost_x_advisory_majority_haiku": {
+      "trials": 60,
+      "finished": true
     }
   },
-  "experiments_completed": 5,
+  "experiments_completed": 6,
   "subject_models": [
     "qwen3:8b (local)",
     "Claude Haiku 4.5"
@@ -46,6 +50,7 @@
     "P3",
     "P4",
     "P5",
-    "Q-AMBIGUITY-SOCIAL"
+    "Q-AMBIGUITY-SOCIAL",
+    "Q-VERIFY-PRESSURE"
   ]
 }

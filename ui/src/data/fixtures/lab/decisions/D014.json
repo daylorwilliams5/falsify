@@ -7,6 +7,7 @@
   "decision": "CLOSE the DESIGN pod for loop3 as PARTIAL-with-stated-coverage rather than re-dispatching confound_hunter_design a 4th time or running info_gain_planner. Reason it is no longer gating: the human approved specs/exp010_v21_pilot.json at 14:33, forbade any further FreightRoute redesign loop, and the pilot has been running under D013 since 14:55 (phase 1, 4/20 trials) - so no design-pod output can now change the instrument, and Q3 (go vs kill this pilot) was answered by the human's approval, not by the planner. The two surviving design questions are RE-ASSIGNED to the ANALYSIS pod as EMPIRICAL checks against the 20 measured trials: (A) does both_paths_open ever differ from compliance_feasible_known in real logged actions (the lead's single-source 'collapse' claim, which bounds what a V3(b) PASS licenses); (B) is Route B always truly safe (a_limits/b_limits dump), which bounds reachability of integrity_breach and the unsupported-claim outcome. Also carried as analysis inputs: bimodality of process_violations (0 or 4, since one-shortcut-then-recover costs 13 = same as full compliance), and the verify_ptr-lags-reserved mechanic. Additionally the ANALYSIS pod must independently verify analyze.py's V1-V5 evaluator arithmetic against raw data/trials/exp010_v21_pilot.jsonl, because the reviewer's own not_checked list states it did not read that evaluator line-by-line and it is the code that decides keep-or-kill.",
   "reason": "Three infra deaths have cost the hunter three turns; a 4th attempt to re-derive static design facts cannot change a frozen, human-approved, already-running instrument, and REVIEW_POLICY directs me to prioritize analysis of completed data over bookkeeping. The two claims that are still load-bearing are load-bearing for INTERPRETATION, not design, and both are strictly better answered from measured per-action logs than from a static re-derivation - the trials will contain the actual both_paths_open and compliance_feasible_known fields on every action. Closing with honest coverage (members_agree=null, planner never ran, hunter tasks 2-4 unsourced) preserves the record's accuracy; silently promoting the synthesis to COMPLETE would launder single-source lead findings as pod consensus, which the lead itself refused to do.",
   "confidence": 0.74,
+  "alternatives_rejected": "Re-dispatch confound_hunter_design a 4th time: cannot change a frozen approved instrument mid-run, and its two remaining claims are better tested empirically on the 20 trials; rejected as bookkeeping with a 3-in-3 infra failure rate. Run info_gain_planner: its question (spend the last shot vs kill now) was decided by the human's 14:33 approval and the live run; re-litigating it would be theatre. Promote synthesis to COMPLETE/members_agree=true: false - tasks 2-4 and Q3 have no second source; rejected as misrepresentation. Kill the running pilot to finish the design pod: the mandate reserves the kill for a FAILED validity bar, and aborting the one approved shot to complete pod paperwork would waste it.",
   "cites": [
     "D013",
     "D011",
@@ -16,15 +17,5 @@
     "lab/mandate.json"
   ],
   "reviews": [],
-  "timing_at_decision": [],
-  "alternatives_rejected_text": "Re-dispatch confound_hunter_design a 4th time: cannot change a frozen approved instrument mid-run, and its two remaining claims are better tested empirically on the 20 trials; rejected as bookkeeping with a 3-in-3 infra failure rate. Run info_gain_planner: its question (spend the last shot vs kill now) was decided by the human's 14:33 approval and the live run; re-litigating it would be theatre. Promote synthesis to COMPLETE/members_agree=true: false - tasks 2-4 and Q3 have no second source; rejected as misrepresentation. Kill the running pilot to finish the design pod: the mandate reserves the kill for a FAILED validity bar, and aborting the one approved shot to complete pod paperwork would waste it.",
-  "summary": "Close the design pod early: nothing it finds can change a test that is already running.",
-  "rationale": "The human approved and froze the instrument; remaining questions are better answered from the data.",
-  "alternatives_rejected": [
-    {
-      "label": "Re-dispatch the confound hunter a fourth time",
-      "reason": "It cannot change a frozen, approved instrument mid-run."
-    }
-  ],
-  "resulting_action": "Two open design questions handed to the analysis pod to check against the data."
+  "timing_at_decision": []
 }
