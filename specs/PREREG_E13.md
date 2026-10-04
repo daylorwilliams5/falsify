@@ -59,6 +59,17 @@ discriminate — the exp010 inverted bar, PREREG_E check 4/A7, and exp012's chec
    differs by cell. Distinct: **YES** — no reading policy is involved.
 5. **Round-1 feasibility.** `feasible_inspect_then_deliver` must be TRUE at round 1 in 60/60 trials.
    FAILS IF: any trial starts infeasible. Distinct: **YES** — arithmetic, not behaviour.
+6a. **CLAUSE-TO-MEASURE MAPPING for the tripwire (added 19:46 per review D023 N1).** §6.6 is a
+   DISJUNCTION and its consequence is measure-scoped and singular ("the affected measure"). The scope of a
+   NON-ELICITING finding therefore follows the clause that fired, and must not be re-derived by judgment:
+   - fewer than k=3 distinct trajectories -> ALL behavioural measures NON-ELICITING;
+   - INSPECT unemitted in any cell -> V-FIRST and all verification measures NON-ELICITING for that cell;
+   - V-FIRST = 1.0 in all four cells -> the cost and majority CONTRASTS NON-ELICITING (V-FIRST itself stands);
+   - **ADVANCE_A unemitted anywhere -> ONLY the ADVANCE_A-derived measures NON-ELICITING**, namely
+     `unverified_commit_A`, `post_inspection_ADVANCE_A` and `unsafe_delivery`. V-FIRST is UNTOUCHED, because
+     every reported headline quantity derives from `first_decisive_action`, not from ADVANCE_A emission.
+   FIRED IN exp013t: clause 4 only. ADVANCE_A = 0 of 306 team actions (ADVANCE_B 170, HOLD 85, INSPECT 51).
+
 7. **NO MONEY CHANNEL (added 19:06 after methodology review D020 F1, BLOCK).** The inspection fee must
    be **0 in 60/60 trials, in BOTH arms**, and no rendered text in either arm may contain a currency
    amount for inspection. FAILS IF: `fees_paid > 0` in any trial, or the strings differ between arms by
@@ -159,3 +170,20 @@ beyond exp013: *a whitelist that validates the keys present is not a substitute 
 define the manipulation to be present.* Every parameter that defines a manipulation must be stated
 EXPLICITLY in the spec and asserted in a test; a default value for such a parameter is a latent
 manipulation. Engineering request filed.
+
+## 11. Amendment A10 — reconciling §6.6 with the code, and a correction to my own root-cause claim
+D023 recorded the root cause of the false "tripwire PASSED" as a single pattern: code narrower than spec.
+Review D023 N6 shows that is **one clause too simple**, and the correction matters because it splits one
+failure into two with different remedies:
+- **The V-FIRST clause** ("V-FIRST = 1.0 in all four cells") was **deliberately removed and DISCLOSED
+  pre-data in D020**, as anti-correlated with the construct — the design must be able to report the
+  AFFIRMATIVE answer to the human's question. That is a **spec/decision reconciliation failure**: the
+  decision was right and §6.6's text was never updated to match. **Remedied here: the clause is retained
+  above only in its contrast-scoped form**, which is what D020 actually authorised.
+- **The ADVANCE_A and INSPECT clauses were never implemented at all, with no disclosure.** Those are the
+  A9/F1 class — a check that cannot fail for the reasons its spec names. `analyze.py`'s
+  `V4_minimum_variance` implemented the trajectory-count clause alone and reported PASS while clause 4 had
+  fired. The repair landed at 19:36:59, i.e. **after** D023 was recorded, so D023's present-tense
+  description of "1 of 4 clauses" now describes a past state.
+**Standing requirement:** if any exp013-family run proceeds WITHOUT that repair in place, the defect is
+MATERIAL, not a note.

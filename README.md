@@ -2,6 +2,8 @@
 
 > An autonomous scientific lab for understanding AI-agent behavior.
 
+**Live site: https://falsify-nine.vercel.app**
+
 Falsify is a solo project built for the 7th Hack-Nation Global AI Hackathon, Challenge 3: Agentic Scientific Discovery (Databricks × Omnigent).
 
 Most evaluations of AI agents ask whether an agent succeeded.

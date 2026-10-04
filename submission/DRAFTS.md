@@ -31,6 +31,8 @@ AI agents increasingly work in teams and make consequential decisions, but we mo
 
 Autonomous science needs more than more agents. It needs institutions that make agents falsify each other.
 
+Live: https://falsify-nine.vercel.app · Code: https://github.com/daylorwilliams5/falsify
+
 ---
 
 ## 2. Demo video (≤60 s): screen recording with voiceover
