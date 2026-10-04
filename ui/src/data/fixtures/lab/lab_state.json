@@ -1,15 +1,23 @@
 {
-  "as_of": "2026-10-03T13:00:51",
+  "as_of": "2026-10-03T18:27:31",
   "status": "RUNNING",
-  "loop": 3,
+  "loop": 5,
   "loop_stage": "design",
-  "latest_finding": "exp009_v2_floor_probe",
+  "latest_finding": "exp012_ambiguity_x_peer_haiku_main",
   "next": {
-    "plain_goal": "Rebuilding the test so it can tell a chosen shortcut from a forced one.",
-    "stage_label": "Loop 3 · design pod working",
-    "rule_intro": "Rule set before the rebuild starts:",
-    "if_works": "Run a 20-trial pilot",
-    "if_fails": "Drop this test and pivot"
+    "plain_goal": "Testing whether agents still check when checking costs time and money, and a teammate argues against it.",
+    "stage_label": "Loop 5 · designing exp013",
+    "rule_intro": "Decided before any data:",
+    "branches": [
+      {
+        "k": "still checks",
+        "text": "Careful checking survives pressure"
+      },
+      {
+        "k": "stops checking",
+        "text": "Pressure breaks it. Reported either way"
+      }
+    ]
   },
   "reviewer": {
     "auditing": null,
@@ -18,28 +26,28 @@
   "roles": [
     {
       "role": "PI",
-      "state": "IDLE",
-      "detail": "Opened Loop 3"
+      "state": "RUNNING",
+      "detail": "Choosing the exp013 design"
     },
     {
       "role": "Design pod",
       "state": "RUNNING",
-      "detail": "Designing FreightRoute v2.1"
+      "detail": "Finalizing the exp013 design"
     },
     {
-      "role": "Skeptic",
+      "role": "Analysis pod",
       "state": "IDLE",
-      "detail": "Idle"
+      "detail": "exp012 analyzed"
     },
     {
       "role": "Methodology Reviewer",
       "state": "WAITING",
-      "detail": "Waiting for the design"
+      "detail": "Waiting for the PI’s decision"
     },
     {
       "role": "Human",
       "state": "IDLE",
-      "detail": "No decision required"
+      "detail": "Allowed one follow-up (exp013)"
     }
   ],
   "process": [
@@ -49,19 +57,19 @@
     },
     {
       "id": "hypothesis",
-      "caption": "12 hypotheses registered. None ruled out yet."
+      "caption": "13 hypotheses registered. None ruled out yet; one is inconclusive."
     },
     {
       "id": "experiment",
-      "caption": "2 experiments, 60 trials. Now rebuilding the test environment."
+      "caption": "5 experiments, 200 trials, 2 AI models. Now designing exp013."
     },
     {
       "id": "challenge",
-      "caption": "The independent reviewer failed 2 decisions. The PI corrected both."
+      "caption": "The reviewer stopped 5 decisions (fail, block or escalate). Each was corrected or sent to the human."
     },
     {
       "id": "next",
-      "caption": "If the rebuilt test fails, the lab drops it and pivots."
+      "caption": "exp013 adds pressure: costly checking and a teammate who argues against it."
     }
   ],
   "escalations": [],
@@ -76,7 +84,7 @@
     {
       "n": 2,
       "label": "Loop 2",
-      "sub": "PI + independent review",
+      "sub": "PI + reviewer",
       "start": "2026-10-03T12:04:55",
       "end": "2026-10-03T12:36:41",
       "ended": "Frozen by the human"
@@ -84,8 +92,23 @@
     {
       "n": 3,
       "label": "Loop 3",
-      "sub": "Pods",
+      "sub": "Pods · rebuild test",
       "start": "2026-10-03T12:37:39",
+      "end": "2026-10-03T16:01:04"
+    },
+    {
+      "n": 4,
+      "label": "Loop 4",
+      "sub": "Haiku · ambiguity",
+      "start": "2026-10-03T16:01:04",
+      "end": "2026-10-03T18:05:13",
+      "ended": "Result frozen"
+    },
+    {
+      "n": 5,
+      "label": "Loop 5",
+      "sub": "exp013",
+      "start": "2026-10-03T18:05:13",
       "end": null
     }
   ],
@@ -93,42 +116,81 @@
     {
       "id": "exp009",
       "start": "2026-10-03T12:06:09",
-      "end": "2026-10-03T12:21:34"
+      "end": "2026-10-03T12:21:34",
+      "trials": 20
+    },
+    {
+      "id": "exp010",
+      "start": "2026-10-03T14:54:19",
+      "end": "2026-10-03T15:00:08",
+      "trials": 20
+    },
+    {
+      "id": "exp011",
+      "start": "2026-10-03T16:15:31",
+      "end": "2026-10-03T16:43:04",
+      "trials": 30
+    },
+    {
+      "id": "exp012",
+      "start": "2026-10-03T17:38:50",
+      "end": "2026-10-03T17:50:11",
+      "trials": 90
     }
   ],
   "public": {
     "testing": {
-      "id": "exp010",
-      "question": "Does pressure to hit a target make an AI agent skip a required safety check?",
-      "manipulation": "Tight vs. generous action budget × ordinary vs. hard performance target",
-      "behavior": "Booking a route segment without inspecting it first",
+      "id": "exp013",
+      "question": "Does careful checking survive pressure?",
+      "manipulation": "Free vs. costly checking (it eats 2 of 6 rounds plus a fee) × with or without a teammate who argues against checking",
+      "behavior": "Whether the agent checks before committing, and whether it sticks with a plan the evidence says is wrong",
       "trials_done": 0,
-      "trials_total": 20,
-      "status": "Rebuilt test awaiting the PI’s decision and independent review"
+      "trials_total": 60,
+      "status": "The design pod is finalizing the design; it needs the PI’s decision and independent review before it runs."
     },
     "lessons": [
       {
         "id": "exp001",
         "headline": "The first hypothesis did not survive testing.",
-        "body": "Raising prior investment in a plan did not make agents cling to it. When clear evidence said the plan was wrong, they switched right away. That forced the lab to change direction.",
+        "body": "Raising prior investment in a plan did not make agents cling to it. When clear evidence said the plan was wrong, they switched right away.",
         "figure": {
           "value": 18,
           "total": 20,
           "unit": "agents abandoned the bad plan immediately"
         },
         "status": "Not enough evidence"
+      },
+      {
+        "id": "exp009",
+        "headline": "The lab caught its own broken test.",
+        "body": "Agents got stuck repeating the same check, so the test never measured what it was built for. The lab made no claim and rebuilt it.",
+        "figure": {
+          "value": 13,
+          "total": 20,
+          "unit": "trials where the test never got going"
+        },
+        "status": "Instrument failure, no conclusion drawn"
+      },
+      {
+        "id": "exp010",
+        "headline": "Its validity check rewarded the wrong behavior, and the lab proved it.",
+        "body": "A script that never looked at the task passed the check while making unsafe claims; honest scripts failed it. The lab dropped the test and switched to a more capable model.",
+        "figure": {
+          "value": 20,
+          "total": 20,
+          "unit": "blind-script runs that passed the check anyway"
+        },
+        "status": "Test retired"
       }
     ],
     "steps": [
-      "Read prior research",
-      "Proposed competing explanations",
-      "Designed an experiment",
-      "Ran the experiment",
-      "A statistician analyzed the result",
-      "A skeptic tried to falsify it",
-      "The PI chose the next test"
+      "Ran exp012: 90 trials with Claude Haiku 4.5, approved by the human",
+      "Three analysts checked the result independently",
+      "The reviewer required three limits on the claim before it could be written up",
+      "The PI froze the result: no persistence, reported with its limits",
+      "The human allowed one follow-up, and the design pod proposed exp013"
     ],
-    "decision": "Rebuild the corner-cutting test once, so it can tell a chosen shortcut from a forced one. If it still can't, drop it and test whether ambiguous evidence and peer discussion make agents resist correction.",
+    "decision": "Test whether careful checking survives pressure: make checking cost time and money, and add a teammate who argues against it. Report the result even if nothing changes.",
     "trust": [
       "Research agents do not grade their own work.",
       "Analysis pods check results independently before they count.",

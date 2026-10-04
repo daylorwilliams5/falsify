@@ -266,7 +266,9 @@ export interface PIDecision {
   alternatives_rejected: RejectedAlternative[]; // NEW structure (legacy: " | "-separated text)
   responds_to?: string[]; // NEW: decisions this one corrects or discharges
   resulting_action?: string; // NEW: what actually happened
-  human_intervention?: { by: string; ts: string; text: string };
+  human_approval?: { ts: string; via: string; question?: string }; // Level 3 gate answered by the human
+  engineering_fix?: { by: string; ts: string; text: string }; // change made outside the PI's authority
+  remediated?: { ts: string; text: string }; // review findings cleared without a new decision
   cites: string[];
   reviews: Review[];
   spec?: string;
@@ -274,7 +276,7 @@ export interface PIDecision {
   code_hashes?: Record<string, string>;
 }
 
-export type TrialOutcome = 'measured' | 'stuck' | 'breach';
+export type TrialOutcome = string;
 
 // results/<exp>.json, reduced to what the Overview shows
 export interface Finding {
@@ -285,8 +287,10 @@ export interface Finding {
   status: HypothesisStatus;
   status_reason: string;
   plain_reason: string;
+  public_status: string;
   figure: { value: number; total: number; unit: string };
   trials: { trial: string; cell: string; condition: string; outcome: TrialOutcome; detail: string }[];
+  legend: { outcome: TrialOutcome; label: string; tone: 'solid' | 'light' | 'hatched' | 'accent' }[];
   decision?: string;
 }
 
@@ -295,10 +299,12 @@ export interface Budget {
   as_of: string;
   elapsed_research_minutes: number;
   external_spend_usd: number;
+  external_spend_cap_usd: number;
   model_calls_used: number;
   trials_run: number;
   experiments: Record<string, { trials: number; finished: boolean }>;
   experiments_completed: number;
+  subject_models: string[];
   hypotheses_eliminated: string[];
   unresolved: string[];
 }
@@ -313,12 +319,12 @@ export interface LabState {
   loop: number;
   loop_stage: string;
   latest_finding: string;
-  next: { plain_goal: string; stage_label: string; rule_intro: string; if_works: string; if_fails: string };
+  next: { plain_goal: string; stage_label: string; rule_intro: string; branches: { k: string; text: string }[] };
   reviewer: { auditing: string | null; active: boolean };
   roles: RoleStatus[];
   process: { id: string; caption: string }[];
   loops: { n: number; label: string; sub: string; start: string; end: string | null; ended?: string }[];
-  runs: { id: string; start: string; end: string }[];
+  runs: { id: string; start: string; end: string; trials: number }[];
   escalations: Escalation[];
   public: PublicState;
 }

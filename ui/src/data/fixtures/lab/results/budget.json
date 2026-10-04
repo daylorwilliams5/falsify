@@ -1,17 +1,10 @@
 {
-  "as_of": "2026-10-03T12:36:41",
-  "elapsed_research_minutes": 91.0,
-  "external_spend_usd": 0.0,
-  "external_spend_cap_without_human_usd": 0,
-  "subject_model": {
-    "provider": "ollama",
-    "name": "qwen3:8b"
-  },
-  "model_calls_used": 700,
-  "subject_tokens_in": 1131699,
-  "subject_tokens_out": 54436,
-  "trials_run": 60,
-  "trials_invalid": 0,
+  "as_of": "2026-10-03T18:27:31",
+  "elapsed_research_minutes": 441.8,
+  "external_spend_usd": 5.0,
+  "external_spend_cap_usd": 20,
+  "model_calls_used": 2366,
+  "trials_run": 200,
   "experiments": {
     "exp001_pilot": {
       "trials": 40,
@@ -20,29 +13,28 @@
     "exp009_v2_floor_probe": {
       "trials": 20,
       "finished": true
+    },
+    "exp010_v21_pilot": {
+      "trials": 20,
+      "finished": true
+    },
+    "exp011_ambiguity_x_peer_haiku_pilot": {
+      "trials": 30,
+      "finished": true
+    },
+    "exp012_ambiguity_x_peer_haiku_main": {
+      "trials": 90,
+      "finished": true
     }
   },
-  "experiments_completed": 2,
-  "hypotheses_by_status": {
-    "inconclusive": [
-      "H1"
-    ],
-    "untested": [
-      "H2",
-      "H3",
-      "H4",
-      "H5",
-      "H6",
-      "M1",
-      "P1",
-      "P2",
-      "P3",
-      "P4",
-      "P5"
-    ]
-  },
+  "experiments_completed": 5,
+  "subject_models": [
+    "qwen3:8b (local)",
+    "Claude Haiku 4.5"
+  ],
   "hypotheses_eliminated": [],
   "unresolved": [
+    "H1",
     "H2",
     "H3",
     "H4",
@@ -54,16 +46,6 @@
     "P3",
     "P4",
     "P5",
-    "H1"
-  ],
-  "decisions": {
-    "total": 12,
-    "by_level": {
-      "1": 12,
-      "2": 0,
-      "3": 0
-    },
-    "human_escalations": 0,
-    "human_overrides": 0
-  }
+    "Q-AMBIGUITY-SOCIAL"
+  ]
 }

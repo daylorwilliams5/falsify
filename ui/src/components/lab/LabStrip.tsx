@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import type { Budget, LabState, Mandate } from '../../data/types';
-import { elapsedSince } from '../../data/view';
+import type { Budget, LabState } from '../../data/types';
 
 export function LabStatus({ roles }: { roles: LabState['roles'] }) {
   return (
@@ -15,16 +13,13 @@ export function LabStatus({ roles }: { roles: LabState['roles'] }) {
   );
 }
 
-export function BudgetStrip({ b, mandate }: { b: Budget; mandate: Mandate }) {
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => { const i = setInterval(() => setNow(Date.now()), 30_000); return () => clearInterval(i); }, []);
-  // Research clock starts where the budget report says it did.
-  const started = new Date(new Date(b.as_of).getTime() - b.elapsed_research_minutes * 60000).toISOString();
+export function BudgetStrip({ b }: { b: Budget }) {
+  const h = Math.floor(b.elapsed_research_minutes / 60), m = Math.round(b.elapsed_research_minutes % 60);
   const cells = [
-    ['Experiments completed', String(b.experiments_completed), `${b.trials_run} trials`],
-    ['Model calls used', b.model_calls_used.toLocaleString(), `local model · $${b.external_spend_usd.toFixed(0)} external`],
-    ['Per-experiment limit', `${mandate.budget.max_trials_per_experiment_level1} trials`, 'before review is required'],
-    ['Research time', elapsedSince(started, now), 'since loop 1 opened'],
+    ['Experiments completed', String(b.experiments_completed), `${b.trials_run} trials · ${b.subject_models.length} AI models`],
+    ['Model calls used', b.model_calls_used.toLocaleString(), b.subject_models.join(' + ')],
+    ['Outside spend', `$${b.external_spend_usd.toFixed(2)}`, `of a $${b.external_spend_cap_usd} cap the human set`],
+    ['Research time', `${h}h ${String(m).padStart(2, '0')}m`, `as of ${b.as_of.slice(11, 16)}`],
     ['Hypotheses', `${b.hypotheses_eliminated.length} / ${b.unresolved.length}`, 'eliminated / unresolved'],
   ];
   return (

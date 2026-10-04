@@ -48,10 +48,13 @@
       "reason": "Premature; the skeptic has not reported on exp009 yet."
     }
   ],
-  "human_intervention": {
-    "by": "Engineer",
+  "engineering_fix": {
+    "by": "Engineer (Claude Code)",
     "ts": "2026-10-03T12:34:44",
     "text": "Closed the second bypass: specs without conditions now fail closed."
   },
-  "resulting_action": "Bypass closed by the engineer 16 seconds after the decision."
+  "responds_to": [
+    "D008"
+  ],
+  "resulting_action": "Bypass closed by the engineer 16 seconds after the decision; the D008 citations withdrawn."
 }

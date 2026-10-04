@@ -42,8 +42,14 @@ export function DecisionEntry({ d, all, outcome, focused }: {
         </div>
 
         {d.resulting_action && <p className="entry-result"><span className="k">Resulting action</span>{d.resulting_action}</p>}
-        {d.human_intervention && (
-          <p className="entry-human"><span className="k">Human intervention · {d.human_intervention.by} · <span className="num">{hhmm(d.human_intervention.ts)}</span></span>{d.human_intervention.text}</p>
+        {d.human_approval && (
+          <p className="entry-human"><span className="k">Human decision · Level 3 gate · <span className="num">{hhmm(d.human_approval.ts)}</span></span>Approved by the human through an Omnigent approval card.</p>
+        )}
+        {d.remediated && (
+          <p className="entry-result"><span className="k">Review cleared · <span className="num">{hhmm(d.remediated.ts)}</span></span>{d.remediated.text}</p>
+        )}
+        {d.engineering_fix && (
+          <p className="entry-result"><span className="k">Fixed outside the PI · {d.engineering_fix.by} · <span className="num">{hhmm(d.engineering_fix.ts)}</span></span>{d.engineering_fix.text}</p>
         )}
 
         <button className="entry-toggle" onClick={() => setOpen((o) => !o)}>{open ? 'Hide reasoning and audit' : 'Reasoning and audit'}</button>

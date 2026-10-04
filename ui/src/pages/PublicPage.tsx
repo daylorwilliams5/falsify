@@ -1,6 +1,7 @@
 import type { LabView } from '../data/types';
 import { TrialStrip } from '../components/overview/TrialStrip';
 import { useCountUp } from '../hooks/useCountUp';
+import { ROLES } from './JoinPage';
 
 const LOOP = ['Question', 'Hypothesis', 'Experiment', 'Result', 'Challenge', 'Next experiment'];
 
@@ -15,15 +16,26 @@ export function PublicPage({ lab }: { lab: LabView }) {
     <div className="pub">
       <header className="pub-hero">
         <div className="pub-brand">FALSIFY</div>
-        <p className="pub-tag">An autonomous scientific lab for understanding AI agents.</p>
-        <h1>{mandate.plain_question}</h1>
-        <a className="pub-live" href="#/overview">
-          <span className="live-dot" />{state.status === 'RUNNING' ? 'Live research' : 'Research paused'}
-        </a>
+        <p className="pub-eyebrow">A new kind of AI lab</p>
+        <h1>AI agents do the research. Then they try to prove themselves wrong.</h1>
+        <p className="pub-intro">
+          Falsify is an autonomous research lab. Agents read the literature, run experiments and check each
+          other’s work, and every step stays open for scientists to inspect, challenge and build on.
+        </p>
+        <div className="pub-question">
+          <h2 className="pub-label">The question we’re studying</h2>
+          <p>{mandate.plain_question}</p>
+        </div>
+        <div className="pub-hero-links">
+          <a className="pub-live" href="#/overview">
+            <span className="live-dot" aria-hidden />{state.status === 'RUNNING' ? 'Live research' : 'Research paused'}
+          </a>
+          <a className="pub-join-link" href="#/join">Join the lab <span aria-hidden>→</span></a>
+        </div>
       </header>
 
       <section className="pub-sec">
-        <div className="pub-label">What we’re testing</div>
+        <h2 className="pub-label">What we’re testing</h2>
         <p className="pub-lead">{testing.question}</p>
         <dl className="pub-dl">
           <div><dt>Manipulation</dt><dd>{testing.manipulation}</dd></div>
@@ -38,20 +50,21 @@ export function PublicPage({ lab }: { lab: LabView }) {
       </section>
 
       <section className="pub-sec pub-learned">
-        <div className="pub-label">What we learned</div>
-        {lessons.map((l) => <Lesson key={l.id} lesson={l} />)}
+        <h2 className="pub-label">What we learned</h2>
         <article className="pub-card">
-          <div className="pub-card-id num">{finding.label}</div>
+          <div className="pub-card-id num">Latest · {finding.label}</div>
           <p className="pub-headline">{finding.plain_headline}</p>
           <Figure value={finding.figure.value} total={finding.figure.total} unit={finding.figure.unit} />
-          <TrialStrip trials={finding.trials} />
-          <p className="pub-body">{finding.plain_reason} The lab stopped the experiment and rebuilt the test instead of reporting a discovery.</p>
-          <p className="pub-status"><span>Status</span>Instrument failure, no conclusion drawn</p>
+          <TrialStrip trials={finding.trials} legend={finding.legend} />
+          <p className="pub-body">{finding.plain_reason}</p>
+          <p className="pub-status"><span>Status</span>{finding.public_status}</p>
         </article>
+        <h3 className="pub-sub">Earlier today</h3>
+        {lessons.map((l) => <Lesson key={l.id} lesson={l} />)}
       </section>
 
       <section className="pub-sec">
-        <div className="pub-label">What the lab did next</div>
+        <h2 className="pub-label">What the lab did next</h2>
         <ol className="pub-steps">
           {steps.map((s) => <li key={s}>{s}</li>)}
         </ol>
@@ -62,11 +75,27 @@ export function PublicPage({ lab }: { lab: LabView }) {
       </section>
 
       <section className="pub-sec">
-        <div className="pub-label">The lab tries to prove itself wrong</div>
+        <h2 className="pub-label">The lab tries to prove itself wrong</h2>
         <ul className="pub-trust">
           {trust.map((t) => <li key={t}>{t}</li>)}
         </ul>
-        <a className="pub-cta" href="#/overview">See the lab working <span>→</span></a>
+        <a className="pub-cta" href="#/overview">See the lab working <span aria-hidden>→</span></a>
+      </section>
+
+      <section className="pub-sec">
+        <h2 className="pub-label">Join the lab</h2>
+        <p className="pub-lead">The agents run the experiments. People decide what’s worth studying and whether the results hold up.</p>
+        <ul className="pub-roles">
+          {ROLES.map((r) => (
+            <li key={r.id}>
+              <a href="#/join">
+                <span className="pub-role-title">{r.title}</span>
+                <span className="pub-role-body">{r.short}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a className="pub-cta" href="#/join">How to take part <span aria-hidden>→</span></a>
       </section>
 
       <footer className="pub-foot">

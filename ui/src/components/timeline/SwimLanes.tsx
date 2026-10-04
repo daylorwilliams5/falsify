@@ -10,7 +10,11 @@ export const ACTOR_LABEL: Record<string, string> = {
   PI: 'Principal investigator', methodology_reviewer: 'Independent reviewer', human: 'Human', engineer: 'Engineer',
   falsify: 'Lab system', director: 'Director', 'statistician-tool': 'Statistics tool',
 };
-export const actorLabel = (a: string) => ACTOR_LABEL[a] ?? a.charAt(0).toUpperCase() + a.slice(1);
+export const actorLabel = (a: string) => {
+  if (ACTOR_LABEL[a]) return ACTOR_LABEL[a];
+  const words = a.replace(/[_-]+/g, ' ');
+  return words.charAt(0).toUpperCase() + words.slice(1);
+};
 
 export function SwimLanes({ events, decisions, loops, runs, selected, onSelect, laneFocus, onLaneFocus }: {
   events: LabEvent[];
@@ -109,7 +113,7 @@ export function SwimLanes({ events, decisions, loops, runs, selected, onSelect, 
           {runs.map((r) => (
             <div key={r.id} className={`run-span ${play !== null && play < ms(r.start) ? 'is-future' : ''}`}
               style={{ left: `${x(r.start)}%`, width: `${x(r.end) - x(r.start)}%`, top: TOP + laneIndex('experiments') * LANE_H + LANE_H / 2 - 9 }}>
-              <span className="num">{r.id} · 20 trials</span>
+              <span className="num">{r.id} · {r.trials} trials</span>
             </div>
           ))}
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { LabView, LabEvent } from '../data/types';
-import { eventHeadline, eventKind, hhmm, hhmmss, LANES, type LaneId, laneOf, outcomeOf, shortCite } from '../data/view';
+import { eventHeadline, eventKind, hhmm, hhmmss, LANES, type LaneId, laneOf, shortCite, stoppedByReviewer } from '../data/view';
 import { SwimLanes, actorLabel } from '../components/timeline/SwimLanes';
 
 const KIND_LABEL = {
@@ -26,13 +26,12 @@ export function TimelinePage({ lab, focus }: { lab: LabView; focus?: string }) {
   };
 
   const stats = useMemo(() => {
-    const failed = decisions.filter((d) => d.reviews.some((r) => r.verdict === 'FAIL' || r.verdict === 'BLOCK'));
     return [
       [events.length, 'events'],
       [decisions.length, 'decisions'],
       [events.filter((e) => e.stage === 'methodology_review').length, 'independent reviews'],
-      [failed.filter((d) => outcomeOf(d, decisions) === 'CORRECTED').length, 'failed reviews, corrected'],
-      [events.filter((e) => e.actor === 'human').length, 'human directives'],
+      [stoppedByReviewer(decisions).length, 'decisions stopped by the reviewer'],
+      [decisions.filter((d) => d.human_approval).length, 'human approvals'],
     ] as const;
   }, [events, decisions]);
 
@@ -45,6 +44,7 @@ export function TimelinePage({ lab, focus }: { lab: LabView; focus?: string }) {
     <div className="tl2">
       <div className="label">Timeline</div>
       <h1 className="dec-title">Everything the lab did, in order</h1>
+      <p className="tl2-asof">Snapshot of the lab’s record through <span className="num">{hhmm(events[events.length - 1].ts)}</span>, October 3.</p>
 
       <div className="tl2-stats">
         {stats.map(([n, label]) => (

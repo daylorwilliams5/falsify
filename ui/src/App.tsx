@@ -31,7 +31,7 @@ export default function App() {
       case 'literature': return <LiteraturePage lab={snapshot} base={base} />;
       case 'lab': return <AgentsPage lab={snapshot} base={base} view={lab} />;
       case 'decisions': return <DecisionsPage key={a ?? ''} decisions={lab.decisions} focus={a} />;
-      case 'join': return <JoinPage />;
+      case 'join': return <JoinPage lab={lab} />;
       case 'timeline': return <TimelinePage key={a ?? ''} lab={lab} focus={a} />;
       default: return <LabOverview lab={lab} />; // #/overview
     }

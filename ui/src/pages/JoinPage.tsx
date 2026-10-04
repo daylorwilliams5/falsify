@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import type { LabView } from '../data/types';
+import { stoppedByReviewer } from '../data/view';
 
 export const ROLES = [
   {
@@ -6,7 +8,7 @@ export const ROLES = [
     title: 'Propose a question',
     short: 'Suggest what the lab should study next.',
     body: 'Anyone can suggest a research question. The community decides which questions the lab takes on, and the lab turns each one into a plan with competing hypotheses before running anything.',
-    proof: 'Today’s question came from a person, and the lab worked out how to test it.',
+    proof: (l: LabView) => `Today’s question came from a person. The lab turned it into ${l.budget.unresolved.length} testable hypotheses.`,
     link: { href: '#/research', label: 'See the current hypotheses' },
   },
   {
@@ -14,7 +16,7 @@ export const ROLES = [
     title: 'Contribute an experiment',
     short: 'Build a test the agents can run.',
     body: 'Experiments run inside test environments. Build one for a question you care about, and the lab can run it, analyze it and report what it shows, including when the test itself doesn’t work.',
-    proof: 'The lab found its own test was broken, and is rebuilding it with a rule to drop it if it fails again.',
+    proof: () => 'The lab found two of its own tests were flawed, retired them, and switched to a better one.',
     link: { href: '#/experiments', label: 'See an experiment' },
   },
   {
@@ -22,7 +24,7 @@ export const ROLES = [
     title: 'Review decisions',
     short: 'Check the lab’s reasoning.',
     body: 'Every decision is already audited by an independent agent reviewer. Human experts can join it: sign off on a decision, challenge it, or flag something the agents missed.',
-    proof: 'The agent reviewer failed two decisions today, and the lab corrected both.',
+    proof: (l: LabView) => `The agent reviewer stopped ${stoppedByReviewer(l.decisions).length} decisions today, and ${l.decisions.filter((d) => d.human_approval).length} went to the human for approval.`,
     link: { href: '#/decisions', label: 'Read the decision journal' },
   },
   {
@@ -30,12 +32,12 @@ export const ROLES = [
     title: 'Replicate a result',
     short: 'Re-run it and see if it holds.',
     body: 'Each experiment is saved with its locked setup and random seeds. Re-run it, fork it, or try it on a different model, and add what you find to the record.',
-    proof: 'Every trial from today is on the record, in order.',
+    proof: (l: LabView) => `All ${l.budget.trials_run} trials from today are saved, and every step is on the record, in order.`,
     link: { href: '#/timeline', label: 'Browse the full record' },
   },
 ] as const;
 
-export function JoinPage() {
+export function JoinPage({ lab }: { lab: LabView }) {
   const [q, setQ] = useState('');
   const [sent, setSent] = useState(false);
 
@@ -55,7 +57,7 @@ export function JoinPage() {
             <div className="role-main">
               <h2 className="role-title">{r.title}</h2>
               <p className="role-body">{r.body}</p>
-              <p className="role-proof"><span>Already happening</span>{r.proof}</p>
+              <p className="role-proof"><span>Already happening</span>{r.proof(lab)}</p>
               <a className="h2-link role-link" href={r.link.href}>{r.link.label} <span aria-hidden>→</span></a>
 
               {r.id === 'propose' && (
@@ -82,7 +84,7 @@ export function JoinPage() {
       <section className="support">
         <h2 className="sec-title">Supporting the lab</h2>
         <div className="support-grid">
-          <div><span className="support-k">Sponsors</span><p>Donate compute. Today’s research ran on a local open model, with $0 of outside spend.</p></div>
+          <div><span className="support-k">Sponsors</span><p>Donate compute. Today’s research ran {lab.budget.trials_run} trials for ${lab.budget.external_spend_usd.toFixed(2)} of outside spend.</p></div>
           <div><span className="support-k">Institutions</span><p>Become members, propose questions with priority, and run studies with the same open record.</p></div>
           <div><span className="support-k">Funders</span><p>Fund research programs the community has chosen, with every step auditable.</p></div>
         </div>

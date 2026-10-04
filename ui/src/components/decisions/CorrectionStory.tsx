@@ -5,7 +5,7 @@ import { hhmm, latestReview, minutesBetween, verdictLabel } from '../../data/vie
 export function CorrectionStory({ original, correction }: { original: PIDecision; correction: PIDecision }) {
   const review = latestReview(original)!;
   const mins = minutesBetween(original.ts, correction.ts);
-  const human = correction.human_intervention ?? original.human_intervention;
+  const human = correction.human_approval ?? original.human_approval;
   return (
     <section className="story">
       <div className="label">A decision that failed review</div>
@@ -26,7 +26,7 @@ export function CorrectionStory({ original, correction }: { original: PIDecision
         </li>
         <li className="is-end">
           <div className="st-kind">Human</div>
-          <p className="st-text st-quiet">{human ? human.text : 'No intervention.'}</p>
+          <p className="st-text st-quiet">{human ? `Approved at the Level 3 gate, ${hhmm(human.ts)}.` : 'No intervention.'}</p>
         </li>
       </ol>
       <p className="story-foot">

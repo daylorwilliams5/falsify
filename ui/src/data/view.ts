@@ -64,8 +64,8 @@ export const respondersTo = (d: PIDecision, all: PIDecision[]) =>
 
 export function outcomeOf(d: PIDecision, all: PIDecision[]): Outcome {
   const r = latestReview(d);
-  if (d.human_intervention || d.level === 3 || r?.verdict === 'ESCALATE') return 'ESCALATED';
-  if (respondersTo(d, all).length) return 'CORRECTED';
+  if (d.human_approval || r?.verdict === 'ESCALATE') return 'ESCALATED';
+  if (respondersTo(d, all).length || d.remediated) return 'CORRECTED';
   if (!r) return 'IN_REVIEW';
   if (r.verdict === 'PASS' || r.verdict === 'PASS_WITH_NOTE') return 'ACCEPTED';
   return 'OPEN';
@@ -97,6 +97,10 @@ export const PLAIN_STATUS: Record<string, string> = {
 };
 
 // ---------- timeline ----------
+/** Decisions the reviewer stopped outright (fail, block or escalate) at least once. */
+export const stoppedByReviewer = (all: PIDecision[]) =>
+  all.filter((d) => d.reviews.some((r) => ['FAIL', 'BLOCK', 'ESCALATE'].includes(r.verdict)));
+
 export const LANES = [
   { id: 'human', label: 'Human', actors: ['human'] },
   { id: 'lead', label: 'Lab lead', actors: ['PI', 'director', 'falsify'] },
