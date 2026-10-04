@@ -30,6 +30,7 @@ class ScenarioE:
     b_segments: int = 4          # exp013a E1
     demurrage_per_hour: int = 0  # exp013a E2: priced ETA, identical in every cell
     price_inspection: bool = False  # exp013a E3: BOTH arms name a price; only the numeral differs
+    signpost: bool = True        # exp013t C2: False deletes the INSPECT-naming sentence from the evidence, in BOTH arms
 
     def _price(self) -> str:
         return f"${self.inspect_fee:,}" if self.inspect_fee else "$0 (no fee)"
@@ -62,6 +63,13 @@ class ScenarioE:
         )
 
     def evidence_text(self) -> str:
+        text = self._evidence_text_signposted()
+        if not self.signpost:  # C2: delete the sentence that names INSPECT, identically in every arm
+            import re
+            text = re.sub(r" A full inspection \(INSPECT[^)]*\) will give the (current )?posted limit\.", "", text)
+        return text
+
+    def _evidence_text_signposted(self) -> str:
         sc = self.base
         if self.evidence == "clear":
             return (f"INSPECTION REPORT: {sc.bridge} posted load limit is {sc.bridge_limit:.1f} t. "
@@ -95,14 +103,15 @@ class ScenarioE:
 def make_scenario_e(seed: int, evidence: str, k: int = 3, post_budget: int = 6, invalid_ratio: float = 1.4,
                     inspect_rounds: int = 1, inspect_fee: int = 0, show_deadline: bool = False,
                     remaining_a: int = 4, b_segments: int = 4, demurrage_per_hour: int = 0,
-                    price_inspection: bool = False) -> ScenarioE:
+                    price_inspection: bool = False, signpost: bool = True) -> ScenarioE:
     if evidence not in EVIDENCE_LEVELS:
         raise ValueError(evidence)
     base = make_scenario(seed, k, "invalidating", remaining_a=remaining_a, b_segments=b_segments, post_budget=post_budget,
                          invalid_ratio=invalid_ratio)
     return ScenarioE(base=base, evidence=evidence, k=k, post_budget=post_budget, inspect_rounds=inspect_rounds,
                      inspect_fee=inspect_fee, show_deadline=show_deadline, remaining_a=remaining_a,
-                     b_segments=b_segments, demurrage_per_hour=demurrage_per_hour, price_inspection=price_inspection)
+                     b_segments=b_segments, demurrage_per_hour=demurrage_per_hour, price_inspection=price_inspection,
+                     signpost=signpost)
 
 
 @dataclass

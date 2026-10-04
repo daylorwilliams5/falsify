@@ -10,7 +10,7 @@ from tests.test_anthropic_backend import scripted
 
 ENV = {"k": 3, "post_budget": 5, "remaining_a": 2, "b_segments": 4, "demurrage_per_hour": 300,
        "costly_inspect_fee": 1800, "costly_inspect_rounds": 1, "show_deadline": False,
-       "early_stop_two_consecutive_b": False, "n_scripted_colleagues": 3}
+       "early_stop_two_consecutive_b": False}
 CELLS = [{"cell": f"{v}_{'dissent' if d else 'nodissent'}", "org": "advised", "evidence": "conflicting",
           "verification": v, "dissenter": d} for v in ("free", "costly") for d in (False, True)]
 MODEL = {"name": "q", "temperature": 0.7}
