@@ -49,7 +49,6 @@ Hack-Nation 7th Global AI Hackathon · Challenge 3: Agentic Scientific Discovery
 <li><span class="k">Executable oversight.</span> The adversarial pod ran a script that never reads the environment. It passed the preregistered validity bar while acting unsafely in 20/20 trials, so the lab threw out a bar everyone (including the human) had approved.</li>
 <li><span class="k">The reviewer runs code, not summaries.</span> It blocked a run over a silent $8,000 default in the engineer's build.</li>
 <li><span class="k">Honest nulls.</span> Each null was reported with an upper bound and an explicit claim boundary.</li>
-<li><span class="k">The design pod argued the follow-up down from three drafts before spending a cent.</span></li>
 </ul>
 
 <h2>What was hard</h2>
@@ -86,24 +85,23 @@ Hack-Nation 7th Global AI Hackathon · Challenge 3: Agentic Scientific Discovery
 
 <h2>How the time was spent (solo, Oct 3)</h2>
 <table>
-<tr><td>morning → 10:40</td><td>Idea, pitch, research plan, Omnigent setup</td></tr>
-<tr><td>10:40 – 12:00</td><td>Manual baseline loop; exp001 (40 trials, qwen3): a floor effect, reported as null</td></tr>
+<tr><td>→ 12:00</td><td>Idea, plan, Omnigent setup; manual baseline loop; exp001 (40 trials, qwen3): null</td></tr>
 <tr><td>12:00 – 13:00</td><td>Omnigent lab goes live; exp009: the instrument fails (livelock)</td></tr>
 <tr><td>13:00 – 16:00</td><td>Rebuild v2.1; exp010; the lab proves its own validity bar inverted; pivot to Haiku</td></tr>
 <tr><td>16:00 – 18:00</td><td>exp011 pilot + exp012 main (90 trials): a clean null with bounds</td></tr>
 <tr><td>18:00 – 19:30</td><td>exp013: 3 design drafts, reviewer BLOCK on an $8,000 bug, run: −30 pt effect</td></tr>
 <tr><td>19:30 →</td><td>Write-up, one-pager, videos, submission</td></tr>
 </table>
-<p class="small">21 PI decisions, each independently reviewed (timeline.jsonl) · about $6 of subject-model API spend.</p>
+<p class="small">23 PI decisions, each independently reviewed (timeline.jsonl) · about $6 of subject-model API spend.</p>
+<p><span class="k">Measured speed-up:</span> from an analysis on disk to the lab's next decision took <span class="k">60 min</span> in Loop 1 and <span class="k">6–11 min</span> in Loops 4–5 (about 6–10×), with more review per result. This is not measured against a conventional lab; the remaining bottleneck is question → valid experiment (56 min for exp013).</p>
 
 <h2>If we had 24 more hours</h2>
 <ul>
 <li>The same advisory majority recommending the <i>unsafe</i> route: does deference stay safe?</li>
 <li>Strong prior commitment, the untested third clause.</li>
-<li>Live peers forced to disagree.</li>
-<li>Replication on a second model family.</li>
+<li>Live peers forced to disagree; a second model family.</li>
 </ul>
-<p class="small">Data: data/trials/*.jsonl (immutable) · results/*.json · decisions/ · critiques/ · specs/PREREG_*.md</p>
+
 </div>
 </div>
 </body></html>

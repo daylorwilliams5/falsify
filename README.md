@@ -216,6 +216,50 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 
 ---
 
+## Measured improvement, and the path to 10×
+
+**Measured from `timeline.jsonl`: the time from an analysis landing on disk to the lab's next recorded decision.**
+
+| Result | Analysis written | Next decision | Elapsed |
+|---|---|---|---|
+| exp001 (Loop 1, the lab's first loop) | 11:06 | D001, 12:06 | **60 min** |
+| exp011 pilot | 16:44 | D017, 16:50 | **6 min** |
+| exp012 main | 17:51 | D019, 18:00 | **10 min** |
+| exp013t | 19:15 | D022, 19:26 | **11 min** |
+
+- **The lab got about 6–10× faster at turning a result into a decision** over the day.
+- **It also did more checking per result:** an independent re-analysis, a skeptic pass, and a methodology review; the review adds 5–8 minutes.
+- **Throughput:** 6 experiments and 23 reviewed decisions in about 8.5 hours of research time, for about $6 of subject-model API spend.
+- **Quality, by the same record:** errors were caught before they cost anything. These include:
+  - an inverted validity bar;
+  - a silent $8,000 cost default;
+  - an API-schema failure;
+  - a tripwire implemented narrower than its preregistration;
+  - a pooled bound presented as a headline.
+
+**What this is not:** a measured 10× against a conventional human lab. The manual baseline (`baseline/manual_loop.jsonl`, 24 minutes) covered only build, run and analysis, and it was done with AI help. A conventional loop of design, build, run, analysis and peer review takes days to weeks; we did not time one.
+
+**Where the time now goes, and so the path to 10× end to end:**
+- **The bottleneck is no longer analysis or deciding; it is question → valid running experiment.** That took 56 minutes for exp013 (18:04 → 19:00). Most of it was spent on three design drafts and two engineering defects that review caught.
+- **Three of those defects share one pattern: code narrower than the spec.** A missing-key default, an unchecked schema keyword, and one of four tripwire clauses implemented. Generating the conformance tests directly from the preregistration would remove that whole class.
+- **Pods already run in parallel.** Running several candidate designs in parallel, and letting the reviewer execute rather than read, are the next multipliers.
+
+---
+
+## Challenge deliverables: where to find them
+
+| Asked for | Where |
+|---|---|
+| Repository | this repo |
+| Agent specifications and policies | [`lab/config.yaml`](lab/config.yaml) (PI), [`lab/agents/`](lab/agents/) (reviewer, pods, sub-agents), [`lab/mandate.json`](lab/mandate.json); policies in [`specs/AUTHORITY.md`](specs/AUTHORITY.md), [`specs/REVIEW_POLICY.md`](specs/REVIEW_POLICY.md), [`specs/EDGE_CASE_POLICY.md`](specs/EDGE_CASE_POLICY.md); enforced by [`falsify/cli.py`](falsify/cli.py) |
+| Demo | the demo and tech videos (links in the submission form); public site in [`ui/`](ui/) |
+| Cited evidence | [`sources/candidates.md`](sources/candidates.md) (each entry carries its verification level); decisions cite files, trials and results ([`decisions/`](decisions/), [`critiques/`](critiques/)) |
+| Experiment code and results | [`falsify/`](falsify/) (environments, runner, analysis), [`specs/`](specs/) (preregistrations), [`data/trials/`](data/trials/) (raw), [`results/`](results/) (analyses); see [`data/README.txt`](data/README.txt) |
+| Measured improvement | the section above |
+| Next experiment | the same advisory majority recommending the **unsafe** route (does deference stay safe?); then strong prior commitment |
+
+---
+
 ## What makes Falsify different
 
 Falsify is not a multi-agent chat room. It is a scientific organization.

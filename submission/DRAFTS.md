@@ -86,5 +86,5 @@ Autonomous science needs more than more agents. It needs institutions that make 
     - time cost had no effect;
     - no safety claim: the design could not produce an unsafe outcome (tripwire, D023);
     - all manipulation checks passed.
-- **Speedup claim (measured):** [from baseline/manual_loop.jsonl and the loop-quality rubric; state honestly].
+- **Speedup claim (measured):** result-to-decision time 60 min (Loop 1) → 6–11 min (Loops 4–5), about 6–10×, with more review per result. Not measured against a conventional lab; the remaining bottleneck is question → valid experiment (56 min for exp013).
 - **If we had 24 more hours:** the same advisory majority recommending the UNSAFE route (does deference stay safe?); strong prior commitment; live peers who actually disagree; replication on a second model family.
