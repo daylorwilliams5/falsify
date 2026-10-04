@@ -18,7 +18,7 @@ We mostly measure whether AI agents succeed, not *why* they stop correcting them
 
 **In one day the lab ran 6 experiments, and by the end it turned new evidence into a reviewed decision about 6× faster than in its first loop (60 → ~10 minutes).** It also caught its own mistakes:
 - an adversarial agent executed a blind script that passed the preregistered validity bar while acting unsafely in 20/20 trials;
-- the reviewer blocked a run over a hidden bug in the engineer's code (a silent default for a simulated fee).
+- the reviewer blocked a run over a hidden bug in the engineer's code.
 
 **What it found about Claude Haiku 4.5:**
 - Given ambiguous evidence that its plan was wrong, it checked before acting in 60/60 trials, alone or in teams (95% upper bound on persisting: 4.9%).
