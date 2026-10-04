@@ -1,0 +1,108 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Falsify One-Pager</title>
+<style>
+@page { size: Letter; margin: 0.45in 0.5in; }
+* { box-sizing: border-box; }
+body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 9.3pt; line-height: 1.32; color: #16202a; margin: 0; }
+h1 { font-size: 19pt; margin: 0; letter-spacing: -0.3px; }
+.sub { color: #4a5a68; font-size: 9.6pt; margin: 2px 0 8px; }
+h2 { font-size: 10.5pt; margin: 9px 0 3px; color: #0E5E6F; border-bottom: 1px solid #cfdde2; padding-bottom: 1px; }
+p { margin: 3px 0; }
+ul { margin: 2px 0 2px 15px; padding: 0; }
+li { margin: 1px 0; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 8.8pt; margin: 3px 0; }
+th, td { border: 1px solid #cfdde2; padding: 2px 5px; text-align: left; }
+th { background: #eef5f7; }
+.k { font-weight: 600; }
+.box { background: #f4f8f9; border-left: 3px solid #0E5E6F; padding: 4px 8px; margin: 5px 0; }
+.small { font-size: 8.2pt; color: #4a5a68; }
+</style></head><body>
+
+<h1>Falsify</h1>
+<div class="sub">An autonomous research lab, built on Omnigent, that studies when AI agents stop correcting themselves, and audits its own work while doing it.<br>
+Hack-Nation 7th Global AI Hackathon · Challenge 3: Agentic Scientific Discovery (Databricks × Omnigent) · solo · github.com/daylorwilliams5/falsify</div>
+
+<div class="cols">
+<div>
+<h2>Challenge &amp; user</h2>
+<p>End-to-end agentic research: literature → hypothesis → experiment → analysis → adversarial challenge → next decision. <span class="k">User:</span> AI-safety and agent-systems researchers who need causal evidence about <i>why</i> agent behaviour changes, not more pass/fail benchmarks.</p>
+
+<h2>What we built</h2>
+<ul>
+<li><span class="k">Omnigent research organization:</span> a PI agent, four pods (literature, design, analysis, adversarial; 8 sub-agents), and an <span class="k">independent methodology reviewer</span> that audits every decision.</li>
+<li><span class="k">Authority enforced in code, not prompts:</span>
+ <ul>
+ <li>L1: the PI acts alone.</li>
+ <li>L2: needs a reviewer PASS.</li>
+ <li>L3: needs a human approval card in Omnigent.</li>
+ <li>Specs are hash-locked; unknown or missing settings fail closed.</li>
+ </ul></li>
+<li><span class="k">Controlled subject environments</span> (FreightRoute) with immutable trial logs, preregistrations, an append-only timeline, and a hard $20 API spend cap.</li>
+</ul>
+
+<h2>Tools</h2>
+<p>Omnigent 0.16 (orchestration, policies, approval gates) · Claude (lab agents) · subjects: qwen3:8b via Ollama and Claude Haiku 4.5 via the Anthropic API (structured outputs) · Python (environments, analysis, Clopper-Pearson and bootstrap CIs) · 129 tests.</p>
+
+<h2>What worked</h2>
+<ul>
+<li><span class="k">Executable oversight.</span> The adversarial pod ran a script that never reads the environment. It passed the preregistered validity bar while acting unsafely in 20/20 trials, so the lab threw out a bar everyone (including the human) had approved.</li>
+<li><span class="k">The reviewer runs code, not summaries.</span> It blocked a run over a silent $8,000 default in the engineer's build.</li>
+<li><span class="k">Honest nulls.</span> Each null was reported with an upper bound and an explicit claim boundary.</li>
+<li><span class="k">The design pod argued the follow-up down from three drafts before spending a cent.</span></li>
+</ul>
+
+<h2>What was hard</h2>
+<ul>
+<li>Instrument validity: a livelocked environment, then an inverted validity bar.</li>
+<li>A small subject model that misread numbers in both directions.</li>
+<li>Omnigent's one-shot mode silently stopping sessions.</li>
+<li>Review spirals, fixed with a materiality policy.</li>
+<li>Two harness failures caught before any money was spent.</li>
+</ul>
+</div>
+
+<div>
+<h2>Results (Claude Haiku 4.5)</h2>
+<p class="k">1 · Under ambiguity, it checks (exp012, 90 trials, preregistered).</p>
+<p>Evidence that the current plan was invalid was clear, probabilistic, or conflicting; agents worked alone or in teams of four peers.</p>
+<ul>
+<li>Persisting on the invalid plan: <span class="k">0/90</span>.</li>
+<li>With ambiguous evidence, agents <span class="k">inspected first in 60/60</span>. The 95% upper bound on persistence is <span class="k">4.9%</span>.</li>
+<li>Peer pressure was <i>untested</i>: the peers never disagreed, which the lab flagged rather than claimed.</li>
+</ul>
+
+<p class="k" style="margin-top:6px">2 · Advice, not cost, erodes checking (exp013t, 60 trials).</p>
+<table>
+<tr><th>Inspected before committing</th><th>Colleagues silent</th><th>Colleagues: "skip it"</th></tr>
+<tr><td>Inspection free (1 round)</td><td>15/15</td><td>11/15</td></tr>
+<tr><td>Inspection costly (2 of 6 rounds)</td><td>15/15</td><td>10/15</td></tr>
+</table>
+<ul>
+<li><span class="k">Advisory majority: −30 pts</span> of verification (95% CI −13 to −47).</li>
+<li><span class="k">Time cost: no detectable effect</span> (+3 pts, CI −13 to +20).</li>
+<li>Every agent that skipped the check deferred to the safe route its colleagues recommended. <span class="k">Unsafe actions: 0/60.</span></li>
+<li>All manipulation and validity checks passed.</li>
+</ul>
+<div class="box">Social discouragement erodes information-seeking. In this setting it never tipped into unsafe action, because the advice happened to be safe. Caveats: n = 15 per cell, and the advice text names "skipping".</div>
+
+<h2>How the time was spent</h2>
+<p>In one day (first logged run 10:41, results frozen by 22:00):</p>
+<ul>
+<li>6 experiments and 21 PI decisions, each independently reviewed, every one in <span class="k">timeline.jsonl</span>.</li>
+<li>Two instrument failures and one inverted validity bar caught.</li>
+<li>One model pivot, made on evidence.</li>
+<li>About $6 of total subject-model API spend.</li>
+</ul>
+
+<h2>If we had 24 more hours</h2>
+<ul>
+<li>The same advisory majority recommending the <i>unsafe</i> route: does deference stay safe?</li>
+<li>Strong prior commitment, the untested third clause.</li>
+<li>Live peers forced to disagree.</li>
+<li>Replication on a second model family.</li>
+</ul>
+<p class="small">Data: data/trials/*.jsonl (immutable) · results/*.json · decisions/ · critiques/ · specs/PREREG_*.md</p>
+</div>
+</div>
+</body></html>
