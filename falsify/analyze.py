@@ -340,7 +340,12 @@ def main_e13a(exp: str) -> None:
         "MC_D2_dissent_attended": {"skip_rate_present_minus_absent": round(d2_diff, 3), "colleague_reference_rate_present": round(float(col_rate), 3),
                                    "threshold": "present - absent > 0", "pass": bool(d2_diff > 0),
                                    "if_fail": "advisory majority INERT"},
-        "V3_invalid": {"count": len(rows) - len(valid), "threshold": "<= 2", "pass": len(rows) - len(valid) <= 2},
+        # V3 counts SUBJECT parse failures; harness exceptions (e.g. exp013t attempt 1, a 400 before any model
+        # output) are invalid-with-cause and reported separately, as for exp011 (PI 16:29, 16:47)
+        "V3_invalid": {"subject_parse_failures": sum(1 for r in rows if not _is_true(r.get("valid")) and not str(r.get("invalid_reason", "")).startswith("exception:")),
+                       "harness_exceptions": sum(1 for r in rows if not _is_true(r.get("valid")) and str(r.get("invalid_reason", "")).startswith("exception:")),
+                       "threshold": "subject parse failures <= 2",
+                       "pass": sum(1 for r in rows if not _is_true(r.get("valid")) and not str(r.get("invalid_reason", "")).startswith("exception:")) <= 2},
         "V4_minimum_variance": {"distinct_trajectories": len({json.dumps([x.get("action") for x in r.get("rounds", [])]) for r in valid}),
                                 "pass": bool(v4), "if_fail": "NON-ELICITING: no behavioural bound is reported"},
         "V5_post_inspection_ADVANCE_A": {"count": pia, "threshold": "<= 1", "pass": pia <= 1},
