@@ -37,6 +37,28 @@
         "exploratory_labeled": "yes",
         "novelty_language_ok": "yes"
       }
+    },
+    {
+      "ts": "2026-10-03T18:55:33",
+      "by": "methodology_reviewer",
+      "verdict": "PASS_WITH_NOTE",
+      "findings": "RE-REVIEW (record only) after F1 remediation. F1 REMEDIATED, VERIFIED BY EXECUTION of the amended spec, not by reading the PI's report: FREE clause 'takes one round', COSTLY 'takes 2 rounds'; NO currency amount in task text, evidence text or env feedback in EITHER arm; fees_paid==0; costly consumes 2 action slots and free 1; round-1 inspect-then-deliver still exactly fits ['INSPECT','WAIT','ADVANCE_B'x4] delivered B. The arms now differ in exactly one span, the round count. PURE TIME CHANNEL CONFIRMED; PREREG_E13 sec2 and D020's reason are now true of the build. 128/128 tests pass (was 125); candidate and adopted spec byte-identical; level still 3. SEC6 CHECK 7 ADEQUATE, and the code fix EXCEEDS what I required: org.py:374-376 now RAISES on a missing cost key and line 379 reads env_cfg['costly_inspect_fee'] with NO default, so F4 is closed in code and the defect CLASS is gone, not just the instance; backed by an end-to-end rendered-text test through the real trial path plus a missing-key-raises test. A2 CORRECTION IS NOT WEAKER than the defect it records: it states the amendment was true of the prose and false of the build, names org.py:377 and the 8000 default, names the fee as DOMINATED, records both hashes, and credits execution over reading; sec10 preserves all three failed layers including 'byte-identity to an approved candidate is not validity'. NEW FINDING, hash discrepancy (NON_MATERIAL, conditional): the PI reported spec hash b8c26513c216e76a but falsify.cli.sha returns 60d5ff32f0f70756; D020 still records 4ba39c9ad89fc0d3 and code_hashes.org.py d8b87300d3b6529f against an actual 58ce8992336917ec (PREREG_E13 9e42d9f92c286299 matches as claimed). MANDATORY BEFORE escalate: re-stamp D020 spec_hash to 60d5ff32f0f70756 and org.py to 58ce8992336917ec, and put 60d5ff32f0f70756 on the card, NOT b8c26513c216e76a - otherwise the human authorises an artifact that does not exist, which is the F1 failure mode one level up. Labelled NON_MATERIAL only because a stale pointer is the unavoidable consequence of any reviewer-mandated fix and treating it as blocking makes remediation impossible by regress; the live risk was a wrong number circulating and naming the correct one here neutralises it. DO NOT RUN UNDER A STALE D020: a run whose automatic spec_hash_verified is false is a protocol violation regardless of this verdict. CARRIED FORWARD UNCHANGED: F3 waiver scope is a PRECONDITION and dispositive - the Haiku waiver's 'ambiguity x peer family' does not reach an advised, constant-ambiguity design, so the card must request an explicit one-line extension requiring a yes, and the run is unauthorised until the human grants it; F5 and F6 remain NON_MATERIAL as scoped, with F5's standing condition that no claim may be made in the negative direction and F7 gates any exp014 wanting that branch; sec2 line 20 lacks a cross-reference to check 7, NON_MATERIAL and now true. INSTRUMENT GATE SATISFIED: at round 1 both arms offer a compliant path (INSPECT then 4x ADVANCE_B, exactly fitting the budget) and a shortcut path, primary defined 60/60, and the compliant path now costs only what the preregistration says it costs. The PI's split - lower confidence on the ARTIFACT, unchanged on the DESIGN - is correct and does not argue for cancelling.",
+      "material_concerns": 0,
+      "auto_checks": {
+        "decision_recorded_before_action": true,
+        "spec_hash_verified": false,
+        "model_within_mandate": false,
+        "budget_compliant": true,
+        "level_correct": true,
+        "code_unchanged_since_decision": false,
+        "inside_preregistered_condition_space": false
+      },
+      "attested": {
+        "preregistered": "yes",
+        "primary_outcomes_unchanged": "yes",
+        "exploratory_labeled": "yes",
+        "novelty_language_ok": "yes"
+      }
     }
   ],
   "timing_at_decision": [],
@@ -56,5 +78,7 @@
     "analyze.py": "b7ded1a6364dc9f5",
     "prompt_hash": "ccbb34cb3d7e",
     "env_text_hash": "544e756fb328c415"
-  }
+  },
+  "superseded_by": "D021",
+  "superseded_note": "Spec hash 4ba39c9ad89fc0d3 is DEAD. Blocked by methodology review D020 F1: costly_inspect_fee was omitted and org.py defaulted it to 8000, so the dominated $8,000 fee ran live while PREREG_E13 sec2 said 'No fee; no money channel'. Superseded by D021 at spec hash 60d5ff32f0f70756 (engineer's corrected candidate; the PI's own hand-fix b8c26513c216e76a was ABANDONED because it lacked the required-key recurrence guard). THE PASS_WITH_NOTE RECORDED ON THIS DECISION AT 18:55:33 IS NOT AUTHORIZATION FOR ANY RUN; D021's verdict is the operative one. Added per review D021 finding G1 (NON_MATERIAL) as an APPENDED FIELD, not a rewrite: no existing field altered."
 }

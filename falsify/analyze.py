@@ -319,7 +319,7 @@ def main_e13a(exp: str) -> None:
     # F3: elicited belief, round 1, per arm; a skipped check is scored against the trial's own stated p
     def p1(r):
         v = (r.get("rounds") or [{}])[0].get("single", {}).get("p_route_a_legal")
-        return float(v) if v is not None else None
+        return float(v) if isinstance(v, (int, float)) and 0 <= v <= 1 else None  # out-of-range p = missing
     belief = {}
     for k, rs in sorted(by.items()):
         ps = [p1(r) for r in rs if p1(r) is not None]

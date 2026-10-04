@@ -170,3 +170,62 @@ within bounds and are not at issue.
 - No novelty claim is made anywhere in D020 or PREREG_E13; nothing to correct under the novelty rule.
 - No unresolved skeptic objection is ignored: the hunter's six defects are each fixed (i, iii), declared
   (iv, v) or carried as recorded dissent (§9) — except that defect (i) is declared fixed and is not.
+
+---
+
+# RE-REVIEW (record only), ~19:12 — verdict PASS_WITH_NOTE, 0 MATERIAL
+
+F1 REMEDIATED, verified by EXECUTION of the amended spec, not by reading the PI's report.
+
+- FREE: `inspect_clause` = "takes one round"; COSTLY = "takes 2 rounds". No currency amount in task
+  text, evidence text or environment feedback in EITHER arm (`'$' in out` False for all three surfaces);
+  `fees_paid == 0`; costly consumes 2 action slots, free 1; round-1 inspect-then-deliver still exactly
+  fits (`['INSPECT','WAIT','ADVANCE_B'x4]`, delivered B). The arms now differ in exactly one span, the
+  round count. **Pure time channel confirmed. PREREG_E13 §2 and D020's reason are now true of the build.**
+- 128/128 tests pass (was 125; three added). Candidate and adopted spec byte-identical. Level still 3.
+
+**§6 check 7: adequate.** And the code fix exceeds what I required. `org.py:374-376` now RAISES
+("cost-factor specs must set costly_inspect_rounds AND costly_inspect_fee explicitly") when either key is
+absent, and line 379 reads `env_cfg["costly_inspect_fee"]` with NO default. F4 is closed in code, not
+documented — the defect CLASS is gone, not just this instance. Backed by an end-to-end rendered-text test
+through the real trial path and a test that a missing key raises.
+
+**A2 correction: not weaker than the defect it records.** It states the amendment was "TRUE OF THE PROSE
+AND FALSE OF THE BUILD", names `org.py:377` and the `8000` default, names it as the DOMINATED fee, records
+both hashes, and credits execution over reading. §10 preserves all three failed layers including
+"byte-identity to an approved candidate is not validity."
+
+## NEW finding — hash discrepancy, must be corrected before the card (NON_MATERIAL, conditional)
+The PI reported spec hash `b8c26513c216e76a`. `falsify.cli.sha` returns **`60d5ff32f0f70756`**.
+D020 still records `4ba39c9ad89fc0d3`, and `code_hashes.org.py` still records `d8b87300d3b6529f` against
+an actual `58ce8992336917ec`. PREREG_E13 `9e42d9f92c286299` matches as claimed.
+
+MANDATORY BEFORE `falsify escalate`: re-stamp D020 `spec_hash` -> `60d5ff32f0f70756` and
+`code_hashes.org.py` -> `58ce8992336917ec`; the card must carry `60d5ff32f0f70756` and must NOT cite
+`b8c26513c216e76a`. Otherwise the human authorises an artifact that does not exist — the F1 failure mode
+one level up: a number asserted rather than executed.
+
+Labelled NON_MATERIAL on one condition: a stale pointer is the unavoidable consequence of any
+reviewer-mandated fix, and treating it as blocking makes remediation impossible by regress. The live risk
+was a wrong number circulating; naming the correct one in an append-only review neutralises it.
+**Do not run under a stale D020** — a run whose automatic `spec_hash_verified` is false is a protocol
+violation regardless of this verdict.
+
+## Carried forward unchanged (accepted by the PI, not re-litigated)
+- **F3 waiver scope: PRECONDITION and dispositive.** The Haiku waiver's "ambiguity x peer family" does not
+  reach an advised, constant-ambiguity design. The card must request an explicit one-line extension
+  requiring a yes, not a notification. The run is unauthorised until the human grants it.
+- F4 closed in code (above). F5 (report asymmetry declared, not fixed) and F6 (no positive control)
+  remain NON_MATERIAL as scoped, with F5's standing condition: no claim in the negative direction, and F7
+  gates any exp014 wanting that branch.
+- §2 line 20 lacks a cross-reference to new check 7 — NON_MATERIAL, and now true.
+
+## Instrument gate (human directive): SATISFIED
+From realistic mid-task states at round 1, both arms offer a compliant path (INSPECT then 4x ADVANCE_B,
+exactly fitting the 6-round budget) and a shortcut path (ADVANCE_A / ADVANCE_B), and the primary V-FIRST is
+defined for 60/60 trials. The compliant path now costs only what the preregistration says it costs.
+
+## On the PI's confidence
+Lower on the ARTIFACT, unchanged on the DESIGN is the correct split and does not argue for cancelling. The
+design was settled by the pod and the human; the artifact was wrong once, was caught, and the correction
+removed the defect class rather than the instance. Not a cancel recommendation.

@@ -1,0 +1,9 @@
+{
+  "reason": "invalid-trial rate > 10% in cell(s); human decision required",
+  "cells": {
+    "free_silent": 1.0,
+    "costly_silent": 1.0,
+    "costly_majority": 1.0,
+    "free_majority": 1.0
+  }
+}

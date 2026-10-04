@@ -114,3 +114,18 @@ def test_measures_distinguish_persist_from_switch_scripts(monkeypatch):
                             {"name": "q", "temperature": 0.7}, {"post_budget": 3}, "h", "x")
         res[const] = t["measured"]["first_response"]
     assert res == {"ADVANCE_A": "persist", "ADVANCE_B": "switch"}
+
+
+def test_no_schema_uses_keywords_anthropic_structured_outputs_reject():
+    """exp013t attempt 1: 60/60 trials got a 400 because a number field carried minimum/maximum."""
+    from falsify import org
+    banned = {"minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "multipleOf", "minLength", "maxLength",
+              "pattern", "format", "minItems", "maxItems"}
+    def walk(s):
+        if isinstance(s, dict):
+            assert not (banned & set(s)), set(s) & banned
+            for v in s.values():
+                walk(v)
+    for group in (org.SCHEMAS_E,):
+        for s in group.values():
+            walk(s)

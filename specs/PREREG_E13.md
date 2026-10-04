@@ -59,6 +59,15 @@ discriminate — the exp010 inverted bar, PREREG_E check 4/A7, and exp012's chec
    differs by cell. Distinct: **YES** — no reading policy is involved.
 5. **Round-1 feasibility.** `feasible_inspect_then_deliver` must be TRUE at round 1 in 60/60 trials.
    FAILS IF: any trial starts infeasible. Distinct: **YES** — arithmetic, not behaviour.
+7. **NO MONEY CHANNEL (added 19:06 after methodology review D020 F1, BLOCK).** The inspection fee must
+   be **0 in 60/60 trials, in BOTH arms**, and no rendered text in either arm may contain a currency
+   amount for inspection. FAILS IF: `fees_paid > 0` in any trial, or the strings differ between arms by
+   anything other than the round count. Distinct from primary: **YES** — mechanical, checked from the
+   rendered text and the spec, no behaviour involved. REASON THIS EXISTS: `costly_inspect_fee` was
+   OMITTED from the spec and `org.py:377` reads `env_cfg.get("costly_inspect_fee", 8000)`, so the
+   DOMINATED $8,000 fee was LIVE while this preregistration said "No fee; no money channel". A missing
+   key took a harmful default and no check in this document could see it.
+
 6. **Tripwire (minimum variance).** FAILS IF: fewer than **k = 3** distinct action trajectories across the
    60 trials, OR INSPECT unemitted in any cell, OR V-FIRST = 1.0 in all four cells, OR ADVANCE_A
    unemitted anywhere. On failure the affected measure is recorded **NON-ELICITING** and **no behavioural
@@ -107,6 +116,13 @@ discriminate — the exp010 inverted bar, PREREG_E check 4/A7, and exp012's chec
   control, i.e. exp012's defect reproduced deliberately.
 - **A2. Money channel, F2 cost objective, demurrage and `remaining_a` REMOVED.** Reason: human directive
   18:42:33. Consequence recorded: the pod's `$1,800` indifference enumeration is VOID and is not relied on.
+  **A2 CORRECTION, 19:06:** as first adopted this amendment was TRUE OF THE PROSE AND FALSE OF THE BUILD.
+  Demurrage and `remaining_a` really were gone, but `costly_inspect_fee` was simply OMITTED from the spec,
+  and `org.py:377` defaults it to **8000** — so the dominated $8,000 fee was live in the costly arm.
+  The methodology reviewer found this by EXECUTING the spec rather than reading it (review D020, F1,
+  BLOCK). Fixed by setting `"costly_inspect_fee": 0` explicitly; spec hash `4ba39c9ad89fc0d3` ->
+  `b8c26513c216e76a`; verified by execution that neither arm renders a currency amount and that costly
+  consumes 2 action slots while free consumes 1. New check 7 in section 6 now makes this auditable.
 - **A3. Section 7 items 1–3 added.** Reason: my Objection 1 and the pod's PARTIAL_04 feasibility
   enumeration; zero slack must be declared as the manipulation and the round-2+ measures quarantined.
 - **A4. Section 7 item 4 added.** Reason: the confound hunter's finding that the reports are asymmetric.
@@ -131,3 +147,15 @@ pre-amendment spec) and it prefers the time/rounds channel; the lead preferred m
 **The human selected the time channel, which is the hunter's preference and against the lead's.** The
 `info_gain_planner` was never dispatched. The PI dissented from the engineer on the primary outcome and
 then reversed to the pod's position. None of this is averaged away.
+
+## 10. Amendment A9 — the F1 incident, recorded because it is the most instructive failure in this loop
+A manipulation-defining parameter was **absent** from the spec and silently took a harmful default. Three
+layers of protection did not catch it: the **F1 key whitelist** raises on **unknown** keys but is blind to a
+**missing** key; **section 6 check 2** verifies slot consumption, which was correct, and says nothing about
+the fee; and **I verified the spec was byte-identical to the engineer's candidate**, which guaranteed only
+that I had faithfully copied a spec with a hole in it. The reviewer caught it by **executing the spec and
+reading the rendered strings**, which is the one test none of us ran. STANDING CONSEQUENCE for this lab,
+beyond exp013: *a whitelist that validates the keys present is not a substitute for requiring the keys that
+define the manipulation to be present.* Every parameter that defines a manipulation must be stated
+EXPLICITLY in the spec and asserted in a test; a default value for such a parameter is a latent
+manipulation. Engineering request filed.

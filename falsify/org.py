@@ -282,7 +282,9 @@ SCHEMAS_E = {
     "peer_final": _schema({"vote": ACTION_E}),
     # exp013t F3: elicited belief, ordered BEFORE the action, identical in every cell (zero extra calls)
     "advised": _schema({"evidence_assessment": {"type": "string"},
-                        "p_route_a_legal": {"type": "number", "minimum": 0, "maximum": 1}, "action": ACTION_E}),
+                        # no minimum/maximum: Anthropic structured outputs reject them (400 on exp013t attempt 1);
+                        # the 0-1 range is enforced in analysis (out-of-range p is treated as missing)
+                        "p_route_a_legal": {"type": "number"}, "action": ACTION_E}),
 }
 N_PEERS = 4
 SINGLE_E = ("You are the operator of a freight delivery. Each round you assess the latest information and choose "
