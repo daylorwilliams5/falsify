@@ -16,9 +16,8 @@ AI agents increasingly work in teams, but we mostly measure whether they succeed
 - an independent methodology reviewer audits every decision;
 - the human approves only high-stakes actions, through Omnigent approval cards.
 
-**In one day the lab ran 6 experiments and changed course on evidence each time.** It also caught its own mistakes:
+**In one day the lab ran 6 experiments, and by the end it turned new evidence into a reviewed decision about 6× faster than in its first loop (60 → ~10 minutes).** It also caught its own mistakes:
 - an adversarial agent executed a blind script that passed the preregistered validity bar while acting unsafely in 20/20 trials;
-- agents reported loopholes in their own governance code instead of exploiting them;
 - the reviewer blocked a run over a silent $8,000 bug in the engineer's code.
 
 **What it found about Claude Haiku 4.5:**
@@ -92,5 +91,5 @@ Open these tabs first: **falsify-nine.vercel.app**, the **Omnigent UI** (127.0.0
     - time cost had no effect;
     - no safety claim: the design could not produce an unsafe outcome (tripwire, D023);
     - all manipulation checks passed.
-- **Speedup claim (measured):** result-to-decision time 60 min (Loop 1) → 6–11 min (Loops 4–5), about 6–10×, with more review per result. Not measured against a conventional lab; the remaining bottleneck is question → valid experiment (56 min for exp013).
+- **Speedup claim (measured):** result-to-decision time 60 min (Loop 1) → 6–11 min (Loops 4–5), about 6× (range 5.5–10×, n = 4 loops), with more review per result. Not measured against a conventional lab; the remaining bottleneck is question → valid experiment (56 min for exp013).
 - **If we had 24 more hours:** the same advisory majority recommending the UNSAFE route (does deference stay safe?); strong prior commitment; live peers who actually disagree; replication on a second model family.

@@ -220,6 +220,28 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 
 ---
 
+## One complete discovery loop, timestamped (exp012 → exp013)
+
+**Question → Evidence → Hypothesis → Experiment → Result → Updated decision.** Every step below is a record in [`timeline.jsonl`](timeline.jsonl) or [`decisions/`](decisions/).
+
+| Step | When | What happened | Record |
+|---|---|---|---|
+| **Question** | 18:04 | Human: "If verification becomes expensive or socially discouraged, does the agent still stop and check?" | timeline, `human directive` |
+| **Evidence** | before 18:04 | exp012: Haiku inspected first in 60/60 ambiguous trials, but checking was free and uncontested, and the peers never disagreed. Prior work: Barkett et al. (2025) report 99.2% escalation in peer deliberation, but with no option to verify. | [`results/exp012…`](results/exp012_ambiguity_x_peer_haiku_main.json), [`sources/candidates.md`](sources/candidates.md) |
+| **Hypothesis** (agent-generated design) | 18:11 – 18:39 | The design pod turned the question into a testable 2×2 (see below). | [`pods/design/loop5/`](pods/design/loop5/) |
+| **Review and approval** | 18:46 – 19:00 | The PI decided (D020). The reviewer executed the code and **BLOCKED** it over a silent $8,000 default. The PI re-decided on the corrected spec (D021), the reviewer passed it, and the human approved the Level-3 card. | [`decisions/D020.json`](decisions/D020.json), [`D021`](decisions/D021.json) |
+| **Experiment** | 19:00 – 19:15 | exp013t ran 60 trials. Attempt 1 failed on an API schema error at $0 and was resumed with human approval. | [`data/trials/exp013t…`](data/trials/exp013t_time_cost_x_advisory_majority_haiku.jsonl) |
+| **Result** | 19:15 | Checking first: 30/30 with colleagues silent vs 21/30 with "skip it" (−30 pts, 95% CI −13 to −47). Time cost: no effect. | [`results/exp013t…`](results/exp013t_time_cost_x_advisory_majority_haiku.json) |
+| **Updated decision** | 19:26 – 19:35 | The PI froze the result (D022). The reviewer caught an overclaim: the safety measures could never fire. D023 corrected the record. | [`D022`](decisions/D022.json), [`D023`](decisions/D023.json) |
+
+**How the design pod turned the question into a hypothesis:**
+- Agents check less when checking costs time **or** when a colleague majority advises skipping.
+- Along the way it refuted the engineer's first design arithmetically (the fee made checking irrational) and argued the cost channel from money to time.
+
+**What the next decision is:** the same advisory majority recommending the **unsafe** route. exp013 showed that agents defer to advice instead of checking. The next question is whether that deference survives when the advice is wrong, which is the case that matters for safety.
+
+**Elapsed:** the human question at 18:04 → a reviewed, frozen result at 19:26 is **82 minutes**. That covered three design drafts, two caught defects, one blocked decision and one human gate. **Result → updated decision took 11 minutes.**
+
 ## Evidence standards
 
 - **Citations for factual claims.** Literature is in [`sources/candidates.md`](sources/candidates.md). Every entry carries its verification level (`[abstract-only]`, `[2026 preprint]`), and novelty claims are forbidden by a human rule. Every PI decision and review cites the files, trials or results it rests on ([`decisions/`](decisions/), [`critiques/`](critiques/)).
@@ -274,7 +296,7 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 
 ## Measured improvement, and the path to 10×
 
-**Measured from `timeline.jsonl`: the time from an analysis landing on disk to the lab's next recorded decision.**
+**What "faster discovery" means here: how quickly new evidence changes the next decision.** It is measured from `timeline.jsonl` as the time from an analysis landing on disk to the lab's next recorded decision.
 
 | Result | Analysis written | Next decision | Elapsed |
 |---|---|---|---|
@@ -283,7 +305,7 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 | exp012 main | 17:51 | D019, 18:00 | **10 min** |
 | exp013t | 19:15 | D022, 19:26 | **11 min** |
 
-- **The lab got about 6–10× faster at turning a result into a decision** over the day.
+- **Observed improvement: about 6×** (range 5.5–10×; 60 min → 6, 10 and 11 min over three later loops). This is n = 4 loops within one lab on one day, and Loop 1 used an earlier architecture, so treat the size as indicative.
 - **It also did more checking per result:** an independent re-analysis, a skeptic pass, and a methodology review; the review adds 5–8 minutes.
 - **Throughput:** 6 experiments and 23 reviewed decisions in about 8.5 hours of research time, for about $6 of subject-model API spend.
 - **Quality, by the same record:** errors were caught before they cost anything. These include:
@@ -299,6 +321,11 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 - **The bottleneck is no longer analysis or deciding; it is question → valid running experiment.** That took 56 minutes for exp013 (18:04 → 19:00). Most of it was spent on three design drafts and two engineering defects that review caught.
 - **Three of those defects share one pattern: code narrower than the spec.** A missing-key default, an unchecked schema keyword, and one of four tripwire clauses implemented. Generating the conformance tests directly from the preregistration would remove that whole class.
 - **Pods already run in parallel.** Running several candidate designs in parallel, and letting the reviewer execute rather than read, are the next multipliers.
+- **What 10× at scale would need:**
+  - question → valid experiment under 15 minutes, which means generated conformance tests and pre-built, validated environment families;
+  - several experiments in flight at once instead of one (the spend cap and the human gate are the limits, not compute);
+  - a reviewer that is a different model family from the PI;
+  - human gates batched by risk, so the human is asked once per program rather than once per run.
 
 ---
 
