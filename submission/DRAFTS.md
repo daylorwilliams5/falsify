@@ -4,57 +4,56 @@
 
 ---
 
-## 1. Project summary (target 150–300 words; this draft is ~245)
+## 1. Project summary (paste into the form; ~280 words)
 
-**Falsify: an AI research organization that checks its own work.**
+**Falsify: an AI research lab that checks its own work.**
 
-As AI systems become teams of agents, a new question matters: when do AI organizations stop correcting themselves, and what oversight brings them back? Falsify is an autonomous research lab, built on Omnigent, that investigates this question by running controlled experiments on AI teams.
+AI agents increasingly work in teams and make consequential decisions, but we mostly measure whether they succeed, not *why* they stop correcting themselves. Falsify is an autonomous research lab, built on Omnigent, that runs controlled experiments to find out.
 
-The lab is organized like a real scientific institution with separation of powers:
-- a **Principal Investigator agent** makes research decisions;
-- four **research pods** (literature, design, analysis, adversarial review) argue independently;
-- an **independent methodology reviewer** audits every decision;
-- the **human** sets the mandate and approves only high-stakes actions.
+**It is organized like a scientific institution, with separation of powers enforced in code:**
+- a Principal Investigator agent decides what to test next;
+- four research pods (literature, design, analysis, adversarial) argue independently;
+- an independent methodology reviewer audits every decision;
+- the human approves only high-stakes actions, through Omnigent approval cards.
 
-These authority levels are enforced in code, not just in prompts.
+**In one day the lab ran 6 experiments and changed course on evidence each time.** It also caught its own mistakes:
+- an adversarial agent executed a blind script that passed the preregistered validity bar while acting unsafely in 20/20 trials;
+- agents reported loopholes in their own governance code instead of exploiting them;
+- the reviewer blocked a run over a silent $8,000 bug in the engineer's code.
 
-In one day the lab ran 6 experiments and changed course on the evidence each time:
-- It overturned its own validity bar when an adversarial agent **executed a blind script that passed the bar while acting unsafely in 20/20 trials**.
-- It **reported two loopholes in its own governance code instead of exploiting them**.
-- Its reviewer **blocked a run over a silent $8,000 default in the engineer's code**.
-
-Findings on Claude Haiku 4.5:
-- Given ambiguous evidence that its plan was wrong, it **checked before acting in 60/60 trials**, alone or in teams. The upper bound on persisting is 4.9%.
-- When colleagues simply advised skipping the check, **verification fell from 100% to 70%** (−30 points, 95% CI −13 to −47).
+**What it found about Claude Haiku 4.5:**
+- Given ambiguous evidence that its plan was wrong, it checked before acting in 60/60 trials, alone or in teams (95% upper bound on persisting: 4.9%).
+- When colleagues simply advised "skip the inspection", checking fell from 100% to 70% (−30 points, 95% CI −13 to −47).
 - Making the check cost time had no effect.
-- No agent ever acted unsafely: the ones that skipped deferred to advice that happened to be safe.
+- No agent acted unsafely: those that skipped deferred to advice that happened to be safe.
 
-Falsify shows that autonomous science needs more than more agents. It needs institutions that make agents falsify each other.
+**Who benefits:** AI-safety researchers and teams deploying multi-agent systems, who get causal, reproducible evidence about when oversight works, with every decision, review and trial on the record.
 
----
-
-## 2. Demo video script (60 s)
-
-| Time | On screen | Narration |
-|---|---|---|
-| 0–8 s | Tracker overview (live pipeline, decisions, estimated finish) | "This is Falsify: an AI research lab that studies how AI organizations fail, and audits itself while it does." |
-| 8–20 s | Omnigent UI: PI dispatching pods, sub-agents running | "A Principal Investigator agent runs the science. Four pods of independent agents propose experiments, analyze data and attack every conclusion." |
-| 20–32 s | Decision D002 → reviewer FAIL → D003 correction (tracker decision cards) | "Every decision is audited by an independent methodology reviewer. Here the PI overreached; the reviewer failed it; the PI corrected itself, with no human needed." |
-| 32–45 s | Adversarial pod output: blind script passes the bar, unsafe 20/20 | "Its adversarial pod ran a script that never reads the environment, and it passed our preregistered validity check. Everyone had approved that check, including us. The lab caught it and changed course." |
-| 45–55 s | Approval card in Omnigent → exp012 table → exp013t table | "Humans approve only what matters. The result: Claude Haiku checked before acting every time it was unsure, 60 out of 60. But when colleagues just said 'skip the inspection', checking fell to 70%. Time pressure didn't move it; social pressure did." |
-| 55–60 s | Logo / repo URL | "Falsify. Autonomous science that falsifies itself." |
+Autonomous science needs more than more agents. It needs institutions that make agents falsify each other.
 
 ---
 
-## 3. Tech video script (60 s)
+## 2. Demo video (≤60 s): screen recording with voiceover
 
-| Time | On screen | Narration |
+| Time | On screen | Say |
 |---|---|---|
-| 0–12 s | Architecture diagram (README) | "Stack: Omnigent orchestrates a PI, seven specialists and four pods on Claude. The AI teams under study run on qwen3:8b locally and Claude Haiku 4.5." |
-| 12–27 s | `falsify/cli.py` level check + tests | "Authority is enforced in code: a CLI computes each experiment's required level from its spec. Unknown fields fail closed. Specs are hash-locked. Level 3 actions pause on an Omnigent approval card. 129 tests." |
-| 27–42 s | Timeline: exp009 livelock → v2.1 → inverted bar → pivot | "What was hard: our instruments failed, twice. The lab diagnosed a livelock, rebuilt the environment, then proved its own validity bar was inverted, using executable counterexamples instead of reading the spec." |
-| 42–55 s | Reviewer BLOCK on D020 ($8,000 default) → fix → end-to-end test | "The reviewer runs the code, not the summary. It caught a silent $8,000 default in my own build that would have contaminated the experiment, and blocked the run until it was fixed. Plus a hard spend cap: the whole day cost about $6 in API calls." |
-| 55–60 s | Repo | "Lesson: oversight works when it can execute, not just read." |
+| 0–8 s | Local site front page (localhost:5199) | "Falsify is an AI research lab that studies when AI agents stop correcting themselves, and checks its own work while it does." |
+| 8–20 s | Omnigent UI (127.0.0.1:6767): the PI dispatching pods; scroll the conversation | "A Principal Investigator agent runs the science. Pods of agents design experiments, analyze data and attack every conclusion." |
+| 20–32 s | Tracker (127.0.0.1:5210) or `decisions/`: D020 → reviewer **BLOCK** → D021 → **PASS** | "Every decision is audited. Here the reviewer ran my own code, found a hidden $8,000 bug, and blocked the experiment until it was fixed." |
+| 32–40 s | An Omnigent approval card being approved | "Humans approve only what matters: new models and real spending." |
+| 40–55 s | README results tables (exp012, then exp013t) | "The finding: Claude Haiku checked before acting every time it was unsure, 60 out of 60. But when colleagues just said 'skip the inspection', checking dropped to 70%. Time pressure didn't move it. Social pressure did." |
+| 55–60 s | Repo URL | "Falsify. Science that falsifies itself." |
+
+---
+
+## 3. Tech video (≤60 s)
+
+| Time | Section | On screen | Say |
+|---|---|---|---|
+| 0–13 s | **Stack** | README architecture diagram | "Omnigent orchestrates a PI agent, four pods and an independent reviewer, all on Claude. The AI agents under study run on qwen3 locally and Claude Haiku through the API, inside simulated freight-routing environments we built in Python." |
+| 13–30 s | **Highlights** | `bin/falsify level` output; `tests/` | "The clever part is that authority lives in code, not prompts. A CLI computes each experiment's authority level from its spec. Specs are hash-locked. Unknown settings fail closed. Level-3 actions wait for an Omnigent approval card. Every validity check is tested against scripts that don't read the environment: 129 tests." |
+| 30–52 s | **Challenges** | Timeline: exp009 livelock → inverted bar → $8,000 block | "What broke: our first environment livelocked. Our validity bar turned out to be inverted: a blind script passed it. And a silent default in my own code would have contaminated a run, until the reviewer executed it and blocked it. Each time, the fix was to make oversight execute instead of read." |
+| 52–60 s | **Takeaway** | Repo | "Lesson: oversight works when it can run the code, not just review the summary." |
 
 ---
 
