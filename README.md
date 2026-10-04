@@ -16,6 +16,8 @@ Falsify uses Omnigent to run an autonomous scientific organization. The organiza
 
 The goal is not to produce more agent benchmarks. The goal is to build an empirical science of AI-agent behavior.
 
+**Discovery bottleneck we target:** turning a result into a *trustworthy* next decision. That means checked by an independent analyst, attacked by a skeptic, audited by a reviewer, and still fast. It is measured below: 60 minutes in the lab's first loop, 6–11 minutes by the end of the day.
+
 ---
 
 ## Research question

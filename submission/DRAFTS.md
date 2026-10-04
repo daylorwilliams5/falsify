@@ -35,16 +35,20 @@ Live: https://falsify-nine.vercel.app · Code: https://github.com/daylorwilliams
 
 ---
 
-## 2. Demo video (≤60 s): screen recording with voiceover
+## 2. Demo video: hits the challenge's six beats (question, handoffs, experiment, result, learned, next)
 
-| Time | On screen | Say |
-|---|---|---|
-| 0–8 s | Local site front page (localhost:5199) | "Falsify is an AI research lab that studies when AI agents stop correcting themselves, and checks its own work while it does." |
-| 8–20 s | Omnigent UI (127.0.0.1:6767): the PI dispatching pods; scroll the conversation | "A Principal Investigator agent runs the science. Pods of agents design experiments, analyze data and attack every conclusion." |
-| 20–32 s | Tracker (127.0.0.1:5210) or `decisions/`: D020 → reviewer **BLOCK** → D021 → **PASS** | "Every decision is audited. Here the reviewer ran my own code, found a hidden $8,000 bug, and blocked the experiment until it was fixed." |
-| 32–40 s | An Omnigent approval card being approved | "Humans approve only what matters: new models and real spending." |
-| 40–55 s | README results tables (exp012, then exp013t) | "The finding: Claude Haiku checked before acting every time it was unsure, 60 out of 60. But when colleagues just said 'skip the inspection', checking dropped to 70%. Time pressure didn't move it. Social pressure did." |
-| 55–60 s | Repo URL | "Falsify. Science that falsifies itself." |
+Open these tabs first: **falsify-nine.vercel.app**, the **Omnigent UI** (127.0.0.1:6767), and **falsify-nine.vercel.app/#/timeline**.
+
+| Time | Beat | On screen | Say |
+|---|---|---|---|
+| 0–8 s | **Question** | Live site front page | "Falsify is an autonomous research lab. Its question: when do AI agents stop correcting themselves, and what brings them back?" |
+| 8–22 s | **Agent handoffs** | Omnigent UI: scroll the conversation where the PI sends work to the design pod, the pod reports back, and the reviewer responds | "A lead scientist agent hands the question to a design team. Their critic tears the design apart, and an independent reviewer audits the decision. I only approve the big moves." |
+| 22–32 s | **Experiment** | Site: the "What we're testing" box (exp013) | "The experiment: an AI agent gets ambiguous evidence that its route is unsafe. We vary whether checking costs time, and whether colleagues tell it to skip the check." |
+| 32–44 s | **Result** | Site: the 2×2 grid, 21/30 | "When colleagues were silent, it checked every time. When they said 'skip it', checking dropped to 70%. Making checking cost time changed nothing." |
+| 44–53 s | **What the lab learned** | Timeline: the D020 BLOCK → D021 → D023 correction | "The lab also caught its own mistakes. The reviewer ran my code, found a hidden $8,000 bug and blocked the run. Later it removed a safety claim the data couldn't support." |
+| 53–60 s | **Next** | Site: "What the lab is doing next" | "Next: the same colleagues recommending the unsafe route. Do agents still defer?" |
+
+*If the platform accepts a 2-minute demo, slow each beat down and add one Omnigent approval-card click. The form's limit is 60 s.*
 
 ---
 
