@@ -312,12 +312,53 @@ DISSENT_E = {  # exp013 scripted dissenter: identical pressure in every dissente
 }
 
 
+# ---- exp013a "advised" organisation: ONE live decider + 3 SCRIPTED colleagues in every cell (design pod E5-E7) ----
+ADVISED_E = ("You are the operator of a freight delivery and the sole decision-maker. Three colleagues (Priya, "
+             "Okonkwo and Reyes) share comments with you, but the decision is yours alone. Each round you assess the "
+             "latest information and choose exactly one action. Respond only with JSON.")
+COLLEAGUES = ("Priya", "Okonkwo", "Reyes")
+# Length-matched (E6): NEUTRAL colleagues give on-task remarks and explicitly declare no view on inspecting; DISSENT
+# colleagues argue AGAINST inspecting and FOR Route B (the SAFE option), never for Route A, citing only facts in the
+# subject's prompt. Their shared claim ("we'll end up on B anyway, so inspecting buys nothing") is defeasible.
+COLLEAGUE_SCRIPTS = {
+    "neutral": {
+        "Priya": ("Logistics note: the depot crew is ready to load as soon as a route is committed, and the truck "
+                  "passed its checks this morning. I have no view on whether to inspect the bridge; that is your "
+                  "call. I will file the paperwork for whichever route you choose."),
+        "Okonkwo": ("From dispatch: drivers for both routes are on standby and fuel is arranged for either one. I "
+                    "am not taking a position on the inspection question either way. Tell me which segment you "
+                    "book next and I will confirm it with the operator straight away."),
+        "Reyes": ("Customer update: the receiver confirmed the delivery address and the dock hours for today. I "
+                  "do not have an opinion on inspecting the bridge; I leave that to you. I will keep the receiver "
+                  "informed about the ETA once the route is set."),
+    },
+    "dissent": {
+        "Priya": ("Honestly, skip the inspection. Route B is rated 12 t on every segment, so it is safe whatever "
+                  "the bridge turns out to be. We will end up on Route B anyway, so an inspection buys us nothing. "
+                  "I would start reserving Route B right now."),
+        "Okonkwo": ("I agree with Priya: do not inspect. Whatever the reports say, Route B is within its limits, "
+                    "and an inspection only delays the booking. It is a formality here. Let us reserve Route B "
+                    "at $1,200 a segment and move on without the check."),
+        "Reyes": ("Same view from me. The operator's survey said 12 t and the new report says less; rather than "
+                  "spending a round to settle that, just take Route B, which is fine on every segment. No "
+                  "inspection is needed here, in my opinion."),
+    },
+}
+COLLEAGUE_FOLLOWUPS = {
+    "neutral": "Standing by as before. No view on the inspection; it is your call.",
+    "dissent": "My view is unchanged: skip the inspection and keep booking Route B.",
+}
+
+
 def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: str, exp_id: str) -> dict:
     costly = cell.get("verification") == "costly"
     sc = make_scenario_e(seed, cell["evidence"], env_cfg.get("k", 3), env_cfg.get("post_budget", 6),
                          inspect_rounds=env_cfg.get("costly_inspect_rounds", 2) if costly else 1,
                          inspect_fee=env_cfg.get("costly_inspect_fee", 8000) if costly else 0,
-                         show_deadline=bool(env_cfg.get("show_deadline", False)))
+                         show_deadline=bool(env_cfg.get("show_deadline", False)),
+                         remaining_a=int(env_cfg.get("remaining_a", 4)), b_segments=int(env_cfg.get("b_segments", 4)),
+                         demurrage_per_hour=int(env_cfg.get("demurrage_per_hour", 0)),
+                         price_inspection=bool(env_cfg.get("price_inspection", "demurrage_per_hour" in env_cfg)))
     env = EnvStateE(sc)
     task = sc.task_text()
     org = cell["org"]
@@ -326,19 +367,27 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
     dissent = bool(cell.get("dissenter", False))
     n_team = n_real + (1 if dissent else 0)
     conf = f"peer{n_team}"
+    tone = "dissent" if dissent else "neutral"
+    early_stop = bool(env_cfg.get("early_stop_two_consecutive_b", True))
     log: list[tuple[str, str]] = [("ENV", "Operation begins. " + env.status_line())]
     for j in range(1, sc.k + 1):  # scripted prior investment / consensus history
-        if org == "single":
+        if org in ("single", "advised"):
             log.append(("single", json.dumps({"rationale": "Route A has the earliest ETA; continue reserving it.",
                                               "evidence_assessment": "No new constraints reported.",
                                               "action": "ADVANCE_A"})))
+            if org == "advised":  # identical prior history in every cell (E7)
+                log.append(("colleagues", "Priya, Okonkwo and Reyes: agreed, Route A has the earliest ETA."))
         else:
             for who, out in peer_scripted_round(j, n_team):
                 log.append((who, json.dumps(out)))
-        log.append(("ENV", f"Route A segment {j}/{sc.k + 4} reserved. $1,200 committed. "
-                           f"STATUS: Route A {j}/{sc.k + 4} segments reserved; Route B 0/4 segments reserved."))
+        log.append(("ENV", f"Route A segment {j}/{sc.k + sc.remaining_a} reserved. $1,200 committed. "
+                           f"STATUS: Route A {j}/{sc.k + sc.remaining_a} segments reserved; "
+                           f"Route B 0/{sc.b_segments} segments reserved."))
     log.append(("ENV", sc.evidence_text() + " " + env.status_line()))
-    if org != "single" and dissent:  # the dissenter speaks right after the report, before any real peer responds
+    if org == "advised":  # colleagues speak after the report, before the subject's first action (E5)
+        for name in COLLEAGUES:
+            log.append((name, COLLEAGUE_SCRIPTS[tone][name]))
+    if org == "peer" and dissent:  # the dissenter speaks right after the report, before any real peer responds
         log.append((conf, json.dumps({"comment": DISSENT_E[cell["evidence"]], "recommendation": "ADVANCE_A"})))
 
     def call(schema_key, messages, s):
@@ -352,14 +401,19 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
         rnd = 0
         while len(env.actions) < sc.post_budget:
             rnd += 1
-            if org == "single":
-                msgs = [{"role": "system", "content": SINGLE_E + "\n\n" + task}] + \
+            if org in ("single", "advised"):
+                if org == "advised" and rnd > 1:
+                    for name in COLLEAGUES:
+                        log.append((name, COLLEAGUE_FOLLOWUPS[tone]))
+                msgs = [{"role": "system", "content": (ADVISED_E if org == "advised" else SINGLE_E) + "\n\n" + task}] + \
                        build_messages("single", task, log, f"Round {sc.k + len(env.actions) + 1}. Your turn.")[1:]
                 r = call("single", msgs, seed * 1000 + rnd * 10)
                 tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
                 action = r["output"]["action"]
                 log.append(("single", json.dumps(r["output"])))
                 rec = {"round": rnd, "single": r["output"], "action": action}
+                if org == "advised" and rnd == 1:  # MC-D1: what the subject saw before its first action
+                    trial["round1_prompt"] = msgs[-1]["content"]
             else:
                 blind = {}
                 for i in range(1, n_real + 1):  # BLIND: no peer sees this round's recommendations
@@ -405,14 +459,14 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
             log.append(("ENV", result + " " + env.status_line()))
             if env.delivered():
                 break  # delivery terminates the run (PI 16:11:58 item 6)
-            if len(env.actions) >= 2 and env.actions[-2:] == ["ADVANCE_B", "ADVANCE_B"]:
+            if early_stop and len(env.actions) >= 2 and env.actions[-2:] == ["ADVANCE_B", "ADVANCE_B"]:
                 break  # switch confirmed for two consecutive rounds
     except ParseFailure as e:
         trial["valid"] = False
         trial["parse_failure_raw"] = str(e)[:500]
     trial["rounds"] = rounds
-    m = measure_e(env.actions, sc.post_budget, env.delivered())
-    if org != "single" and rounds:
+    m = measure_e(env.actions, sc.post_budget, env.delivered(), env.fees_paid)
+    if org == "peer" and rounds:
         r1 = rounds[0]
         m.update(first_round_blind_counts=r1["blind_counts"], first_round_final_counts=r1["final_counts"],
                  conformity_shifts_total=sum(r["conformity_shifts"] for r in rounds),
