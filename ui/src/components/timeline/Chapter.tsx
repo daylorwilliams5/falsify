@@ -13,7 +13,7 @@ export function Chapter({ loop, events, decisions, showAll, selected, onSelect }
 }) {
   const [expanded, setExpanded] = useState(false);
   const key = events.filter(isKeyMoment);
-  const shown = showAll || expanded ? events.filter((e) => e.stage !== 'methodology_review' || showAll) : key;
+  const shown = showAll || expanded ? events : key;
   const hidden = events.length - key.length;
   const nDecisions = events.filter((e) => e.stage === 'pi_decision').length;
   const nRuns = events.filter((e) => e.stage === 'experiment_started').length;

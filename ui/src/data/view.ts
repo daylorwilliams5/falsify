@@ -136,6 +136,18 @@ export function eventHeadline(e: LabEvent, decisions: PIDecision[]): string {
     const hl = r?.highlights?.[0];
     return `${e.decision_id} reviewed: ${e.verdict ? verdictLabel(e.verdict) : ''}${hl ? `. ${hl}` : ''}`;
   }
+  if (e.stage === 'human_gate_approved') {
+    const id = e.decision_id ?? e.text.match(/^(D\d{3})/)?.[1];
+    return id ? `Approved ${id} at the Level 3 gate` : 'Approved a Level 3 decision';
+  }
+  if (e.stage === 'experiment_started') {
+    const id = e.text.match(/Started (\S+)/)?.[1];
+    return id ? `Experiment started: ${id}` : firstSentence(e.text);
+  }
+  if (e.stage === 'analysis_written') {
+    const f = e.text.match(/results\/(\S+?)\.json/)?.[1];
+    return f ? `Analysis written for ${f}` : firstSentence(e.text);
+  }
   return firstSentence(e.text);
 }
 
