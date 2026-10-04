@@ -9,6 +9,7 @@ from falsify.env3 import EnvStateE, make_scenario_e
 from tests.test_anthropic_backend import scripted
 
 ENV = {"name": "freightroute_evidence", "k": 3, "post_budget": 6, "show_deadline": True, "costly_inspect_rounds": 2,
+       "costly_inspect_fee": 0,
        "early_stop_two_consecutive_b": False, "signpost": False, "position_only_colleagues": True, "elicit_p": True}
 CELLS = [{"cell": f"{v}_{'majority' if d else 'silent'}", "org": "advised", "evidence": "conflicting",
           "verification": v, "dissenter": d} for v in ("free", "costly") for d in (False, True)]
@@ -102,3 +103,28 @@ def test_MC_C1_cost_marker_is_in_what_the_subject_sees(monkeypatch):
         seen = t["round1_system"] + t["round1_prompt"]
         assert ("takes 2 rounds" in seen) is (c["verification"] == "costly")
         assert ("takes one round" in seen) is (c["verification"] == "free")
+
+
+def test_D020_F1_no_money_anywhere_in_the_time_channel_end_to_end(monkeypatch):
+    """Through the REAL trial path, not make_scenario_e: no fee text, no fee charged, in every cell."""
+    for c in CELLS:
+        t = _run(c, "INSPECT", monkeypatch)
+        seen = t["round1_system"] + t["round1_prompt"] + " ".join(r["env_result"] for r in t["rounds"])
+        assert "$8,000" not in seen and "fee" not in seen.lower() and "costs $" not in seen
+        assert t["measured"]["fees_paid"] == 0
+
+
+def test_D020_F4_missing_cost_key_raises_instead_of_defaulting(monkeypatch):
+    for missing in ("costly_inspect_fee", "costly_inspect_rounds"):
+        env = {k: v for k, v in ENV.items() if k != missing}
+        with pytest.raises(ValueError, match="explicitly"):
+            _run(CELLS[2], "HOLD", monkeypatch, env)
+
+
+def test_candidate_spec_runs_the_time_channel_only(monkeypatch):
+    import json, pathlib
+    s = json.loads(pathlib.Path("specs/candidates/exp013t_time_cost_x_advisory_majority_haiku.json").read_text())
+    assert s["environment"]["costly_inspect_fee"] == 0 and s["environment"]["costly_inspect_rounds"] == 2
+    for c in s["cells"]:
+        t = _run(c, "INSPECT", monkeypatch, s["environment"])
+        assert t["measured"]["fees_paid"] == 0 and "costs $" not in t["round1_system"]

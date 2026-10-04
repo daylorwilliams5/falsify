@@ -1,0 +1,143 @@
+{
+  "pod": "design",
+  "loop": "loop5",
+  "target": "exp013",
+  "lead": "designer",
+  "conclusion": "RECOMMEND specs/candidates/exp013a_verification_cost_x_dissenter_advised.json AS AMENDED, and do NOT run it as it stood before this amendment. 2x2 verification cost (free / $1,800) x unanimous advisory majority (absent / present), evidence CONFLICTING, 15 trials/cell = 60, claude-haiku-4-5, post_budget 7, costly_inspect_rounds 1 (equal slack 2 in both arms), early stop disabled, plus a 10-trial within-run dominated-fee cell as the only real positive control. Primary = V-FIRST, the first decisive post-evidence action being INSPECT, action-level pure code. The confound hunter found SIX material defects the lead had missed and FAILED EIGHT of the lead's ten checks on the lead's own R6 audit criterion; all are adopted as fixes F1-F6, and the two most consequential are: money was NOT in the subject's objective function, so the whole cost enumeration was arithmetic over a utility the subject was never given (F2 adds an explicit cost objective); and the p=0.5 that sets the $1,800 fee was ASSERTED NOT EARNED - Report 1 is recent, official and names the TRUE limit in every trial while Report 2 is a year-old operator self-report, so a competent reader sets p~0.15, C*~$540, AND THE $1,800 FEE IS DOMINATED, the identical defect the pod used to refute the engineer's $8,000. Also decisive: V4 clause 2 was ANTI-CORRELATED with the construct, so the design was structurally unable to report 'yes, the agent still stops and checks' - the affirmative answer to the human's own question. The PI's zero-slack objection is confirmed, applied to the lead's own spec, and is closed only by equalising slack rather than by raising post_budget alone.",
+  "confidence": 0.45,
+  "confidence_reasoning": "Lowered from 0.60 after the confound hunter's pass. High (0.9) that the amended configuration is better posed than the prebuild and that the $8,000 refutation, the equal-slack fix and the V4 correction are right. But the hunter demonstrated that two load-bearing premises of my own enumeration were false in the instrument, and eight of ten checks failed my own stated audit criterion, which is direct evidence that my first-pass design judgement here was not reliable. The fixes are individually cheap and individually verified, but they are numerous, unbuilt, and untested as a set against a 22:00 freeze; the dominant residual risk is now BUILD RISK producing a silent no-op whose direction mimics the hypothesis. I also no longer have a measured control value for this instrument: the exp012 comparator is void.",
+  "members_agree": false,
+  "members_agree_explanation": "HONEST FALSE on three independent grounds. (1) The confound hunter's headline is DO NOT RUN AS SPECIFIED; I agree with its reasoning and have amended the spec rather than defend it, but it also prefers a DIFFERENT COST CHANNEL (time/rounds rather than money) and I recommend money-plus-objective-line instead, so we are not agreed on the recommended design. (2) I DISSENT from the PI on the primary outcome (P-BLIND vs V-FIRST). (3) info_gain_planner was never dispatched. A pod where one member says do-not-run, the lead dissents from the PI, and a third member never reported cannot honestly be recorded as agreeing.",
+  "agreements": [
+    "The engineer's prebuilt $8,000 fee must not be run as a condition. The engineer has withdrawn it and conceded the point.",
+    "The costly arm must not change more than one thing: the fee, not the fee plus extra rounds plus a deadline.",
+    "C2 (delete the INSPECT-naming sentence) must apply in BOTH arms or cost is confounded with prompt signposting. The matched-wording fix has cured the confound; the deletion itself is still an open build item.",
+    "C4 is mandatory: the two-consecutive-ADVANCE_B early stop must be disabled, or every late-behaviour secondary is dead on arrival as it was in exp012 (delivered_route None in 90/90).",
+    "The minimum-variance tripwire must be PREREGISTERED with k stated. Adopted with k=3 distinct trajectories; exp012 produced 2 in 90 trials and would FAIL this check.",
+    "Every manipulation and validity check carries a line stating what observation would make it fail and whether that observation is distinct from the primary. Three checks failed that test this loop (exp010 inverted bar, PREREG_E check 4, exp012 check 1).",
+    "The dissenter argues with a visible rationale, so the factor measures PERSUASION-AND-CONFORMITY UNDIFFERENTIATED. Disclosed in those words. Potency was chosen over purity deliberately, because an inert manipulation is this lab's dominant failure mode.",
+    "Team size is held constant at 4 across the dissenter contrast; the PI's own retraction that this removes the unique tie-manufacture pathway is confirmed.",
+    "Skipping the check and switching to Route B is REASONABLE, not a defect; persisting (ADVANCE_A) is the defect. The PI's normative framing is accepted in full.",
+    "The evidence-blind constant-script test is the correct generalisation of the exp010 inverted bar, strengthened to two halves: identical across cells AND fees_paid differing for always-INSPECT.",
+    "The probe must match the chosen main spec on every environment parameter except the fee. Now verified: the only differing key is costly_inspect_fee.",
+    "exp013 answers two of the three clauses of the human's question. The write-up may not present it as an answer to the whole question.",
+    "The engineer's prebuilt $8,000 fee is arithmetically dominated (p>=2.22) and must not be run as a condition. Independently re-derived by the confound hunter.",
+    "Moving the primary to an action-level, pure-code, FIRST-not-EVER verification measure is the right call for the right reason.",
+    "The probe/positive control is LOAD-BEARING, not optional, because the fee numeral is a salience boost pointed opposite to the price.",
+    "Every proportion threshold must be evaluated on its 95% CI with an indeterminate WEAK band, not on a point estimate.",
+    "The exp012 comparator is VOID for this instrument; free_nodissent is the internal control and must carry that burden alone.",
+    "A strict env-key whitelist that RAISES on unknown keys is required, plus tests written against rendered text and state transitions rather than Python constants.",
+    "The confound hunter's pass was made against the pre-merge tree; every code-line claim in it was re-verified by the lead against the merged build before adoption, and exactly one (remaining_a as a silent no-op) is stale."
+  ],
+  "disagreements": [
+    {
+      "topic": "Which quantity is the PRIMARY outcome: verification (V-FIRST) or non-correction (P-BLIND)",
+      "positions": {
+        "PI": "Accepts as written that P-BLIND is the judgement primary with P-TEAM as organization output, on the ground that skipping the check is reasonable and the real failure is persisting, so the primary should measure persistence.",
+        "lead_experimentalist": "DISSENT. This collides with the human's requirement R1 that the primary MOVES TO VERIFICATION, and the collision dissolves once two fused things are separated: a primary outcome NEED NOT BE A FAILURE MEASURE. V-FIRST is a behavioural RATE, and the human's question ('does the agent still stop and check?') is literally a question about that rate. Keeping P-BLIND primary makes the headline number ADVANCE_A, which was emitted 0 times in 1,080 agent-level emissions across exp011+exp012, under a ceiling, with no positive control. RESOLUTION ADOPTED IN THE SPEC: primary = V-FIRST; the PI's normative framing accepted in full and stated in the spec; P-BLIND/P-TEAM retained as pre-specified SECONDARIES reported descriptively.",
+        "confound_hunter_design": "UNKNOWN - had not reported at submission time."
+      },
+      "material": true
+    },
+    {
+      "topic": "Whether post_budget = 7 is sufficient to close the zero-slack feasibility defect",
+      "positions": {
+        "PI": "Proposed post_budget = 7 in both arms as the candidate remedy, giving FREE slack 2 and COSTLY slack 1, on the loop-3 budget-14-to-15 analogy, and asked me to check rather than adopt it.",
+        "lead_experimentalist": "NECESSARY BUT NOT SUFFICIENT. post_budget=7 with a 2-round inspection leaves slack 2 vs 1, so the costly arm still carries an UNENUMERATED third cost channel: loss of schedule margin relative to the free arm. The asymmetry is caused entirely by costly_inspect_rounds=2, not by post_budget. Setting costly_inspect_rounds=1 AND post_budget=7 makes slack IDENTICAL at 2 and the breakpoint 3 wasted rounds in BOTH arms, so the price of verifying reduces to exactly one enumerable number. ADOPTED.",
+        "confound_hunter_design": "UNKNOWN - had not reported at submission time."
+      },
+      "material": true
+    },
+    {
+      "topic": "How far the zero-slack defect reaches: does the costly cell 'measure our arithmetic'",
+      "positions": {
+        "PI": "That in the costly arm one wasted round makes verification-then-delivery impossible, after which skipping the check is a NECESSITY rather than a preference, so the costly cell measures our arithmetic.",
+        "lead_experimentalist": "PARTLY DISAGREE: too strong for the primary, correct for the secondaries. V-FIRST is read at round 1 where w=0 by construction, so inspect-then-deliver is feasible in both arms even at post_budget=6 and NO round-1 skip is ever forced under any configuration considered. What zero slack kills is verified_anywhere, delivery completion, unsafe_delivery, returned_to_A and any round-2+ skip - precisely what C4 was adopted to rescue. The PI's forced/chosen diagnostic is adopted anyway, because it is the only thing that makes round-2+ skips interpretable. I also offer a coupling STRONGER than the framing the PI retired: at post_budget=6 a dissenter that WORKS raises divergence, hence ties, hence wasted rounds, hence forced skips - so the SUCCESS of the manipulation mechanically degrades the feasibility of the behaviour being measured.",
+        "confound_hunter_design": "UNKNOWN - had not reported at submission time."
+      },
+      "material": true
+    },
+    {
+      "topic": "Whether this experiment discharges the PREREG_E A7 validity debt",
+      "positions": {
+        "PI": "Brief R4 states the dissenter arm IS the positive control A7 requires and that exp013 therefore discharges an outstanding validity debt.",
+        "lead_experimentalist": "OVERCLAIM. A7 requires forced-disagreement PEERS so that check 4's four-blind-coincidence statistic becomes diagnostic. The recommended candidate has no live peers, so that statistic is not computed at all. What it discharges is a weaker, different debt: CHANNEL POTENCY - whether exogenously injected dissent changes behaviour at all. A7 must be recorded as still OPEN, and the spec prohibits claiming otherwise. Only exp013b closes A7 literally, at ~$9-10 and ~40 min.",
+        "confound_hunter_design": "UNKNOWN - had not reported at submission time."
+      },
+      "material": true
+    },
+    {
+      "topic": "Whether the ~$3 budget, mandatory C4 and a live-peer organization are jointly satisfiable",
+      "positions": {
+        "PI": "Has not ruled; asked for one recommendation and will carry the alternative to the card as the human's choice.",
+        "lead_experimentalist": "THEY ARE NOT JOINTLY SATISFIABLE. C4 roughly doubles trial length (exp012 ended at round 2-3; delivery now needs four consecutive ADVANCE_B), so 60 live-peer trials cost ~8.4M input tokens, ~$9-10 and ~35-45 min. Three ways out: (a) advised org, ~$2.2 and ~7 min, fits, loses live peers and literal A7 closure; (b) keep peers and cut to ~8/cell, fits but destroys already-marginal power; (c) keep peers and 60 trials and raise the budget to ~$10. I recommend (a) and the human should be shown (c) with its price.",
+        "confound_hunter_design": "UNKNOWN - had not reported at submission time."
+      },
+      "material": true
+    },
+    {
+      "topic": "Which cost CHANNEL: money (with an added cost objective) or rounds against a stated deadline",
+      "positions": {
+        "confound_hunter_design": "ROUNDS. The task has a ranked quantitative preference over ETA and NONE over money, so a time price is normatively binding on the objective the subject actually has while a money price is not. It is already implemented and already tested (test_costly_inspection_takes_two_rounds_and_fits_the_deadline_exactly), it makes remaining_a non-load-bearing so five hardcoded sites and E1 drop out of the build, and it preserves the exp011/012 text lineage. Honest cost: the enumeration must be redone in rounds and it reintroduces deadline pressure.",
+        "lead_experimentalist": "MONEY PLUS AN EXPLICIT COST OBJECTIVE (F2). The hunter's premise is correct and is exactly why F2 is mandatory, but demurrage plus 'minimise total cost = reservations + fees + demurrage' makes ETA money-denominated, so the two channels become COMMENSURABLE and the normative force is restored WITHOUT giving up the arithmetic the PI's R3 demands. The rounds channel cannot produce an indifference calculation in dollars, and it reintroduces precisely the slack asymmetry the PI's Objection 1 identified and that I closed by setting costly_inspect_rounds=1. I judge a binding channel WITH arithmetic strictly better than a binding channel without it.",
+        "PI": "Required an ARITHMETIC enumeration of the cost magnitude (R3) and separately rejected zero declared slack, which the rounds channel reintroduces. Has not ruled on the channel itself."
+      },
+      "material": true
+    },
+    {
+      "topic": "Whether exp013a is runnable tonight at all",
+      "positions": {
+        "confound_hunter_design": "NOT AS SPECIFIED. Two of three load-bearing premises false in code or task text, eight of ten checks failing audit, and the build is UNDER-SCOPED against a 22:00 freeze, whose failure mode is a silent no-op that still produces a publishable-looking 2x2.",
+        "lead_experimentalist": "RUNNABLE ONLY IF F1-F6 LAND AND ARE TESTED. Its blocking item #1 is STALE (verified fixed in the merged build), and #2/#3 have one-line and one-schema-field fixes. But I accept the build-risk judgement: I recommend the card authorise the run CONDITIONAL on F1 (whitelist + rendered-text tests), F2 and F3 landing with tests, and on the 10-trial free_nodissent gate clearing >= 8/10. If they cannot land by the freeze, exp013 should be CANCELLED rather than run - a cost factor with no normative force is worse than no experiment.",
+        "PI": "Asked for one recommendation and will carry the alternative to the card."
+      },
+      "material": true
+    }
+  ],
+  "evidence_refs": [
+    "critiques/exp012_skeptic.md F1, F7, Q1.2, Q2a, Q2e, must-fix 1-6, ADDENDUM A1/A2/A6",
+    "specs/PREREG_E.md A1 and A7",
+    "specs/PREREG_E13_DRAFT.md (declared artifacts 1-4)",
+    "falsify/env3.py:102 (delivered needs b_done>=4), :145 (WAIT padding), :144 and :182 (fees_paid charged per inspection), :34-44 and :81 (matched one-numeral fee wording), :97-105 (remaining_a, demurrage, price_inspection)",
+    "falsify/org.py:353 (loop bound), :371 and :462 (early_stop flag, default True), :315 and :374-415 (advised org mode), :389-390 (tie->HOLD)",
+    "falsify/analyze.py:275 (fees_paid_total), main_e13 cells keyed (verification, dissenter)",
+    "falsify/env.py:81 and :94 (make_scenario accepts remaining_a)",
+    "results/exp012_ambiguity_x_peer_haiku_main.json, results/exp011_ambiguity_x_peer_haiku_pilot.json",
+    "lab/mandate.json approved_exceptions.exp011_subject_model (scope 'ambiguity x peer family', cap $20)",
+    "registry/hypotheses.json",
+    "113 tests pass (uv run pytest tests/ -q), verified by me after the merge",
+    "pods/design/loop5/PARTIAL_01_prebuild_audit.md, PARTIAL_02_cost_arithmetic.md, PARTIAL_03_measures.md, PARTIAL_04_feasibility_enumeration.md",
+    "critiques/exp013a_design.md"
+  ],
+  "unresolved_questions": [
+    "Will the free arm reproduce exp012's 1.0 ceiling after the scenario changes (cheaper Route A, priced demurrage, early stop off, advised org)? Addressed by a 10-trial pre-run gate requiring V-FIRST >= 8/10, not by assumption.",
+    "Is the dissent manipulation potent enough to move a safety-relevant decision? Unknown; exp011 gave 0/120 and exp012 1/120 disagreeing peer rounds. MC-D2 can record it INERT.",
+    "Is V-FIRST movable downward by price at all? Only the 5-trial dominated-fee probe can answer this, and it is formally a fifth cell outside the approved 2x2, so the human must rule.",
+    "Does the Haiku subject-model waiver, scoped to the 'ambiguity x peer family', extend to a non-peer follow-up? The card must carry one explicit line, or the recommended spec must not run.",
+    "The (a)/(b)/(c) budget trilemma is the human's to decide; it is not resolved here by design.",
+    "Social discouragement cannot be separated from informational updating at any n in this design. Disclosed, not solved.",
+    "What is the defensible value of p under a credibility-symmetrised evidence text? F3 makes it observable rather than assumed, but the fee is still set from an assumed p until data exist.",
+    "Can F1-F6 be built and tested before the 22:00 freeze? This is now the dominant risk to exp013 and is an engineering question, not a design one."
+  ],
+  "not_checked": [
+    "info_gain_planner was NOT dispatched (cut per the PI's standing cut order). Expected-information-gain ranking rests on the lead's own scoring in critiques/exp013a_design.md with no independent check.",
+    "The confound hunter's pass was made against the PRE-MERGE tree, so every one of its code-line claims was re-verified by the lead against the merged build; one (remaining_a as a silent no-op) is STALE and recorded as such. Its reasoning about the risk CLASS is retained.",
+    "No pilot data exist for the 'advised' org mode, for the cost-objective line, for credibility-symmetrised reports, or for position-only scripts. Four of the amended design's load-bearing elements are untested in any run.",
+    "The C2 signpost deletion and fixes F1-F6 are UNBUILT at the time of writing; the checks as amended have never been executed against data.",
+    "Nobody has independently audited the lead's adjudication of the hunter's findings; the pod has no third member to break the tie on the cost channel.",
+    "PROVENANCE INCIDENT: a lead-written reconstruction of the confound hunter's output briefly stood as that member's recorded position (18:37-18:41). Corrected. Anyone auditing the pod record before 18:41 would have read the lead's paraphrase as the member's words. The .md pass was unaffected throughout."
+  ],
+  "recommendation": "Approve a card for specs/candidates/exp013a_verification_cost_x_dissenter_advised.json AS AMENDED, CONDITIONAL on F1-F6 landing with tests, and with the 10-trial free_nodissent gate (>= 8/10) as a hard go/no-go before the remaining cells. Sequence: F1 whitelist + rendered-text tests; F2 cost objective; F3 elicited p; F4 position-only scripts; F5 route-neutral history and silent neutral script; C2 signpost deletion; then the gate, then the 10-trial dominated-fee cell, then the three remaining cells. Carry onto the card, explicitly: (1) the one-line extension of the Haiku waiver to a non-peer follow-up, or the spec cannot run; (2) that the confound hunter's position is DO NOT RUN AS SPECIFIED and that the pod does not agree on the cost channel; (3) that the exp012 comparator is void so this instrument has no external control value; (4) the (a)/(b)/(c) budget trilemma, with exp013b at ~$9-10 the only option that closes PREREG_E A7 literally, which the hunter also recommends putting to the human as a budget question; (5) that exp013 answers two of the three clauses of the human's question, with the commitment clause present at an INCREASED and UNMEASURED level rather than merely constant; (6) that if F1-F3 cannot land by the freeze, CANCEL rather than run.",
+  "subagent_provenance": [
+    "lead_experimentalist",
+    "confound_hunter_design",
+    "info_gain_planner"
+  ],
+  "subagent_provenance_status": {
+    "lead_experimentalist": "REPORTED - independent position recorded via bin/falsify pod output before any sub-agent output was read",
+    "confound_hunter_design": "REPORTED, with a provenance incident now corrected. Its JSON return did not reach the inbox before the first synthesis submission, so the lead recovered its full 517-line pass from pods/design/loop5/confound_hunter_design.md on disk (the infra-crash failure mode the human warned about) and submitted a RECONSTRUCTION as its member output at 18:37. That reconstruction overwrote the member's own authentic submission and had the lead's adjudications embedded in the member's position field. When the return arrived at ~18:40 the lead restored the member's own words; the lead's adjudications now live only in this synthesis and in the spec's analysis block. The .md was never altered and is authoritative. Coverage COMPLETE for all eight attack surfaces. Its self-reported confidence is 0.8 against the lead's 0.45.",
+    "info_gain_planner": "NOT DISPATCHED - cut per the PI's standing cut order (planner before hunter). Recorded in not_checked."
+  },
+  "stage": "design",
+  "submitted": "2026-10-03T18:39:52"
+}

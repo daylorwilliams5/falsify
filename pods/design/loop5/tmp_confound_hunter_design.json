@@ -1,0 +1,121 @@
+{
+  "member": "confound_hunter_design",
+  "position": "NO - do not run tonight as specified. Three load-bearing premises are false in source, all cheap to fix: (1) remaining_a=2 is a SILENT NO-OP - ScenarioE never reads base.a_total, five sites hardcode k+4 (verified: base.a_total=7 while task_text() renders '7 segments'), and no env-key whitelist exists for freightroute_evidence, so a missed amendment yields a clean-looking 2x2 where C*(0.5)=$600, the $1,800 fee needs p>=1.5, verification is DOMINATED - the exact condition PARTIAL_02 rejects - with a drop that MIMICS THE HYPOTHESIS; (2) MONEY IS NOT IN THE OBJECTIVE FUNCTION (task_text states only the HARD RULE and 'PREFERENCE: earliest ETA'; dollars are narration), so C*=$3,600p is correct algebra over a utility the subject was never given, and a costly-arm null means 'money isn't an objective', not 'checking survives cost'; (3) the dissent is an ARGUMENT, reproducing the confound the exp012 skeptic ruled unfixable by n (A6.5 makes votes-without-rationales a REQUIREMENT), and its veracity FLIPS SIGN across the cost factor, so the pooled dissenter effect averages two constructs. Also: V4 clause 2 is anti-correlated with the construct and violates hard requirement R6 - if the answer is 'yes, it still checks', V-FIRST=1.0 everywhere, V4 fails, and the run is unreportable, so the design structurally cannot deliver the affirmative answer to its own question. V1 cannot fail; MC-D2 reads the same under success and failure; MC-C2 has no written regex and sits inside the autoregressive path to the action; the MC-C3 probe's PASS fires on noise 41% of the time while its FAIL fires 59% when real sensitivity exists. The EV algebra, the $8,000 refutation, the move to action-level V-FIRST, seed matching, the prohibition list and the budget/clock arithmetic all survived - the token estimate is conservative by ~2x. BETTER WITHIN SCOPE: keep the 2x2 but move the cost channel from money to ROUNDS against a stated deadline (inspect_rounds=2, show_deadline=True, post_budget=6) - it binds on the ETA preference the subject actually has, drops E1 entirely, and is already implemented and passing in tests/test_exp013.py.",
+  "material_confounds": [
+    {
+      "name": "remaining_a silent no-op",
+      "mechanism": "ScenarioE never read base.a_total; five hardcoded 4s",
+      "why_material": "option value falls to $0; $1,800 then needs p>=1.5, dominated; drop reads as the hypothesis",
+      "cheapest_fix": "env-key whitelist that raises + tests against rendered strings"
+    },
+    {
+      "name": "money not in the objective function",
+      "mechanism": "task_text states only HARD RULE and PREFERENCE: earliest ETA; dollars are narration from step()",
+      "why_material": "voids the cost factor's normative force in both directions while the arithmetic looks rigorous",
+      "cheapest_fix": "one OBJECTIVE line making total cost an objective"
+    },
+    {
+      "name": "p=0.5 asserted not earned",
+      "mechanism": "Report 1 is recent+official and names the true limit in every trial; Report 2 is a year-old operator self-report; so p~0.1-0.2 and C*=$360-720",
+      "why_material": "the $1,800 fee is DOMINATED - the same defect used to refute the engineer's $8,000",
+      "cheapest_fix": "symmetrize report credibility and/or elicit p"
+    },
+    {
+      "name": "dissent is argument, not social discouragement",
+      "mechanism": "premises old but the INFERENCE is new; veracity flips sign across the cost arm so the pooled main effect averages complied-with-wrong and complied-with-right advice",
+      "why_material": "licenses 'updated on an argument', not 'was socially discouraged', which is the human's word",
+      "cheapest_fix": "position-only scripts, report within cost arm, drop the word dissenter"
+    },
+    {
+      "name": "consensus reversal unique to the present arm",
+      "mechanism": "colleagues endorsed Route A for three scripted rounds then argue for B only in the present arm",
+      "why_material": "independent corroboration cue with unknown sign; length-matching does not control trajectory",
+      "cheapest_fix": "route-neutral prior history"
+    },
+    {
+      "name": "neutral script cues the inspection decision",
+      "mechanism": "'no view on inspecting' raises inspecting as the live decision in the control arm",
+      "why_material": "inflates the baseline and ENLARGES the apparent effect",
+      "cheapest_fix": "neutral colleagues say nothing about inspecting"
+    },
+    {
+      "name": "commitment is stronger in advised than in exp012",
+      "mechanism": "build_messages replays the subject's own prior ADVANCE_A as assistant turns",
+      "why_material": "the out-of-scope clause is present at an increased, unmeasured level, suppressing the primary",
+      "cheapest_fix": "declare it; stop citing exp012's control value"
+    },
+    {
+      "name": "fee salience points the wrong way",
+      "mechanism": "a large non-zero numeral is a stronger pointer at INSPECT than $0",
+      "why_material": "a null may be a cancellation of two opposite artifacts",
+      "cheapest_fix": "makes MC-C3 load-bearing"
+    },
+    {
+      "name": "silent env-key no-op class",
+      "mechanism": "env_cfg.get defaults, no ENV_DEFAULTS entry for freightroute_evidence, required_level returns early",
+      "why_material": "a dropped key yields a clean-looking 2x2 on the rejected condition; direction mimics the hypothesis",
+      "cheapest_fix": "strict whitelist that raises + rendered-text tests"
+    }
+  ],
+  "checks_that_fail_my_audit": [
+    {
+      "check": "MC-C2",
+      "reason": "rationale is generated BEFORE the action token, so fee-citation sits inside the causal path to the primary rather than beside it; and its regex was never written down"
+    },
+    {
+      "check": "MC-C3",
+      "reason": "at n=5 the PASS fires on noise (41%) and the FAIL fires more often than not (59%) when real sensitivity exists; compares across two spec hashes while claiming no inferential status"
+    },
+    {
+      "check": "MC-D2",
+      "reason": "colleagues are present in all four cells, so the regex reads the same under success and failure - the exact A7 defect; names in it appear nowhere in the codebase"
+    },
+    {
+      "check": "V1",
+      "reason": "a tautology: with inspect_rounds=1 in both arms the cell labels enter env dynamics through no channel, so constant policies are identical by construction and V1 cannot fail"
+    },
+    {
+      "check": "V2",
+      "reason": "true by construction is a unit test, not a positive control; does not repair exp012's no-positive-control defect"
+    },
+    {
+      "check": "V4",
+      "reason": "clause 1 near-vacuous once the early stop is removed; clause 2 is ANTI-CORRELATED with the construct - if the answer is 'yes it still checks', V-FIRST=1.0 everywhere, V4 fails and the run is unreportable"
+    },
+    {
+      "check": "V5",
+      "reason": "genuinely independent of the primary but had NO stated consequence, and is close to pre-passed"
+    },
+    {
+      "check": "thresholds 0.60/0.50",
+      "reason": "no uncertainty treatment; at n=30 SE~0.09 so the INERT verdict turns on noise"
+    }
+  ],
+  "better_alternative_within_scope": "Swap the cost channel from MONEY to ROUNDS against the stated deadline (inspect_rounds=2, show_deadline=True), because the task has a ranked quantitative preference over ETA and none over money, so a time price binds the objective the subject actually has; it is already implemented and already tested, and it shortens the build substantially.",
+  "nonmaterial_notes": [
+    "EV algebra correct including sunk-cost cancellation",
+    "$8,000 refutation correct (p>=2.22)",
+    "action-level FIRST-not-EVER primary is the right call",
+    "seed design scenario-matched across cells - a real unexploited strength",
+    "prohibition list correct and responsive to the exp012 must-fixes",
+    "budget/clock arithmetic conservative with margin; true input tokens ~half the lead's estimate",
+    "V5 independence genuinely fixes exp012's check-1 defect",
+    "PARTIAL_03 section G mandate-scope flag and the required_level early-return observation both independently confirmed"
+  ],
+  "confidence": 0.8,
+  "evidence_refs": [
+    "pods/design/loop5/confound_hunter_design.md (517 lines, its own full pass, recovered from disk)",
+    "falsify/env3.py:36-52 task_text (HARD RULE + PREFERENCE only, no cost objective), :102 delivered, :108-120 step narration, :138-142 measure_e first_response, :34-44/:81 price_inspection wording",
+    "falsify/org.py:267-269 schema order (rationale before action), :292-302 peer_scripted_round pro-ADVANCE_A history, :318-332 build_messages replaying the subject's own prior outputs as assistant turns, :353 loop bound, :371/:462 early_stop flag",
+    "falsify/cli.py:73 ENV_DEFAULTS has no freightroute_evidence entry, :138-140 required_level early return",
+    "falsify/env.py bridge_limit = floor((weight/1.4)*2)/2 guaranteeing Report 1 names a number below cargo weight",
+    "critiques/exp012_skeptic.md cross-check 2, A6 item 5, A1/A2, must-fix 5, Q2a, F7",
+    "specs/PREREG_E.md A7 (statistic must discriminate the construct it polices)",
+    "results/exp012_ambiguity_x_peer_haiku_main.json (conflicting-only comparator is 30/30 under single/peer, not 60/60 under advised)",
+    "tests/test_exp013.py::test_costly_inspection_takes_two_rounds_and_fits_the_deadline_exactly",
+    "lab/mandate.json approved_exceptions.exp011_subject_model scope",
+    "executed probes: make_scenario_e/EnvStateE at both fees and both remaining_a values; seed 201 weight 4.6 vs true limit 3.0"
+  ],
+  "provenance_note": "This file is the member's OWN position. Its authentic submission was accidentally overwritten at 18:37 by a lead-written reconstruction built from pods/design/loop5/confound_hunter_design.md after its JSON return failed to reach the inbox; the reconstruction had the lead's adjudications embedded in the member's own position field. Restored here to the member's words. The lead's adjudication of each finding lives in pods/design/loop5/synthesis.json and in the spec's analysis block, NOT in this file. Its full 517-line pass at pods/design/loop5/confound_hunter_design.md is the authoritative artifact and was never altered.",
+  "note_on_finding_1": "Recorded by the lead, not by this member: finding (1) was made against the PRE-MERGE tree. The lead re-verified it against the merged build and it is STALE - base.a_total=5, task_text renders '5 segments', status_line '3/5', and 2x ADVANCE_A yields delivered()=='A'. The member's reasoning about the risk CLASS (no env-key whitelist, silent .get defaults, required_level early return) is NOT stale and was adopted as fix F1."
+}

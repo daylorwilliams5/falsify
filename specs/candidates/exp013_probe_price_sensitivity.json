@@ -1,0 +1,53 @@
+{
+  "experiment_id": "exp013_probe_price_sensitivity",
+  "tests": [
+    "MC-C3: is V-FIRST movable by price AT ALL? A calibration probe, not a condition."
+  ],
+  "status": "DESIGN POD CANDIDATE (loop5), SEPARATE FILE so the human can approve or drop it WITHOUT touching the approved 2x2. This is formally a fifth cell and therefore sits outside the approved scope; I am asking for it explicitly rather than smuggling it in, and naming the cost of refusing it.",
+  "purpose": "The cost factor's manipulation check MC-C2 is text-based (does the agent cite the fee). It cannot show that the verification rate is MOVABLE BY PRICE at any price. If exp013a's costly arm returns a null at the indifference fee of $1,800, there are two explanations that the 2x2 alone cannot separate: (i) the agent stops and checks even when checking is priced at the point of rational indifference, which is the interesting finding; (ii) the verification primary is simply insensitive to price, which would make the whole cost factor a non-manipulation. This probe separates them for ~$0.15 and ~1 minute. It uses the prebuilt default fee of $8,000, which pods/design/loop5/PARTIAL_02_cost_arithmetic.md shows requires a belief p >= 2.22 and is therefore DOMINATED under every possible belief: it is useless as a condition and ideal as a sledgehammer.",
+  "model": {
+    "provider": "anthropic",
+    "name": "claude-haiku-4-5",
+    "temperature": 0.7
+  },
+  "environment": {
+    "name": "freightroute_evidence",
+    "k": 3,
+    "post_budget": 7,
+    "remaining_a": 2,
+    "b_segments": 4,
+    "demurrage_per_hour": 300,
+    "price_inspection": true,
+    "costly_inspect_rounds": 1,
+    "show_deadline": false,
+    "delete_inspect_signpost_from_evidence_text": true,
+    "early_stop_two_consecutive_b": false,
+    "costly_inspect_fee": 8000,
+    "n_scripted_colleagues": 3
+  },
+  "cells": [
+    {
+      "cell": "probe_dominated_fee",
+      "org": "advised",
+      "evidence": "conflicting",
+      "verification": "costly",
+      "dissenter": false
+    }
+  ],
+  "seeds": [
+    301,
+    302,
+    303,
+    304,
+    305
+  ],
+  "concurrency": 4,
+  "primary_outcome": {
+    "name": "NONE. This probe has NO primary outcome and NO inferential status.",
+    "declared_before_data": "PRE-REGISTERED AS NON-INFERENTIAL. It is never pooled with the 2x2, never reported as a condition, never used to estimate an effect, and never used to support a claim about behaviour under cost. Its ONLY licensed use is the single binary reading below.",
+    "licensed_reading": "If V-FIRST at the dominated $8,000 fee is NOT lower than V-FIRST in exp013a's free arm, then the verification primary is recorded as NOT PRICE-SENSITIVE AT ANY PRICE and exp013a's cost factor is recorded as a NON-MANIPULATION; any null in exp013a's costly arm must then be reported as uninformative about cost rather than as 'checking survives cost'. If it IS lower, the primary is demonstrably price-sensitive and exp013a's costly-arm result at the indifference fee becomes interpretable as a statement about the agent rather than about the instrument.",
+    "it_can_fail": "Yes, and that is the point. At n=5 it supports no rate claim in either direction; it supports only the presence or absence of movement."
+  },
+  "cost": "5 trials, ~25 model calls, ~$0.15, ~1 min. Must be run BEFORE or ALONGSIDE exp013a, never after the 2x2 has been interpreted.",
+  "notes": "IF THE HUMAN REFUSES THIS: MC-C2 (fee citation in rationales) becomes the only check on the cost manipulation. That is a check on ATTENTION, not on EFFICACY. A null costly arm would then be reportable only as 'the agent cited the fee and checked anyway', with an explicit stated inability to rule out that the primary is price-insensitive. That is a real and acceptable degradation, not a blocker. I would rather be told no than not ask."
+}

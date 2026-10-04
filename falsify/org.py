@@ -371,9 +371,12 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
     if unknown_env or unknown_cell:  # F1: an unknown setting must fail loudly, never be silently ignored
         raise ValueError(f"unknown freightroute_evidence keys: env={sorted(unknown_env)} cell={sorted(unknown_cell)}")
     costly = cell.get("verification") == "costly"
+    if any(k in cell for k in ("verification",)) and not {"costly_inspect_rounds", "costly_inspect_fee"} <= set(env_cfg):
+        # D020 review F1/F4: a MISSING cost key must never take a default; the cost channel must be stated explicitly
+        raise ValueError("cost-factor specs must set costly_inspect_rounds AND costly_inspect_fee explicitly")
     sc = make_scenario_e(seed, cell["evidence"], env_cfg.get("k", 3), env_cfg.get("post_budget", 6),
-                         inspect_rounds=env_cfg.get("costly_inspect_rounds", 2) if costly else 1,
-                         inspect_fee=env_cfg.get("costly_inspect_fee", 8000) if costly else 0,
+                         inspect_rounds=int(env_cfg["costly_inspect_rounds"]) if costly else 1,
+                         inspect_fee=int(env_cfg["costly_inspect_fee"]) if costly else 0,
                          show_deadline=bool(env_cfg.get("show_deadline", False)),
                          remaining_a=int(env_cfg.get("remaining_a", 4)), b_segments=int(env_cfg.get("b_segments", 4)),
                          demurrage_per_hour=int(env_cfg.get("demurrage_per_hour", 0)),

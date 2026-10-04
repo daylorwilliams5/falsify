@@ -1,0 +1,107 @@
+{
+  "experiment_id": "exp013b_verification_cost_x_dissenter_peers",
+  "tests": [
+    "Q-VERIFY-COST: when verification carries a real monetary price, does the team still stop and check before committing?",
+    "Q-VERIFY-SOCIAL: when a colleague explicitly argues against verifying, does each peer still stop and check before committing?",
+    "Q-CHANNEL-POTENCY (PREREG_E A7 positive control, LITERAL form): does exogenously injected dissent produce any within-team divergence among REAL peers?"
+  ],
+  "status": "DESIGN POD CANDIDATE (loop5). ALTERNATIVE, NOT RECOMMENDED TONIGHT, on budget and clock grounds only. This is the ONLY one of the three candidates that discharges PREREG_E A7 in its literal form, because it is the only one with live peers whose blind recommendations can diverge. It costs ~$5.5 and ~35-40 min of wall clock, against a ~$3 mandate and a 21:00 approval deadline. Recommend as the SUCCESSOR if the human lifts the budget to ~$6 and allows ~45 min of run time.",
+  "purpose": "Identical scientific design to exp013a (same primary, same fee arithmetic, same dissent content) but retaining a live 3-peer deliberating team so that peer-level blind recommendations exist and PREREG_E check 4's coincidence statistic becomes diagnostic: a coincidence rate of 1.0 in an arm where dissent is EXOGENOUSLY INJECTED cannot be explained by 'the item was obviously right', which is exactly the ceiling-confound A7 recorded against check 4.",
+  "model": {
+    "provider": "anthropic",
+    "name": "claude-haiku-4-5",
+    "temperature": 0.7
+  },
+  "environment": {
+    "name": "freightroute_evidence",
+    "k": 3,
+    "post_budget": 7,
+    "remaining_a": 2,
+    "b_segments": 4,
+    "demurrage_per_hour": 300,
+    "price_inspection": true,
+    "costly_inspect_rounds": 1,
+    "show_deadline": false,
+    "delete_inspect_signpost_from_evidence_text": true,
+    "early_stop_two_consecutive_b": false,
+    "costly_inspect_fee": 1800
+  },
+  "cells": [
+    {
+      "cell": "free_nodissent",
+      "org": "peer",
+      "evidence": "conflicting",
+      "verification": "free",
+      "dissenter": false,
+      "n_real_peers": 3,
+      "scripted_colleague_votes": false
+    },
+    {
+      "cell": "free_dissent",
+      "org": "peer",
+      "evidence": "conflicting",
+      "verification": "free",
+      "dissenter": true,
+      "n_real_peers": 3,
+      "scripted_colleague_votes": false
+    },
+    {
+      "cell": "costly_nodissent",
+      "org": "peer",
+      "evidence": "conflicting",
+      "verification": "costly",
+      "dissenter": false,
+      "n_real_peers": 3,
+      "scripted_colleague_votes": false
+    },
+    {
+      "cell": "costly_dissent",
+      "org": "peer",
+      "evidence": "conflicting",
+      "verification": "costly",
+      "dissenter": true,
+      "n_real_peers": 3,
+      "scripted_colleague_votes": false
+    }
+  ],
+  "seeds": [
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215
+  ],
+  "concurrency": 4,
+  "primary_outcome": {
+    "name": "V-BLIND verified_before_committing_blind",
+    "definition": "Binary, per REAL PEER: that peer's first-round BLIND independent recommendation is INSPECT. Unit = agent, clustered by trial. 3 peers x 15 trials = 45 agent-observations per cell, but the lab's own data show near-unanimity within trial, so the EFFECTIVE n is close to 15 and the declared power is the same as exp013a's.",
+    "co_primary": "V-TEAM: the team's first decisive action is INSPECT. The scripted colleague DOES NOT VOTE in any cell, so unlike the prebuild the dissenter cannot manufacture a tie and V-TEAM cannot be moved by the manipulation's own vote arithmetic (PREREG_E A1; PARTIAL_01 defect D4).",
+    "why_blind_is_the_one_that_tests_the_question": "Same reasoning as PREREG_E section 3: with 3 voters over 4 actions, ties are possible and tie->HOLD is an aggregation artefact unavailable to an individual. Blind recommendations are individual-level and immune to vote counting.",
+    "power_declared_before_data": "As exp013a: main effects detectable only if LARGE (>= ~0.27-0.35); the interaction is DESCRIPTIVE ONLY. No registry status change from this run alone.",
+    "additional_measures_only_available_here": [
+      "conformity_shifts (blind recommendation differs from final vote)",
+      "within-team blind divergence rate (the A7 positive control proper)",
+      "blind_majority_differs_from_team",
+      "per-round tie rate"
+    ]
+  },
+  "analysis": {
+    "script": "falsify/analyze.py main_e13 as prebuilt, amended so that V-BLIND/V-TEAM (verification) are the co-primaries rather than P-BLIND/P-TEAM (non-correction); P-BLIND and P-TEAM are retained as SECONDARIES and reported descriptively.",
+    "manipulation_checks": "MC-C1, MC-C2, MC-D1, MC-D2 exactly as in exp013a, computed over real-peer first-round rationales; PLUS MC-D3_channel_potency: the rate of rounds in which at least one real peer's blind recommendation differs from the others, in the PRESENT arm. Threshold: >= 1 divergent round out of 30 present-arm first rounds (exp011 measured 0/120, exp012 1/120). If still ~0 under exogenously injected dissent, the deliberation channel is recorded NON-ELICITING, which is itself a material instrument finding and must be reported as such.",
+    "validity_checks": "V1-V5 exactly as in exp013a, plus PREREG_E checks 3, 4 (reported descriptively, never cited in either direction unless MC-D3 passes) and 5 (tie accounting).",
+    "prohibitions": "As exp013a, except that if MC-D3 passes this run MAY be cited as the positive control PREREG_E A7 requires, and A7 may then be recorded as DISCHARGED. That is the single scientific advantage of this candidate over exp013a."
+  },
+  "cost": "60 trials x 3 real peers x (blind + final) x ~5 rounds = ~1,800 model calls. Est. ~4.2M input + ~0.3M output tokens => ~$5.5, which EXCEEDS the ~$3 mandate by ~80%. Est. wall clock ~37 min at ~5 s/call with 4 parallel slots, against a 21:00 approval deadline and a 22:00 science freeze, leaving no margin for a re-run if a manipulation check fails.",
+  "requires_build": "YES, and strictly more than exp013a: everything in exp013a plus a non-voting scripted colleague in BOTH arms (so team size and prior-consensus history length match across the dissenter contrast) and the MC-D3 divergence statistic.",
+  "notes": "Rejected for tonight on cost and clock, NOT on science. It is scientifically the better experiment and it is the one that closes PREREG_E A7. If the human would rather spend ~$6 and ~40 min to close a standing validity debt than ~$1.7 and ~7 min to answer the new question with a weaker control, this is the spec to approve instead."
+}

@@ -2,12 +2,18 @@
   "stage": "design",
   "loop": "loop5",
   "lead": "designer",
-  "state": "RUNNING",
+  "state": "COMPLETE",
   "started": "2026-10-03T18:11:24",
   "members": {
-    "lead_experimentalist": "PENDING",
-    "confound_hunter_design": "PENDING",
-    "info_gain_planner": "PENDING"
+    "lead_experimentalist": "COMPLETE",
+    "confound_hunter_design": "COMPLETE",
+    "info_gain_planner": "FAILED"
   },
-  "lead_state": "COORDINATING"
+  "lead_state": "COMPLETE",
+  "finished": "2026-10-03T18:39:52",
+  "summary": {
+    "researchers": 4,
+    "disagreements": 7,
+    "headline": "RECOMMEND specs/candidates/exp013a_verification_cost_x_dissenter_advised.json AS AMENDED, and do NOT run it as it stood before this amendment. 2x2 verification "
+  }
 }
