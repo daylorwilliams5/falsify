@@ -7,7 +7,6 @@
   "decision": "PRE-DATA ANALYTIC COMMITMENT closing the D001 CONCERNS, recorded while exp009 is at 7/20 trials and BEFORE any trial outcome has been read or analysed. (1) FEASIBILITY DEFINITION, committed to exactly one: the feasible/forced decomposition of process_violations for exp009 is defined solely on the AGENT-KNOWLEDGE operationalization compliance_feasible_known, i.e. the fields process_violation_feasible and process_violation_forced (falsify/env2.py:170-171). This is the one named in the human-approved, hash-locked spec's requires_build ('compliance_was_feasible'). (2) The GROUND-TRUTH variant shipped beyond the approved spec - process_violation_feasible_truth (env2.py:172), compliance_feasible_truth (env2.py:104) and reservations_with_compliance_feasible_known (env2.py:173) - is hereby declared OUT OF SCOPE for exp009 reporting. These fields stay in the logs (they are measured data and I will not delete or alter them) but will NOT appear in the exp009 descriptive decomposition, will NOT be used to select a reading among the spec's cases A/B/C, and may be reported later only under a separate, explicitly labelled sensitivity analysis authorized by its own decision. (3) Both remain DESCRIPTIVE: per the human's 11:48:56 approval, process_violations stays the PREREG_V2 primary outcome and process_violations_feasible is NOT promoted to primary; promoting it for any subsequent full v2 run requires a preregistered amendment and human approval, never a post-hoc switch after seeing these 20 trials. (4) ENV HASH recorded, which D001 omitted: falsify/env2.py 3acdf7bbbc1e2d94 -> 0d36c8bbb3e4c339, verified by me just now by direct sha256 of the file on disk; this is the env that produced and must produce every exp009 trial, and the same instrumented env must be used for any full run so probe and full run stay comparable. (5) I re-affirm the human's post-run sequencing clause, which D001 omitted: after exp009 the order is Statistician -> Skeptic -> Designer -> PI, and the lab pauses for human approval before any full v2 run or materially changed experiment.",
   "reason": "The methodology reviewer returned CONCERNS on D001 with two actionable findings, and one of them is time-critical. The reviewer verified that the env2.py instrumentation change was NOT an unauthorized Level-2 amendment (PREREG_V2.md:3 permits a logged change with a reason; the change is named inside the approved hash-locked spec's requires_build; the human approved 'instrumentation build + 20-trial probe'; and the 'before' set is empty, the one configuration in which instrumenting a frozen env creates no before/after data split) - but correctly noted D001 recorded only spec_hash and never the env_hash, leaving the artifact that actually changed invisible in the decision record. Item (4) fixes that. The urgent finding is the reviewer's unprompted one: the shipped build EXCEEDS the approved spec by adding a second, rival feasibility operationalization, which is an open analytic degree of freedom. With two definitions live, the feasible/forced split could be read two ways and the spec's case A/B/C reading rule could be steered after the fact by choosing the more convenient one - exactly the garden-of-forking-paths failure the feasible/forced split was introduced to prevent. Committing now, at 7/20 and with no outcome inspected, removes that freedom while it is still genuinely pre-data. I choose the agent-knowledge definition over ground truth on scientific grounds, not convenience: the research question is whether the system sacrificed process integrity, which turns on what was feasible GIVEN WHAT THE SYSTEM COULD KNOW at the moment it reserved; crediting or blaming it against ground truth it had no access to would attribute to choice what was actually a constraint, the same error critiques/escalation_conditions_skeptic.md F15 identified. This is Level 1 because it NARROWS reporting back to the human-approved spec rather than amending it - I am declining to use unapproved fields, not adding anything - and it changes no primary outcome, no manipulation, no exclusion and no condition.",
   "confidence": 0.86,
-  "alternatives_rejected": "Report both feasibility definitions in the exp009 descriptive decomposition: rejected, that is precisely the uncommitted analytic degree of freedom the reviewer flagged; two rival definitions plus a three-case reading rule is a forking path, and the spec authorized one definition. | Choose the GROUND-TRUTH definition as primary: rejected on construct validity. It would classify as a 'chosen' integrity failure a reservation the system had no information to avoid, inverting the F15 logic that motivated the split. It is still worth having as a bounded sensitivity check, which is why the fields are retained rather than discarded. | Wait until the run finishes and then pick a definition: rejected, and this is the whole point - after 20 trials are readable the choice is post-hoc and the reviewer would be right to FAIL it. | Kill the run, strip the unapproved fields from env2.py, re-lock and restart: rejected as disproportionate and actively harmful. It would discard 7 valid trials, change the env hash a second time mid-probe, and create the before/after data split that the empty-'before' argument currently avoids; the extra fields are additive measurement that cannot affect the subject's prompts, manipulations or action space, so scoping them out in the analysis achieves the same integrity guarantee at zero cost. | Escalate the scope creep to the human as a Level-3 safety-policy matter: rejected, it is neither a primary-outcome change after results (nothing read), nor an exclusion change, nor a model-population change, nor external spend; treating ordinary scope discipline as a human gate would be an abdication under the new architecture. I do flag it in my report so the human can override.",
   "cites": [
     "decisions/D001.json",
     "critiques/review_D001.md",
@@ -37,7 +36,12 @@
         "primary_outcomes_unchanged": null,
         "exploratory_labeled": null,
         "novelty_language_ok": null
-      }
+      },
+      "highlights": [
+        "Level 1 confirmed: the preregistered analysis named only one definition.",
+        "Every automatic check passed.",
+        "Remaining notes are documentation fixes."
+      ]
     }
   ],
   "spec": "specs/exp009_v2_floor_probe.json",
@@ -53,5 +57,26 @@
     "org.py": "d683a084718f700a",
     "run.py": "d678cdd8c21b745f",
     "prompt_hash": "ccbb34cb3d7e"
-  }
+  },
+  "alternatives_rejected_text": "Report both feasibility definitions in the exp009 descriptive decomposition: rejected, that is precisely the uncommitted analytic degree of freedom the reviewer flagged; two rival definitions plus a three-case reading rule is a forking path, and the spec authorized one definition. | Choose the GROUND-TRUTH definition as primary: rejected on construct validity. It would classify as a 'chosen' integrity failure a reservation the system had no information to avoid, inverting the F15 logic that motivated the split. It is still worth having as a bounded sensitivity check, which is why the fields are retained rather than discarded. | Wait until the run finishes and then pick a definition: rejected, and this is the whole point - after 20 trials are readable the choice is post-hoc and the reviewer would be right to FAIL it. | Kill the run, strip the unapproved fields from env2.py, re-lock and restart: rejected as disproportionate and actively harmful. It would discard 7 valid trials, change the env hash a second time mid-probe, and create the before/after data split that the empty-'before' argument currently avoids; the extra fields are additive measurement that cannot affect the subject's prompts, manipulations or action space, so scoping them out in the analysis achieves the same integrity guarantee at zero cost. | Escalate the scope creep to the human as a Level-3 safety-policy matter: rejected, it is neither a primary-outcome change after results (nothing read), nor an exclusion change, nor a model-population change, nor external spend; treating ordinary scope discipline as a human gate would be an abdication under the new architecture. I do flag it in my report so the human can override.",
+  "summary": "Commit to one feasibility definition for exp009 before any trial is read.",
+  "rationale": "Choosing after the data are readable would be post hoc.",
+  "alternatives_rejected": [
+    {
+      "label": "Report both definitions",
+      "reason": "That is exactly the uncommitted analytic freedom the reviewer flagged."
+    },
+    {
+      "label": "Choose after the run finishes",
+      "reason": "Post hoc by construction."
+    },
+    {
+      "label": "Kill and restart the run",
+      "reason": "Discards 7 valid trials and changes the environment hash again mid-probe."
+    }
+  ],
+  "responds_to": [
+    "D001"
+  ],
+  "resulting_action": "Agent-knowledge definition locked while exp009 was at 7 of 20 trials."
 }

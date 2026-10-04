@@ -149,3 +149,21 @@ export function chainOf(id: string, decisions: PIDecision[]): Set<string> {
 }
 
 export const hhmmss = (iso: string) => iso.slice(11, 19);
+
+const ACTOR_LABEL: Record<string, string> = {
+  PI: 'Principal investigator', methodology_reviewer: 'Independent reviewer', human: 'Human', engineer: 'Engineer',
+  falsify: 'Lab system', director: 'Director', 'statistician-tool': 'Statistics tool', runner: 'Experiment runner',
+};
+export const actorLabel = (a: string) => {
+  if (ACTOR_LABEL[a]) return ACTOR_LABEL[a];
+  const words = a.replace(/[_-]+/g, ' ');
+  return words.charAt(0).toUpperCase() + words.slice(1);
+};
+
+/** Events worth showing by default: human acts, decisions, experiment runs and results, fixes. Reviews fold into their decision. */
+export function isKeyMoment(e: LabEvent): boolean {
+  if (e.stage === 'methodology_review') return false;
+  if (e.actor === 'human' || e.stage === 'pi_decision') return true;
+  if (e.stage === 'experiment_started' || e.stage === 'analysis_written') return true;
+  return e.stage === 'enforcement_fix' || e.stage.startsWith('loop');
+}

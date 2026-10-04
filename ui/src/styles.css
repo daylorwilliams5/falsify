@@ -1172,3 +1172,25 @@ h2.h2-label { margin: 0; font-weight: 400; }
 
 .tl2-asof { font-size: 14px; color: var(--fg-3); margin: 12px 0 0; }
 .pub-sub { font-size: 14px; font-weight: 500; color: var(--fg-3); margin: 28px 0 0; }
+
+/* experiment index + summary cards (exp001 → exp013) */
+.xi { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.xi-card { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border: 1px solid var(--line, #24272d); border-radius: 12px; color: inherit; text-decoration: none; transition: border-color .2s, transform .2s, background .2s; }
+.xi-card:hover { transform: translateY(-2px); border-color: #ff6b35; }
+.xi-card.is-on { border-color: #ff6b35; background: rgba(255,107,53,.06); }
+.xi-top { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .5px; }
+.xi-head { font-size: 15px; line-height: 1.35; }
+.xi-meta { font-size: 11.5px; }
+.xi-verdict, .xs-verdict { font-size: 11.5px; letter-spacing: .6px; text-transform: uppercase; }
+.tone-good { color: #57d18c; } .tone-warn { color: #e6b450; } .tone-bad { color: #ff6b6b; } .tone-accent { color: #ff6b35; }
+.xi-card.tone-good, .xi-card.tone-warn, .xi-card.tone-bad, .xi-card.tone-accent { color: inherit; }
+.xs { display: flex; flex-direction: column; gap: 16px; }
+.xs-meta { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 16px; }
+.xs-meta .lbl { margin-bottom: 4px; }
+.xs-headline { font-size: 24px; line-height: 1.3; }
+.xs-bullets { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; }
+.xs-foot { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px; }
+.xs-foot a { color: #ff6b35; }
+@media (max-width: 700px) { .xs-meta { grid-template-columns: 1fr; } .xs-headline { font-size: 20px; } }
+
+.entry-full { white-space: pre-wrap; line-height: 1.55; font-size: 13.5px; opacity: .85; max-height: 340px; overflow: auto; }

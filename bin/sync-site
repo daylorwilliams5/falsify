@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Refresh the public site from the lab's live record, rebuild, and (with --deploy) push to Vercel.
+#   bin/sync-site            copy timeline, decisions and budget into ui/ fixtures and rebuild
+#   bin/sync-site --deploy   ...and deploy to production (https://falsify-nine.vercel.app)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+F=ui/src/data/fixtures/lab
+cp timeline.jsonl "$F/timeline.jsonl"
+# copy only NEW decisions: the site keeps enriched (summarised, review-annotated) copies of older ones
+for f in decisions/D[0-9]*.json; do [ -e "$F/decisions/$(basename "$f")" ] || cp "$f" "$F/decisions/"; done
+bin/falsify budget >/dev/null
+uv run --quiet python - <<'PY'
+import json, pathlib, datetime
+F = pathlib.Path("ui/src/data/fixtures/lab")
+b = json.loads((F / "results/budget.json").read_text()); src = json.loads(pathlib.Path("results/budget.json").read_text())
+for k in ("as_of", "elapsed_research_minutes", "external_spend_usd", "model_calls_used"):
+    b[k] = src[k]
+s = json.loads((F / "lab_state.json").read_text())
+s["as_of"] = json.loads(pathlib.Path("timeline.jsonl").read_text().strip().splitlines()[-1])["ts"]
+(F / "results/budget.json").write_text(json.dumps(b, indent=2) + "\n")
+(F / "lab_state.json").write_text(json.dumps(s, indent=2, ensure_ascii=False) + "\n")
+print("synced through", s["as_of"])
+PY
+npm --prefix ui run build --silent >/dev/null
+echo "built ui/dist"
+if [[ "${1:-}" == "--deploy" ]]; then (cd ui && npx --yes vercel@latest --prod --yes) | tail -2; fi

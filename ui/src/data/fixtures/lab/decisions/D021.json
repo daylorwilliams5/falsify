@@ -35,7 +35,10 @@
         "primary_outcomes_unchanged": "yes",
         "exploratory_labeled": "yes",
         "novelty_language_ok": "yes"
-      }
+      },
+      "highlights": [
+        "Nothing new appeared. The fee is dead in all four conditions, checked by execution."
+      ]
     }
   ],
   "timing_at_decision": [],
@@ -66,5 +69,11 @@
       "ts": "2026-10-03T19:02:01",
       "human_note": "Human in chat 19:0x: yes, resume after the attempt-1 API schema fix (minimum/maximum rejected); same approved design; failed attempts kept as harness exceptions."
     }
-  ]
+  ],
+  "summary": "Run exp013 on the engineer's corrected spec (human-approved).",
+  "rationale": "Same design, corrected spec: inspecting costs time only, with no fee anywhere (verified end to end by the reviewer).",
+  "responds_to": [
+    "D020"
+  ],
+  "resulting_action": "exp013 ran 60 valid trials. A first attempt failed on an API schema error at $0 and was resumed with human approval."
 }

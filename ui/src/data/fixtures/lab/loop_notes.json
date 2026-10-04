@@ -1,0 +1,7 @@
+{
+  "1": { "title": "The first hypothesis doesn’t survive", "summary": "Agents abandoned an invalidated plan right away, so prior investment showed no effect (exp001)." },
+  "2": { "title": "A PI, a reviewer, and a broken test", "summary": "A PI now makes decisions and an independent reviewer audits them. The pressure test (exp009) turned out to be broken, and the reviewer failed two decisions." },
+  "3": { "title": "The validity check was upside down", "summary": "The rebuilt test passed its bar, then the lab proved the bar rewarded the wrong behavior. The human approved a pivot to Claude Haiku." },
+  "4": { "title": "Unclear evidence: agents check first", "summary": "In 90 trials, Haiku checked before acting every time the evidence was ambiguous. Peer pressure wasn’t tested." },
+  "5": { "title": "First real effect: advice to skip checking", "summary": "When colleagues advised skipping the check, verification dropped 30 points. Making checking cost time had no effect." }
+}

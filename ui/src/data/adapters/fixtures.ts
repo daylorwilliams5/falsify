@@ -8,9 +8,11 @@ import mandate from '../fixtures/lab/mandate.json';
 import budget from '../fixtures/lab/results/budget.json';
 import exp013t from '../fixtures/lab/results/exp013t.json';
 import timelineRaw from '../fixtures/lab/timeline.jsonl?raw';
+import loopNotes from '../fixtures/lab/loop_notes.json';
 import labState from '../fixtures/lab/lab_state.json';
 import escalationExample from '../fixtures/lab/escalation_example.json';
 import { normalizeDecision, parseTimeline } from './normalize';
+import summaries from '../fixtures/lab/decision_summaries.json';
 import programs from '../fixtures/programs.json';
 import plans from '../fixtures/plans.json';
 import researchState from '../fixtures/corrigibility/research_state.json';
@@ -22,8 +24,10 @@ import literature from '../fixtures/corrigibility/literature.json';
 
 // decisions/D*.json, loaded the way a directory listing would be.
 const decisionFiles = import.meta.glob('../fixtures/lab/decisions/D*.json', { eager: true, import: 'default' });
+// One-line plain-English summaries (a display layer; the lab's decision records are unchanged).
 const decisions = Object.values(decisionFiles)
   .map((d) => normalizeDecision(d as Record<string, unknown>))
+  .map((d) => ({ ...d, summary: d.summary ?? (summaries as Record<string, string>)[d.id] }))
   .sort((a, b) => a.ts.localeCompare(b.ts));
 
 const snapshots: Record<string, LabSnapshot> = {
@@ -46,6 +50,8 @@ export const fixtureSource: LabDataSource = {
     // Demo switch: ?escalation=1 shows a Level 3 card.
     const q = new URLSearchParams(window.location.search);
     const state = { ...(labState as LabState) };
+    const notes = loopNotes as Record<string, { title: string; summary: string }>;
+    state.loops = state.loops.map((l) => ({ ...l, ...notes[String(l.n)] }));
     if (q.get('escalation')) state.escalations = [escalationExample as Escalation];
     return {
       mandate: mandate as Mandate,

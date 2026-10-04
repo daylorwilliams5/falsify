@@ -7,7 +7,6 @@
   "decision": "Execute the F9-C1 offline re-aggregation of the existing 20 exp001_pilot multi-agent transcripts as a zero-model-call, read-only go/no-go gate on the whole aggregation-rule branch (H5/H5a/H8). Re-derive each round's action under the candidate plurality/vote rule from the recorded per-role outputs in data/trials/exp001_pilot.jsonl and report, per trial and per round: the within-round route-intention disagreement rate (disagreement defined over ROUTE INTENTIONS, not the CONTINUE/REPLAN token), how many of the 80 rounds the plurality rule would resolve differently from the recorded planner-authority action, the tie frequency, and the full vote vector. Writes only to results/exp001_pilot_reaggregation.json; data/trials/ stays read-only; no raw data edited, no preregistered result changed. Reported EXPLORATORY. Decision rule fixed in advance: if the re-derived action sequence is identical in 20/20 trials and the route-intention disagreement rate is 0, I will record H8/H5a as VACUOUS-not-falsified on present evidence and will not spend the 3-4h aggregation-rule build; H3 and H5 stay 'untested' either way, since this analysis manipulates nothing.",
   "reason": "Level 1 as a within-budget diagnostic: zero model calls, zero trials, zero external spend, no new condition, no new hypothesis family, and no status transition is taken on it by this decision. It is the single cheapest decision-relevant analysis available, and it was independently named as the right free precursor by two specialists: critiques/loop1_design.md A3 (0 conflicts in 80 rounds make every aggregation rule return the same action, checkable free on existing logs) and critiques/loop1_auditor.md section 2 named non-proposal (re-aggregate offline, 0 model calls, read-only; 'if it is, the build is not worth 3-4 h'). Both PREDICT the result is exactly 0 by arithmetic, which is why running it is worth doing rather than assuming: an assumed-zero kills a branch on an unverified arithmetic claim, whereas a measured zero kills it on evidence, and a measured NON-zero would revive H8 as the cheapest live hypothesis in the registry. It also delivers a prerequisite the auditor flagged separately (C7): redefining 'disagreement' over route intentions rather than the org.py:160 token artifact that produced disagreement_rounds=1.0 in cell D against wasted_actions=0.0.",
   "confidence": 0.9,
-  "alternatives_rejected": "Skip it and declare H8/H5a inert on the designer's and auditor's arithmetic alone: rejected, that would retire a hypothesis branch on an inferred rather than measured basis, and the cost of checking is zero. | Build the plurality-aggregation arm (3-4h) without the precursor: rejected, critiques/escalation_conditions_skeptic.md F9-C1 and EDGE_CASE_POLICY section F (0 conflicts in 80 multi-agent rounds, 20/20 executor compliance) predict a provably inert manipulation; spend the 3-4h only if the precursor returns a non-zero disagreement rate. | Treat the existing disagreement_rounds field as the disagreement measure: rejected, it is a CONTINUE/REPLAN token artifact (org.py:160 flags recommendation-set difference OR plan!=action), giving 1.0 in cell D while all four roles argued for the same route (critiques/exp001_pilot_skeptic.md 1.4); using it would overstate disagreement and manufacture a live-looking H8. | Fold this into the post-exp009 analysis queue: rejected on parallelism, it needs no GPU and no model, so it costs nothing to run concurrently with the exp009 trials.",
   "cites": [
     "exp001_pilot",
     "data/trials/exp001_pilot.jsonl",
@@ -31,7 +30,30 @@
         "primary_outcomes_unchanged": null,
         "exploratory_labeled": null,
         "novelty_language_ok": null
-      }
+      },
+      "highlights": [
+        "The rule pre-authorized a hypothesis status change inside a Level 1 record.",
+        "H8 and H5a are proposals, not registered hypotheses; they have no status to change.",
+        "A decision rule written inside the decision that uses it is not preregistered."
+      ]
     }
-  ]
+  ],
+  "alternatives_rejected_text": "Skip it and declare H8/H5a inert on the designer's and auditor's arithmetic alone: rejected, that would retire a hypothesis branch on an inferred rather than measured basis, and the cost of checking is zero. | Build the plurality-aggregation arm (3-4h) without the precursor: rejected, critiques/escalation_conditions_skeptic.md F9-C1 and EDGE_CASE_POLICY section F (0 conflicts in 80 multi-agent rounds, 20/20 executor compliance) predict a provably inert manipulation; spend the 3-4h only if the precursor returns a non-zero disagreement rate. | Treat the existing disagreement_rounds field as the disagreement measure: rejected, it is a CONTINUE/REPLAN token artifact (org.py:160 flags recommendation-set difference OR plan!=action), giving 1.0 in cell D while all four roles argued for the same route (critiques/exp001_pilot_skeptic.md 1.4); using it would overstate disagreement and manufacture a live-looking H8. | Fold this into the post-exp009 analysis queue: rejected on parallelism, it needs no GPU and no model, so it costs nothing to run concurrently with the exp009 trials.",
+  "summary": "Re-aggregate exp001 at zero cost, and retire H8/H5a if disagreement is zero.",
+  "rationale": "The cheapest decision-relevant analysis available: zero model calls, read-only.",
+  "alternatives_rejected": [
+    {
+      "label": "Declare H8/H5a inert on arithmetic alone",
+      "reason": "Would retire a branch on an inferred rather than measured basis."
+    },
+    {
+      "label": "Build the plurality-aggregation arm now",
+      "reason": "Three to four hours on a manipulation predicted to be inert."
+    },
+    {
+      "label": "Use the existing disagreement field",
+      "reason": "It is a token artifact that overstates disagreement."
+    }
+  ],
+  "resulting_action": "The re-aggregation ran. The pre-committed rule was withdrawn in D003."
 }

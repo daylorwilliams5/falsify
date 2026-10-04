@@ -30,7 +30,11 @@
         "primary_outcomes_unchanged": "yes",
         "exploratory_labeled": "yes",
         "novelty_language_ok": "yes"
-      }
+      },
+      "highlights": [
+        "The 30-point effect survives independent recomputation.",
+        "But the PI called a preregistered tripwire “passed” when it had actually fired."
+      ]
     }
   ],
   "timing_at_decision": [
@@ -43,5 +47,8 @@
       "phase": 3,
       "phase_label": "after outcome inspection"
     }
-  ]
+  ],
+  "summary": "Freeze exp013: colleagues' advice cut checking from 100% to 70%; time cost had no effect.",
+  "rationale": "The human pre-committed to reporting the result either way, with no search for other effects.",
+  "resulting_action": "Result frozen. The reviewer then flagged an overclaim about safety."
 }

@@ -323,7 +323,7 @@ export interface LabState {
   reviewer: { auditing: string | null; active: boolean };
   roles: RoleStatus[];
   process: { id: string; caption: string }[];
-  loops: { n: number; label: string; sub: string; start: string; end: string | null; ended?: string }[];
+  loops: { n: number; label: string; sub: string; start: string; end: string | null; ended?: string; title?: string; summary?: string }[];
   runs: { id: string; start: string; end: string; trials: number }[];
   escalations: Escalation[];
   public: PublicState;

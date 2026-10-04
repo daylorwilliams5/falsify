@@ -12,6 +12,52 @@ import { TraceRow } from '../components/TraceRow';
 import { TimelineEvent } from '../components/TimelineEvent';
 import { EvidenceItem } from '../components/EvidenceItem';
 import { LiteratureSource } from '../components/LiteratureSource';
+import { TrialStrip } from '../components/overview/TrialStrip';
+import allExperiments from '../data/fixtures/lab/experiments_all.json';
+import exp012Finding from '../data/fixtures/lab/results/exp012.json';
+import exp013tFinding from '../data/fixtures/lab/results/exp013t.json';
+import type { Finding } from '../data/types';
+
+type ExpSummary = (typeof allExperiments)[number];
+const FINDINGS: Record<string, Finding> = { exp012: exp012Finding as Finding, exp013t: exp013tFinding as Finding };
+const REPO = 'https://github.com/daylorwilliams5/falsify/blob/main/';
+
+function ExperimentIndex({ current }: { current: string }) {
+  return (
+    <div className="xi">
+      {allExperiments.map((e) => (
+        <a key={e.id} href={`#/experiments/${e.id}`} className={`xi-card tone-${e.tone} ${e.id === current ? 'is-on' : ''}`}>
+          <div className="xi-top mono"><span>{e.short}</span><span className="muted">{e.loop}</span></div>
+          <div className="xi-head">{e.headline}</div>
+          <div className="xi-meta mono muted">{e.model} · {e.trials.split(' ')[0]} trials</div>
+          <div className={`xi-verdict mono tone-${e.tone}`}>{e.verdict}</div>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function ExperimentSummaryCard({ e }: { e: ExpSummary }) {
+  const f = 'finding' in e && e.finding ? FINDINGS[e.finding as string] : undefined;
+  return (
+    <div className="xs">
+      <div className="xs-meta">
+        <div><div className="lbl">Subject model</div><div className="mono">{e.model}</div></div>
+        <div><div className="lbl">Trials</div><div className="mono">{e.trials}</div></div>
+        <div className="xs-wide"><div className="lbl">Design</div><div>{e.design}</div></div>
+      </div>
+      <div className="xs-headline">{e.headline}</div>
+      <ul className="xs-bullets">{e.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
+      {f && <TrialStrip trials={f.trials} legend={f.legend} />}
+      <div className={`xs-verdict mono tone-${e.tone}`}>{e.verdict}</div>
+      <div className="xs-foot mono">
+        <a href={REPO + e.result} target="_blank" rel="noreferrer">{e.result}</a>
+        {e.decision.startsWith('D') && <a href={`#/decisions/${e.decision}`}>decision {e.decision}</a>}
+      </div>
+    </div>
+  );
+}
+
 
 const ORDER = ['MEASURED', 'DERIVED', 'INFERRED', 'HYPOTHESIS'] as const;
 
@@ -27,13 +73,30 @@ export function HypothesesPage({ lab, base }: { lab: LabSnapshot; base: string }
 }
 
 export function ExperimentPage({ lab, base, id }: { lab: LabSnapshot; base: string; id?: string }) {
-  const exp = lab.experiments.find((e) => e.id === id) ?? lab.experiments[0];
-  const evidence = lab.state.evidence.filter((e) => e.hypothesis === exp.hypothesis);
+  const summary = allExperiments.find((e) => e.id === id) ?? (id ? undefined : allExperiments[allExperiments.length - 1]);
+  const exp = lab.experiments.find((e) => e.id === (summary?.id ?? id));
+  if (summary && summary.id !== 'exp001_pilot') {
+    return (
+      <DetailPage base={base} kicker={`Experiment · ${summary.short} · ${summary.loop}`} title={summary.short} lede={summary.question}>
+        <Panel title="All experiments" meta={<span className="mono">{allExperiments.length} run · in order</span>}>
+          <ExperimentIndex current={summary.id} />
+        </Panel>
+        <Panel title="Result" meta={<span className="mono">{summary.result}</span>}>
+          <ExperimentSummaryCard e={summary} />
+        </Panel>
+      </DetailPage>
+    );
+  }
+  const x = exp ?? lab.experiments[0];
+  const evidence = lab.state.evidence.filter((e) => e.hypothesis === x.hypothesis);
   return (
-    <DetailPage base={base} kicker={`Experiment · ${exp.id}`} title={exp.id} lede={exp.question}>
+    <DetailPage base={base} kicker={`Experiment · ${x.id}`} title={x.id} lede={x.question}>
+      <Panel title="All experiments" meta={<span className="mono">{allExperiments.length} run · in order</span>}>
+        <ExperimentIndex current={x.id} />
+      </Panel>
       <div className="detail-grid">
-        <Panel title="Result" meta={<span className="mono">results/{exp.id}.json</span>}>
-          <ExperimentCard x={exp} />
+        <Panel title="Result" meta={<span className="mono">results/{x.id}.json</span>}>
+          <ExperimentCard x={x} />
         </Panel>
         <Panel title="Evidence from this run" meta={<span className="mono">{evidence.length} claims</span>}>
           {ORDER.flatMap((k) => evidence.filter((e) => e.kind === k)).map((e) => <EvidenceItem key={e.id} e={e} />)}

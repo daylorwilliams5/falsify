@@ -56,6 +56,12 @@ export function DecisionEntry({ d, all, outcome, focused }: {
 
         {open && (
           <div className="entry-detail">
+            {d.summary && d.decision && (
+              <section>
+                <div className="label">Full decision record</div>
+                <p className="entry-full">{d.decision}</p>
+              </section>
+            )}
             <section>
               <div className="label">Alternatives rejected</div>
               <ul className="alts">
