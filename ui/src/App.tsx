@@ -4,6 +4,7 @@ import { TopNav } from './components/TopNav';
 import { LabOverview } from './LabOverview';
 import { DecisionsPage } from './pages/DecisionsPage';
 import { TimelinePage } from './pages/TimelinePage';
+import { JoinPage } from './pages/JoinPage';
 import { PublicPage } from './pages/PublicPage';
 import { AgentsPage, ExperimentPage, HypothesesPage, LiteraturePage } from './pages/Pages';
 
@@ -30,6 +31,7 @@ export default function App() {
       case 'literature': return <LiteraturePage lab={snapshot} base={base} />;
       case 'lab': return <AgentsPage lab={snapshot} base={base} view={lab} />;
       case 'decisions': return <DecisionsPage key={a ?? ''} decisions={lab.decisions} focus={a} />;
+      case 'join': return <JoinPage />;
       case 'timeline': return <TimelinePage key={a ?? ''} lab={lab} focus={a} />;
       default: return <LabOverview lab={lab} />; // #/overview
     }
@@ -37,8 +39,9 @@ export default function App() {
 
   return (
     <div className="app">
+      <a className="skip" href="#main">Skip to content</a>
       <TopNav section={section} status={lab.state.status} />
-      <main className="main">{page}</main>
+      <main id="main" className="main" tabIndex={-1}>{page}</main>
     </div>
   );
 }

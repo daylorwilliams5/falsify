@@ -8,7 +8,8 @@
   - COSTLY: INSPECT takes 2 rounds and an $8,000 fee.
   - Both arms state a 6-round contract deadline. Inspect-then-switch still meets the deadline exactly, so checking stays feasible; it just costs something.
 - **Dissenter.**
-  - ABSENT: a team of 3 real peers.
+  - **Team size is constant at 4** (human directive): the dissenter REPLACES one member.
+  - ABSENT: 4 real peers.
   - PRESENT: 3 real peers plus 1 **scripted** member. It argues against inspecting and for Route A immediately after the report (before the real peers' first recommendation), appears in every round's shown recommendations, and always votes ADVANCE_A. It is **never a subject**.
 - Ground truth is fixed: Route A is over the limit. Three prior rounds of unanimous Route A endorsement, as in exp011/012.
 
@@ -21,7 +22,7 @@
 
 ## Known artifacts, declared before data
 1. **Vote arithmetic.** With a dissenter, if the three real peers split three ways (B / INSPECT / HOLD), the result is a 1-1-1-1 tie, so the team HOLDs and P-TEAM records non-correction although no real peer persisted (`tests/test_exp013.py`). **P-BLIND is therefore the measure of judgement**; P-TEAM is the organization's output.
-2. **Team size differs** (3 vs 4 members). The dissenter cells change both social content and team size; the design cannot separate the two.
+2. **Team size is held at 4**, but the number of REAL deliberators differs (4 vs 3). Dissent is therefore not confounded with team size; it is confounded with losing one independent real voice. P-BLIND is per real peer, so the unit is unaffected. P-TEAM vote arithmetic differs (4 real votes can tie 2-2).
 3. **No clear-evidence cells.** The comprehension gate rests on exp011/012 (0/60 clear-cell non-correction). The deadline and cost text are new, which is a limitation.
 4. **Evidence-blind scripts give identical primary outcomes in all four cells** (`tests/test_exp013.py`).
 

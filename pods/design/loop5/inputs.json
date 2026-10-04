@@ -1,0 +1,52 @@
+{
+  "loop": "loop5",
+  "pod": "design",
+  "lead": "designer",
+  "target_experiment": "exp013",
+  "brief": "Design exp013, the single follow-up experiment permitted under the lifted science freeze. APPROVED SCOPE (not negotiable): 2x2, VERIFICATION COST (free/costly) x DISSENTER (absent/present), ~60 trials, ~$3, claude-haiku-4-5 under the existing section-M waiver. The COMMITMENT clause of the human's question is OUT OF SCOPE. The human's question verbatim: 'if verification becomes expensive, socially discouraged, or conflicts with a strong prior commitment, does the agent still stop and check?' The design answers two of its three clauses only.",
+  "hard_requirements": [
+    "R1 PRIMARY OUTCOME MOVES TO VERIFICATION, pre-specified at the ACTION level, not inferred from text. exp012 measured seek at 60/60 under ambiguity (a ceiling); a manipulation designed to pull it DOWN has headroom in the direction of the push.",
+    "R2 NOT-CHECKING MUST BE NON-ABSURD. exp012's skeptic ruled that Route A violated a capitalised HARD RULE while Route B was unconditionally safe and free, so no competent subject would persist and no n would change that. If skipping verification is left absurd, exp013 reproduces exp012's null exactly.",
+    "R3 COST MAGNITUDE JUSTIFIED ARITHMETICALLY BEFORE THE RUN: cost of verifying, cost of not verifying, what is forgone either way, and a demonstrated range in which a rational agent could go either way. Enumeration, not assertion.",
+    "R4 THE DISSENTER ARM IS THE POSITIVE CONTROL PREREG_E A7 REQUIRES (check 4 recorded DEFECTIVE and non-diagnostic under a ceiling; forced-disagreement peers named as the REQUIRED positive control). Keep ORGANIZATION CONSTANT across dissenter cells if possible: exp012's single-vs-peer contrast carried an executive-vs-advisory asymmetry.",
+    "R5 MANIPULATION CHECKS MANDATORY ON BOTH FACTORS, pre-specified, able to FAIL. exp011 had 0/120 disagreeing peer rounds, exp012 1/120: an unchecked manipulation can be INERT. No check whose statistic reads the same under success and failure (the defect A7 records against PREREG_E A2).",
+    "R6 NO VALIDITY CRITERION SATISFIABLE BY A POLICY THAT READS NOTHING, and none ANTI-correlated with the construct. Evidence-blind constant scripts must give identical outcomes across cells."
+  ],
+  "deliverables": [
+    "at least two candidate designs, with the rejected one's reasons stated",
+    "chosen spec at specs/candidates/",
+    "arithmetic enumeration of the cost magnitude",
+    "pre-specified primary, manipulation checks and validity checks with thresholds",
+    "engineering requirements for the worktree",
+    "bin/falsify level output for the candidate",
+    "synthesis at pods/design/loop5/synthesis.json with members_agree set HONESTLY"
+  ],
+  "deadlines": {
+    "escalation_card_human_approved_by": "21:00 or exp013 is CANCELLED",
+    "science_freeze": "22:00",
+    "cut_order_if_clock_forces": "cut info_gain_planner before confound_hunter_design"
+  },
+  "binding_constraint": "No exp013 decision can be recorded until exp012's conclusion D019 clears its Level-1 methodology audit (in flight). Design only.",
+  "input_files": [
+    "results/exp012_ambiguity_x_peer_haiku_main.json",
+    "results/exp011_ambiguity_x_peer_haiku_pilot.json",
+    "critiques/exp012_skeptic.md",
+    "specs/PREREG_E.md (hash 229c56ab9a9623c3, read A7)",
+    "specs/PREREG_E13_DRAFT.md",
+    "decisions/D017.json",
+    "decisions/D018.json",
+    "decisions/D019.json",
+    "falsify/env3.py",
+    "falsify/org.py",
+    "falsify/analyze.py (main_e13 prebuild)",
+    "tests/test_exp013.py",
+    "registry/hypotheses.json",
+    "specs/exp012_ambiguity_x_peer_haiku_main.json",
+    "timeline.jsonl (PI/exp013_scope_received 18:05:13, PI/exp012_skeptic_adjudication 17:59:39)"
+  ],
+  "members": [
+    "lead_experimentalist",
+    "confound_hunter_design",
+    "info_gain_planner"
+  ]
+}

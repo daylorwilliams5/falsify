@@ -15,14 +15,14 @@ export function TopNav({ section, status }: { section: string; status: string })
         <span className="brand-name">FALSIFY</span>
         <span className="brand-tag">The lab that tries to prove itself wrong.</span>
       </a>
-      <nav className="nav-links">
+      <nav className="nav-links" aria-label="Main">
         {LINKS.map(([id, label]) => (
-          <a key={id} href={`#/${id}`} className={section === id ? 'is-active' : ''}>{label}</a>
+          <a key={id} href={`#/${id}`} className={section === id ? 'is-active' : ''} aria-current={section === id ? 'page' : undefined}>{label}</a>
         ))}
       </nav>
-      <div className="live-status">
-        <span className="live-dot" />
-        {status === 'RUNNING' ? 'Lab running' : 'Lab paused'}
+      <div className="nav-right">
+        <span className="live-status"><span className="live-dot" aria-hidden />{status === 'RUNNING' ? 'Lab running' : 'Lab paused'}</span>
+        <a href="#/join" className={`nav-join ${section === 'join' ? 'is-active' : ''}`}>Join the lab</a>
       </div>
     </header>
   );

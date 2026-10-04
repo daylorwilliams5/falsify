@@ -8,7 +8,7 @@ from falsify.env3 import EnvStateE, make_scenario_e
 from tests.test_anthropic_backend import scripted
 
 CELLS = [{"cell": f"{v}_{d}", "org": "peer", "evidence": "conflicting", "verification": v, "dissenter": d,
-          "n_real_peers": 3} for v in ("free", "costly") for d in (False, True)]
+          "n_real_peers": 3 if d else 4} for v in ("free", "costly") for d in (False, True)]
 ENV = {"post_budget": 6, "show_deadline": True, "costly_inspect_rounds": 2, "costly_inspect_fee": 8000}
 MODEL = {"name": "q", "temperature": 0.7}
 
@@ -28,8 +28,8 @@ def test_dissenter_is_never_a_subject_and_only_appears_in_dissent_cells(monkeypa
     for c in CELLS:
         t = _run(c, "INSPECT", monkeypatch)
         r1 = t["rounds"][0]
-        assert set(r1["blind"]) == {"peer1", "peer2", "peer3"}          # P-BLIND units are real peers only
-        assert ("peer4" in r1["final_votes"]) is False
+        real = {"peer1", "peer2", "peer3"} | (set() if c["dissenter"] else {"peer4"})
+        assert set(r1["blind"]) == real and set(r1["final_votes"]) == real  # P-BLIND units are real peers only
         assert (r1["dissenter_vote"] == "ADVANCE_A") is c["dissenter"]
 
 
@@ -44,6 +44,18 @@ def test_dissenter_text_reaches_real_peers_before_their_first_recommendation(mon
     seen.clear()
     org.run_trial_e(CELLS[0], 1, MODEL, ENV, "h", "x")                 # free, no dissenter
     assert all("Stay the course" not in s for s in seen)
+
+
+def test_team_size_is_four_in_every_cell(monkeypatch):
+    seen = []
+    def spy(m, msgs, schema, seed, t):
+        seen.append(msgs[0]["content"])
+        return scripted(lambda _: "INSPECT")(m, msgs, schema, seed, t)
+    monkeypatch.setattr(org, "call_ollama", spy)
+    for c in CELLS:
+        seen.clear()
+        org.run_trial_e(c, 1, MODEL, ENV, "h", "x")
+        assert all("of a 4-member freight operations team" in s for s in seen)
 
 
 def test_costly_inspection_takes_two_rounds_and_fits_the_deadline_exactly():
