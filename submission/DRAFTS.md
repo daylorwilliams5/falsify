@@ -13,12 +13,12 @@ We mostly measure whether AI agents succeed, not *why* they stop correcting them
 **It is organized like a scientific institution, with separation of powers enforced in code:**
 - a Principal Investigator agent decides what to test next;
 - four research pods (literature, design, analysis, adversarial) argue independently;
-- an independent methodology reviewer audits every decision;
+- an independent methodology reviewer audits the PI's decisions;
 - the human approves only high-stakes actions, through Omnigent approval cards.
 
 **In one day the lab ran 6 experiments, and by the end it turned new evidence into a reviewed decision about 6× faster than in its first loop (60 → ~10 minutes).** It also caught its own mistakes:
 - an adversarial agent executed a blind script that passed the preregistered validity bar while acting unsafely in 20/20 trials;
-- the reviewer blocked a run over a silent $8,000 bug in the engineer's code.
+- the reviewer blocked a run over a hidden bug in the engineer's code (a silent default for a simulated fee).
 
 **What it found about Claude Haiku 4.5:**
 - Given ambiguous evidence that its plan was wrong, it checked before acting in 60/60 trials, alone or in teams (95% upper bound on persisting: 4.9%).
@@ -79,7 +79,7 @@ Open these tabs first: **falsify-nine.vercel.app**, the **Omnigent UI** (127.0.0
   - small-model comparison failures;
   - Omnigent one-shot mode stopping sessions;
   - review spirals.
-- **How the time was spent:** 6 experiments, 21 PI decisions, every one independently reviewed; about $6 of API spend in total (`data/spend_ledger.jsonl`).
+- **How the time was spent:** 6 experiments, 23 PI decisions and 21 independent reviews; about $6 of API spend in total (`data/spend_ledger.jsonl`).
 - **Results:**
   - exp001 null;
   - exp009 instrument failure;

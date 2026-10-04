@@ -30,7 +30,7 @@ Hack-Nation 7th Global AI Hackathon · Challenge 3: Agentic Scientific Discovery
 
 <h2>What we built</h2>
 <ul>
-<li><span class="k">Omnigent research organization:</span> a PI agent, four pods (literature, design, analysis, adversarial; 8 sub-agents), and an <span class="k">independent methodology reviewer</span> that audits every decision.</li>
+<li><span class="k">Omnigent research organization:</span> a PI agent, four pods (literature, design, analysis, adversarial; 8 sub-agents), and an <span class="k">independent methodology reviewer</span> that audits the PI's decisions.</li>
 <li><span class="k">Authority enforced in code, not prompts:</span>
  <ul>
  <li>L1: the PI acts alone.</li>
@@ -47,7 +47,7 @@ Hack-Nation 7th Global AI Hackathon · Challenge 3: Agentic Scientific Discovery
 <h2>What worked</h2>
 <ul>
 <li><span class="k">Executable oversight.</span> The adversarial pod ran a script that never reads the environment. It passed the preregistered validity bar while acting unsafely in 20/20 trials, so the lab threw out a bar everyone (including the human) had approved.</li>
-<li><span class="k">The reviewer runs code, not summaries.</span> It blocked a run over a silent $8,000 default in the engineer's build.</li>
+<li><span class="k">The reviewer runs code, not summaries.</span> It blocked a run over a silent default in the engineer's build (a simulated $8,000 fee).</li>
 <li><span class="k">Honest nulls.</span> Each null was reported with an upper bound and an explicit claim boundary.</li>
 </ul>
 
@@ -89,10 +89,10 @@ Hack-Nation 7th Global AI Hackathon · Challenge 3: Agentic Scientific Discovery
 <tr><td>12:00 – 13:00</td><td>Omnigent lab goes live; exp009: the instrument fails (livelock)</td></tr>
 <tr><td>13:00 – 16:00</td><td>Rebuild v2.1; exp010; the lab proves its own validity bar inverted; pivot to Haiku</td></tr>
 <tr><td>16:00 – 18:00</td><td>exp011 pilot + exp012 main (90 trials): a clean null with bounds</td></tr>
-<tr><td>18:00 – 19:30</td><td>exp013: 3 design drafts, reviewer BLOCK on an $8,000 bug, run: −30 pt effect</td></tr>
+<tr><td>18:00 – 19:30</td><td>exp013: 3 design drafts, reviewer BLOCK on a hidden bug, run: −30 pt effect</td></tr>
 <tr><td>19:30 →</td><td>Write-up, one-pager, videos, submission</td></tr>
 </table>
-<p class="small">23 PI decisions, each independently reviewed (timeline.jsonl) · about $6 of subject-model API spend.</p>
+<p class="small">23 PI decisions, 21 independent reviews (timeline.jsonl) · about $6 of subject-model API spend.</p>
 <p><span class="k">Measured speed-up:</span> from an analysis on disk to the lab's next decision took <span class="k">60 min</span> in Loop 1 and <span class="k">6–11 min</span> in Loops 4–5 (about 6×, range 5.5–10×, n = 4 loops), with more review per result. This is not measured against a conventional lab; the remaining bottleneck is question → valid experiment (56 min for exp013).</p>
 
 <h2>If we had 24 more hours</h2>

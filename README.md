@@ -307,7 +307,7 @@ The human asked: *if verification becomes expensive or socially discouraged, doe
 
 - **Observed improvement: about 6×** (range 5.5–10×; 60 min → 6, 10 and 11 min over three later loops). This is n = 4 loops within one lab on one day, and Loop 1 used an earlier architecture, so treat the size as indicative.
 - **It also did more checking per result:** an independent re-analysis, a skeptic pass, and a methodology review; the review adds 5–8 minutes.
-- **Throughput:** 6 experiments and 23 reviewed decisions in about 8.5 hours of research time, for about $6 of subject-model API spend.
+- **Throughput:** 6 experiments, 23 decisions and 21 independent reviews in about 8.5 hours of research time, for about $6 of subject-model API spend.
 - **Quality, by the same record:** errors were caught before they cost anything. These include:
   - an inverted validity bar;
   - a silent $8,000 cost default;
