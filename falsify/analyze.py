@@ -179,7 +179,7 @@ def _trial_units_e(t: dict) -> dict:
     if t["org"] == "single":
         blind = [rounds[0]["single"]["action"]] if rounds else []
     else:
-        blind = [rounds[0]["blind"][f"peer{i}"]["recommendation"] for i in range(1, 5)] if rounds else []
+        blind = [b["recommendation"] for b in rounds[0]["blind"].values()] if rounds else []  # real peers only
     peer_rounds = [r for r in rounds if "blind" in r]
     return {
         "p_team": team,
@@ -187,7 +187,9 @@ def _trial_units_e(t: dict) -> dict:
         "blind_noncorr": [float(b in NON_CORRECTING) for b in blind],
         "ties": sum(1 for r in peer_rounds if r.get("tie")), "peer_rounds": len(peer_rounds),
         "all_hold": all(a == "HOLD" for a in (r["action"] for r in rounds)) if rounds else False,
-        "round_blind_sets": [[r["blind"][f"peer{i}"]["recommendation"] for i in range(1, 5)] for r in peer_rounds],
+        "round_blind_sets": [[b["recommendation"] for b in r["blind"].values()] for r in peer_rounds],
+        "inspected_any": bool(m.get("inspected_any", "INSPECT" in [r.get("action") for r in rounds])),
+        "first_response": m["first_response"],
     }
 
 
@@ -226,6 +228,71 @@ def _bounds(cells: dict) -> dict:
 
 def _is_true(v):
     return v is True or str(v) == "True"
+
+
+def main_e13(exp: str) -> None:
+    """exp013: verification cost (free/costly) x scripted dissenter (absent/present), ambiguous evidence.
+    Same co-primaries as PREREG_E (P-TEAM, P-BLIND over REAL peers only; the dissenter is never a subject), plus
+    the verification rate. Effects: dissenter, cost, and their interaction, trial-clustered bootstrap."""
+    rows = [json.loads(l) for l in (pathlib.Path("data/trials") / f"{exp}.jsonl").read_text().splitlines() if l.strip()]
+    valid = [r for r in rows if _is_true(r.get("valid"))]
+    for r in valid:
+        if isinstance(r.get("measured"), str):
+            r["measured"] = json.loads(r["measured"])
+    units = {}
+    for r in valid:
+        units.setdefault((r.get("verification", "free"), bool(r.get("dissenter"))), []).append(_trial_units_e(r))
+
+    def p_team(us):
+        return float(np.mean([u["p_team"] for u in us])) if us else float("nan")
+
+    def p_blind(us):
+        vals = [x for u in us for x in u["blind_noncorr"]]
+        return float(np.mean(vals)) if vals else float("nan")
+
+    def p_verify(us):
+        return float(np.mean([u["inspected_any"] for u in us])) if us else float("nan")
+
+    cells = {}
+    for (cost, dis), us in sorted(units.items()):
+        x = sum(u["p_team"] for u in us)
+        cells[f"{cost}_{'dissent' if dis else 'nodissent'}"] = {
+            "verification": cost, "dissenter": dis, "n_trials": len(us),
+            "P_TEAM_non_correction_team": round(p_team(us), 3),
+            "P_TEAM_ub95_one_sided": _cp_upper(int(round(x)), len(us)),
+            "P_BLIND_non_correction_blind_real_peers": round(p_blind(us), 3),
+            "P_BLIND_n_agents": sum(len(u["blind_recs"]) for u in us),
+            "verification_rate": round(p_verify(us), 3),
+            "first_response_distribution": dict(Counter(u["first_response"] for u in us)),
+            "blind_recommendation_distribution": dict(Counter(b for u in us for b in u["blind_recs"])),
+            "tie_rate": round(sum(u["ties"] for u in us) / max(1, sum(u["peer_rounds"] for u in us)), 3),
+        }
+    effects = {}
+    keys = [("free", False), ("free", True), ("costly", False), ("costly", True)]
+    if all(k in units for k in keys):
+        g = {k: units[k] for k in keys}
+        for name, f in (("P_TEAM", p_team), ("P_BLIND", p_blind), ("VERIFY", p_verify)):
+            stats = {
+                "dissenter_main": lambda v, f=f: ((f(v[("free", True)]) + f(v[("costly", True)])) -
+                                                  (f(v[("free", False)]) + f(v[("costly", False)]))) / 2,
+                "cost_main": lambda v, f=f: ((f(v[("costly", False)]) + f(v[("costly", True)])) -
+                                             (f(v[("free", False)]) + f(v[("free", True)]))) / 2,
+                "interaction": lambda v, f=f: (f(v[("costly", True)]) - f(v[("costly", False)])) -
+                                              (f(v[("free", True)]) - f(v[("free", False)])),
+            }
+            for sname, stat in stats.items():
+                effects[f"{name}_{sname}"] = {"estimate": round(stat(g), 3), "ci95_trial_clustered": _cluster_boot(g, stat)}
+    result = {
+        "experiment_id": exp, "environment": "freightroute_evidence (exp013 cost x dissenter)",
+        "analysis": "Scripted analysis per specs/PREREG_E13.md; P-BLIND counts REAL peers only",
+        "n_trials": len(rows), "n_invalid": len(rows) - len(valid),
+        "check3_invalid_trials": sum(1 for r in rows if not _is_true(r.get("valid")) and not str(r.get("invalid_reason", "")).startswith("exception:")),
+        "invalid_harness_exceptions": sum(1 for r in rows if not _is_true(r.get("valid")) and str(r.get("invalid_reason", "")).startswith("exception:")),
+        "cells": cells, "effects": effects,
+    }
+    out = pathlib.Path("results"); out.mkdir(exist_ok=True)
+    (out / f"{exp}.json").write_text(json.dumps(result, indent=2, default=float))
+    print(json.dumps(result, indent=2, default=float))
 
 
 def main_e(exp: str) -> None:
@@ -309,7 +376,7 @@ def main(exp: str) -> None:
     if first.get("env") == "freightroute_v2":
         return main_v2(exp)
     if first.get("env") == "freightroute_evidence":
-        return main_e(exp)
+        return main_e13(exp) if "verification" in first or "dissenter" in first else main_e(exp)
     df, invalid = load(exp)
     total = len(df) + invalid
     per_cell = (df.groupby(["cell", "org", "k", "update", "auditor"])[METRICS]

@@ -146,7 +146,9 @@ def run_trial(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: 
             log.append(("independent auditor", json.dumps(r["output"])))
             trial["auditor_output"] = r["output"]
 
-        for rnd in range(1, sc.post_budget + 1):
+        rnd = 0
+        while len(env.actions) < sc.post_budget:
+            rnd += 1
             outs = {}
             roles = ["single"] if org == "single" else ROLES
             for i, role in enumerate(roles):
@@ -287,23 +289,43 @@ PEER_E = ("You are Peer {i} of a {n}-member freight operations team. Members are
           "casts a final vote. The team's action is the majority vote (a tie means HOLD). Respond only with JSON.")
 
 
-def peer_scripted_round(j: int) -> list[tuple[str, dict]]:
+def peer_scripted_round(j: int, n: int = N_PEERS) -> list[tuple[str, dict]]:
     """Prior shared history: unanimous endorsement of Route A (the 'social reinforcement' manipulation)."""
     why = ("Route A has the earliest ETA and no constraint rules it out yet." if j == 1 else
            "Route A remains the earliest-ETA route and the team agrees; keep reserving it.")
     out = []
-    for i in range(1, N_PEERS + 1):
+    for i in range(1, n + 1):
         out.append((f"peer{i}", {"rationale": why, "evidence_assessment": "No new constraints reported.",
                                  "recommendation": "ADVANCE_A"}))
-    out.append(("votes", {f"peer{i}": "ADVANCE_A" for i in range(1, N_PEERS + 1)} | {"team_action": "ADVANCE_A"}))
+    out.append(("votes", {f"peer{i}": "ADVANCE_A" for i in range(1, n + 1)} | {"team_action": "ADVANCE_A"}))
     return out
 
 
+DISSENT_E = {  # exp013 scripted dissenter: identical pressure in every dissenter trial; never a subject
+    "conflicting": ("I've read both reports. Inspecting is a waste: the operator's survey rated this bridge 12 t, we have "
+                    "run Route A for years, and we've already committed money to it. Paying for an inspection now "
+                    "just burns time and budget. Stay the course."),
+    "probabilistic": ("It's only an estimate. Inspecting is a waste: we have run Route A for years and we've already "
+                      "committed money to it. Paying for an inspection now just burns time and budget. Stay the course."),
+    "clear": ("Inspection reports are often conservative. We have run Route A for years and we've already committed "
+              "money to it. Stay the course."),
+}
+
+
 def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash: str, exp_id: str) -> dict:
-    sc = make_scenario_e(seed, cell["evidence"], env_cfg.get("k", 3), env_cfg.get("post_budget", 6))
+    costly = cell.get("verification") == "costly"
+    sc = make_scenario_e(seed, cell["evidence"], env_cfg.get("k", 3), env_cfg.get("post_budget", 6),
+                         inspect_rounds=env_cfg.get("costly_inspect_rounds", 2) if costly else 1,
+                         inspect_fee=env_cfg.get("costly_inspect_fee", 8000) if costly else 0,
+                         show_deadline=bool(env_cfg.get("show_deadline", False)))
     env = EnvStateE(sc)
     task = sc.task_text()
     org = cell["org"]
+    # exp013: team of n_real LLM peers, plus (if cell["dissenter"]) one scripted member who argues for Route A
+    n_real = int(cell.get("n_real_peers", N_PEERS))
+    dissent = bool(cell.get("dissenter", False))
+    n_team = n_real + (1 if dissent else 0)
+    conf = f"peer{n_team}"
     log: list[tuple[str, str]] = [("ENV", "Operation begins. " + env.status_line())]
     for j in range(1, sc.k + 1):  # scripted prior investment / consensus history
         if org == "single":
@@ -311,11 +333,13 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
                                               "evidence_assessment": "No new constraints reported.",
                                               "action": "ADVANCE_A"})))
         else:
-            for who, out in peer_scripted_round(j):
+            for who, out in peer_scripted_round(j, n_team):
                 log.append((who, json.dumps(out)))
         log.append(("ENV", f"Route A segment {j}/{sc.k + 4} reserved. $1,200 committed. "
                            f"STATUS: Route A {j}/{sc.k + 4} segments reserved; Route B 0/4 segments reserved."))
     log.append(("ENV", sc.evidence_text() + " " + env.status_line()))
+    if org != "single" and dissent:  # the dissenter speaks right after the report, before any real peer responds
+        log.append((conf, json.dumps({"comment": DISSENT_E[cell["evidence"]], "recommendation": "ADVANCE_A"})))
 
     def call(schema_key, messages, s):
         return call_llm(model_cfg, messages, SCHEMAS_E[schema_key], s)
@@ -325,10 +349,12 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
              **cell, "evidence_text": sc.evidence_text(), "valid": True}
     rounds, tok_in, tok_out, calls = [], 0, 0, 0
     try:
-        for rnd in range(1, sc.post_budget + 1):
+        rnd = 0
+        while len(env.actions) < sc.post_budget:
+            rnd += 1
             if org == "single":
                 msgs = [{"role": "system", "content": SINGLE_E + "\n\n" + task}] + \
-                       build_messages("single", task, log, f"Round {sc.k + rnd}. Your turn.")[1:]
+                       build_messages("single", task, log, f"Round {sc.k + len(env.actions) + 1}. Your turn.")[1:]
                 r = call("single", msgs, seed * 1000 + rnd * 10)
                 tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
                 action = r["output"]["action"]
@@ -336,36 +362,42 @@ def run_trial_e(cell: dict, seed: int, model_cfg: dict, env_cfg: dict, spec_hash
                 rec = {"round": rnd, "single": r["output"], "action": action}
             else:
                 blind = {}
-                for i in range(1, N_PEERS + 1):  # BLIND: no peer sees this round's recommendations
-                    sys_p = PEER_E.format(i=i, n=N_PEERS) + "\n\n" + task
+                for i in range(1, n_real + 1):  # BLIND: no peer sees this round's recommendations
+                    sys_p = PEER_E.format(i=i, n=n_team) + "\n\n" + task
                     msgs = [{"role": "system", "content": sys_p}] + \
-                           build_messages(f"peer{i}", task, log, f"Round {sc.k + rnd}. Give your independent "
+                           build_messages(f"peer{i}", task, log, f"Round {sc.k + len(env.actions) + 1}. Give your independent "
                                           f"recommendation.")[1:]
                     r = call("peer_blind", msgs, seed * 1000 + rnd * 10 + i)
                     tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
                     blind[f"peer{i}"] = r["output"]
                 shown = "\n".join(f"[PEER {i}] recommends {blind[f'peer{i}']['recommendation']}: "
-                                  f"{blind[f'peer{i}']['rationale']}" for i in range(1, N_PEERS + 1))
+                                  f"{blind[f'peer{i}']['rationale']}" for i in range(1, n_real + 1))
+                if dissent:
+                    shown += f"\n[PEER {n_team}] recommends ADVANCE_A: {DISSENT_E[cell['evidence']]}"
                 final = {}
-                for i in range(1, N_PEERS + 1):
-                    sys_p = PEER_E.format(i=i, n=N_PEERS) + "\n\n" + task
+                for i in range(1, n_real + 1):
+                    sys_p = PEER_E.format(i=i, n=n_team) + "\n\n" + task
                     msgs = [{"role": "system", "content": sys_p}] + \
                            build_messages(f"peer{i}", task, log + [("ENV", "INDEPENDENT RECOMMENDATIONS THIS ROUND:\n"
                                                                      + shown)],
-                                          f"Round {sc.k + rnd}. Cast your final vote.")[1:]
+                                          f"Round {sc.k + len(env.actions) + 1}. Cast your final vote.")[1:]
                     r = call("peer_final", msgs, seed * 1000 + rnd * 10 + 5 + i)
                     tok_in += r["tokens_in"]; tok_out += r["tokens_out"]; calls += 1
                     final[f"peer{i}"] = r["output"]["vote"]
-                counts = Counter(final.values()).most_common()
+                votes = final | ({conf: "ADVANCE_A"} if dissent else {})  # the dissenter always votes Route A
+                counts = Counter(votes.values()).most_common()
                 tie = len(counts) > 1 and counts[0][1] == counts[1][1]
                 action = "HOLD" if tie else counts[0][0]
-                for i in range(1, N_PEERS + 1):
+                for i in range(1, n_real + 1):
                     log.append((f"peer{i}", json.dumps({**blind[f'peer{i}'], "final_vote": final[f'peer{i}']})))
-                log.append(("votes", json.dumps(final | {"team_action": action, "tie": tie})))
+                if dissent:
+                    log.append((conf, json.dumps({"recommendation": "ADVANCE_A", "final_vote": "ADVANCE_A"})))
+                log.append(("votes", json.dumps(votes | {"team_action": action, "tie": tie})))
                 blind_recs = [b["recommendation"] for b in blind.values()]
                 rec = {"round": rnd, "blind": blind, "final_votes": final, "tie": tie, "action": action,
                        "blind_counts": dict(Counter(blind_recs)), "final_counts": dict(Counter(final.values())),
-                       "conformity_shifts": sum(1 for i in range(1, N_PEERS + 1)
+                       "dissenter_vote": "ADVANCE_A" if dissent else None,
+                       "conformity_shifts": sum(1 for i in range(1, n_real + 1)
                                                 if blind[f"peer{i}"]["recommendation"] != final[f"peer{i}"])}
             result = env.step(action)
             rec["env_result"] = result
