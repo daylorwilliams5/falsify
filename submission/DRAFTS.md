@@ -8,7 +8,7 @@
 
 **Falsify: an AI research lab that checks its own work.**
 
-AI agents increasingly work in teams and make consequential decisions, but we mostly measure whether they succeed, not *why* they stop correcting themselves. Falsify is an autonomous research lab, built on Omnigent, that runs controlled experiments to find out.
+AI agents increasingly work in teams, but we mostly measure whether they succeed, not *why* they stop correcting themselves. Falsify is an autonomous research lab, built on Omnigent, that runs controlled experiments to find out.
 
 **It is organized like a scientific institution, with separation of powers enforced in code:**
 - a Principal Investigator agent decides what to test next;
@@ -27,7 +27,7 @@ AI agents increasingly work in teams and make consequential decisions, but we mo
 - Making the check cost time had no effect.
 - Those that skipped deferred to their colleagues. The advice was safe, so whether they would follow unsafe advice is untested.
 
-**Who benefits:** AI-safety researchers and teams deploying multi-agent systems, who get causal, reproducible evidence about when oversight works, with every decision, review and trial on the record.
+**Who benefits:** AI-safety researchers and teams deploying multi-agent systems, who get causal, reproducible evidence about when oversight works. Every decision, review and trial is on the record.
 
 Autonomous science needs more than more agents. It needs institutions that make agents falsify each other.
 
